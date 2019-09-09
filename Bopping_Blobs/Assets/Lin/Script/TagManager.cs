@@ -11,7 +11,7 @@ public class TagManager : MonoBehaviour
     public GameObject player;
     private int scoreNumber;
     public Text scoreText;
-    // Start is called before the first frame update
+
     void Start()
     {
         for (int i = 0; i < allPlayers.Length; i++)
@@ -20,12 +20,6 @@ public class TagManager : MonoBehaviour
             allPlayers[i].GetComponent<PlayerTag>().playerNumber = i;
         }
         player = GameObject.FindGameObjectWithTag("Player");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private int oldTag = 10;

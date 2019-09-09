@@ -17,7 +17,7 @@ public class ThirdPersonInput : MonoBehaviour
     public float sphereCastRadius = 0.31f;
 
     public float qubedistance = 0.2f;
-    // Start is called before the first frame update
+    
     void Start()
     {
         DJ = FindObjectOfType<DigitalJoystick>();
@@ -26,7 +26,6 @@ public class ThirdPersonInput : MonoBehaviour
         TPC = FindObjectOfType<ThirdPersonCharacter>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         TPUC.m_Jump = JB.pressed;

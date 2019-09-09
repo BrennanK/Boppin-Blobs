@@ -6,34 +6,23 @@ using UnityStandardAssets.Characters.ThirdPerson;
 public class PlayerTag : MonoBehaviour
 {
     public GameObject tagCanvas;
-
     public TagManager TM;
-
     public int playerNumber;
-
     private Rigidbody rb;
-
     public float bountFource = 1f;
-
     public PhysicMaterial iceyMaterial;
-
     private Collider playerCollider;
+
     [Header("How long the effect")]
     public float iceyTime;
-
     private bool ishitted;
-    // Start is called before the first frame update
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         playerCollider = GetComponent<Collider>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     /*
     void OnCollisionEnter(Collision other)
     {
@@ -61,6 +50,7 @@ public class PlayerTag : MonoBehaviour
     {
         ishitted = false;
     }
+
     public void ActivateTag()
     {
         tagCanvas.SetActive(true);
