@@ -3,39 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class JoyButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
-{
-    private IPointerDownHandler _pointerDownHandlerImplementation;
-
+public class JoyButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     public bool pressed;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Space)) {
             pressed = true;
-        }
-        else
-        {
+        } else if(Input.GetKeyUp(KeyCode.Space)) {
             pressed = false;
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        //throw new System.NotImplementedException();
+    public void OnPointerDown(PointerEventData eventData) {
         pressed = true;
     }
 
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        //throw new System.NotImplementedException();
+    public void OnPointerUp(PointerEventData eventData) {
         pressed = false;
     }
 }
