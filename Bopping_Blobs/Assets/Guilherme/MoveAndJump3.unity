@@ -896,9 +896,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 6
   groundDamping: 0.05
-  jumpHeight: 0.5
-  jumpDistance: 0.5
-  goingDownGravityMultiplier: 2
+  fallingGravityMultiplier: 3
+  attackDistance: 1.5
 --- !u!143 &2129968142
 CharacterController:
   m_ObjectHideFlags: 0
