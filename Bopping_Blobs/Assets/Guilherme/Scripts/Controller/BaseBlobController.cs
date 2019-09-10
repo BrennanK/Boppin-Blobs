@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseBlobController : MonoBehaviour {
-    // TODO maybe separate the hammer/tag/it logic from the base controller
+    // TODO separate the hammer/tag/it logic from the base controller
     public enum ECharacterState {
         Moving,
         Attacking
@@ -16,14 +16,17 @@ public abstract class BaseBlobController : MonoBehaviour {
     public float fallingGravityMultiplier = 3f;
 
     [Header("Hammer Bop")]
+    public LayerMask attackLayer;
     public float attackDistance = 1f;
     public float attackTime = 1f;
+    public float attackRadius = 1f;
     public Transform hammerTransform;
     public Transform hammerBopAim;
 
     [Header("Feedback Colors (temp")]
     public Color regularBlobColor;
     public Color attackingBlobColor;
+    public Color taggedColor;
 
     // Cached References
     protected CharacterController m_characterControllerReference;
@@ -61,6 +64,7 @@ public abstract class BaseBlobController : MonoBehaviour {
         // Drawing Debug Rays
         Debug.DrawRay(transform.position, transform.forward * attackDistance, Color.red);
         Debug.DrawRay(transform.position, new Vector3(m_movementVector.x, 0f, m_movementVector.z).normalized * attackDistance, Color.green);
+        Debug.DrawRay(hammerBopAim.position, Vector3.up, Color.blue);
 
         // Grounding the player
         if (m_characterControllerReference.isGrounded) {
@@ -86,6 +90,19 @@ public abstract class BaseBlobController : MonoBehaviour {
         m_characterRenderer.material.color = attackingBlobColor;
         m_waitingTime = attackTime;
         // TODO Raycast for Collision
+        RaycastHit attackHit;
+        if(Physics.Raycast(hammerBopAim.position, Vector3.up, out attackHit)) {
+            // TODO This has to be more generic in a way that AIs can be tagged and attack the player
+
+            Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, attackRadius, attackLayer);
+            if(bopCollision.Length > 0) {
+                AIController aiHitted = bopCollision[0].transform.gameObject.GetComponent<AIController>();
+                Debug.Log($"hitted {aiHitted.gameObject.name}");
+                if(aiHitted != null) {
+                    aiHitted.AIWasTagged(taggedColor, new Vector3(Random.value, 0f, Random.value));
+                }
+            }
+        }
 
         // Showing where the hammer will hit
         StartCoroutine(AttackAnimationRoutine());
@@ -112,5 +129,10 @@ public abstract class BaseBlobController : MonoBehaviour {
     }
 
     protected virtual void HandleAttack() {
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(hammerBopAim.transform.position, attackRadius);
     }
 }
