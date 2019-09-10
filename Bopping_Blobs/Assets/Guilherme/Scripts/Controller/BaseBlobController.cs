@@ -59,6 +59,7 @@ public abstract class BaseBlobController : MonoBehaviour {
         }
 
         m_movementVector.x = Mathf.Lerp(m_characterControllerReference.velocity.x, m_movementVector.x, groundDamping * dampingMultiplier);
+        m_movementVector.y = 0;
         m_movementVector.z = Mathf.Lerp(m_characterControllerReference.velocity.z, m_movementVector.z, groundDamping * dampingMultiplier);
 
         // Drawing Debug Rays
@@ -66,15 +67,9 @@ public abstract class BaseBlobController : MonoBehaviour {
         Debug.DrawRay(transform.position, new Vector3(m_movementVector.x, 0f, m_movementVector.z).normalized * attackDistance, Color.green);
         Debug.DrawRay(hammerBopAim.position, Vector3.up, Color.blue);
 
-        // Grounding the player
-        if (m_characterControllerReference.isGrounded) {
-            m_movementVector.y = 0;
-        } else {
-            m_movementVector.y += (Physics.gravity.y * fallingGravityMultiplier * Time.deltaTime);
-        }
 
         // Updating the character position
-        m_characterControllerReference.Move(m_movementVector * Time.deltaTime);
+        m_characterControllerReference.SimpleMove(m_movementVector);
     }
 
     protected virtual void InitializeController() {
@@ -89,17 +84,16 @@ public abstract class BaseBlobController : MonoBehaviour {
         m_currentState = ECharacterState.Attacking;
         m_characterRenderer.material.color = attackingBlobColor;
         m_waitingTime = attackTime;
-        // TODO Raycast for Collision
-        RaycastHit attackHit;
-        if(Physics.Raycast(hammerBopAim.position, Vector3.up, out attackHit)) {
-            // TODO This has to be more generic in a way that AIs can be tagged and attack the player
 
-            Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, attackRadius, attackLayer);
-            if(bopCollision.Length > 0) {
-                AIController aiHitted = bopCollision[0].transform.gameObject.GetComponent<AIController>();
-                Debug.Log($"hitted {aiHitted.gameObject.name}");
+        // TODO Raycast for Collision
+        Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, attackRadius, attackLayer);
+        if (bopCollision.Length > 0) {
+            Debug.Log($"Hitted Something!");
+            for(int i = 0; i < bopCollision.Length; i++) {
+                AIController aiHitted = bopCollision[i].transform.gameObject.GetComponent<AIController>();
                 if(aiHitted != null) {
                     aiHitted.AIWasTagged(taggedColor, new Vector3(Random.value, 0f, Random.value));
+                    break;
                 }
             }
         }
