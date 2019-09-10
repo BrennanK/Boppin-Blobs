@@ -89,18 +89,15 @@ public abstract class BaseBlobController : MonoBehaviour {
         m_currentState = ECharacterState.Attacking;
         m_characterRenderer.material.color = attackingBlobColor;
         m_waitingTime = attackTime;
-        // TODO Raycast for Collision
-        RaycastHit attackHit;
-        if(Physics.Raycast(hammerBopAim.position, Vector3.up, out attackHit)) {
-            // TODO This has to be more generic in a way that AIs can be tagged and attack the player
 
-            Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, attackRadius, attackLayer);
-            if(bopCollision.Length > 0) {
-                AIController aiHitted = bopCollision[0].transform.gameObject.GetComponent<AIController>();
+        // TODO Raycast for Collision
+        Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, attackRadius, attackLayer);
+        if (bopCollision.Length > 0) {
+            Debug.Log($"Hitted Something!");
+            AIController aiHitted = bopCollision[0].transform.gameObject.GetComponent<AIController>();
+            if (aiHitted != null) {
                 Debug.Log($"hitted {aiHitted.gameObject.name}");
-                if(aiHitted != null) {
-                    aiHitted.AIWasTagged(taggedColor, new Vector3(Random.value, 0f, Random.value));
-                }
+                aiHitted.AIWasTagged(taggedColor, new Vector3(Random.value, 0f, Random.value));
             }
         }
 
