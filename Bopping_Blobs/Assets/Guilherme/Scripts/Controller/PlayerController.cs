@@ -6,12 +6,13 @@ public class PlayerController : BaseBlobController {
     
     // Player Cached References
     private DigitalJoystick m_digitalJoystickReference;
-    private JoyButton m_joyButtonReference; 
+    private JoyButton m_joyButtonReference;
 
     protected override void InitializeController() {
         base.InitializeController();
         m_digitalJoystickReference = FindObjectOfType<DigitalJoystick>();
         m_joyButtonReference = FindObjectOfType<JoyButton>();
+
     }
 
     protected override void HandleMovement() {
