@@ -6,9 +6,9 @@ using UnityStandardAssets.Characters.ThirdPerson;
 public class PlayerTag : MonoBehaviour
 {
     public GameObject tagCanvas;
-    public TagManager TM;
+    public TagManager tagManager;
     public int playerNumber;
-    private Rigidbody rb;
+    private Rigidbody m_rigidbody;
     public float bountFource = 1f;
     public PhysicMaterial iceyMaterial;
     private Collider playerCollider;
@@ -19,28 +19,15 @@ public class PlayerTag : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        m_rigidbody = GetComponent<Rigidbody>();
         playerCollider = GetComponent<Collider>();
     }
 
-    /*
-    void OnCollisionEnter(Collision other)
-    {
-        //Debug.Log("Collider Enter");
-        if (other.transform.GetComponent<ThirdPersonCharacter>())
-        {
-            if (other.transform.GetComponent<ThirdPersonCharacter>().addGravity == true)
-            {
-                TM.ChangeTag(playerNumber);
-            }
-        }
-    }
-    */
     public void GetRayCastHit()
     {
         if (!ishitted)
         {
-            TM.ChangeTag(playerNumber);
+            tagManager.ChangeTag(playerNumber);
             ishitted = true;
             //Invoke("ReTagOpen",0.5f);
         }
@@ -58,7 +45,7 @@ public class PlayerTag : MonoBehaviour
         float randomNum = Random.Range(0, 360);
         float trueAngle = randomNum / 180;
         Vector3 faceDirection = new Vector3(bountFource * Mathf.Sin(trueAngle * Mathf.PI), 0f, bountFource * Mathf.Cos(trueAngle * Mathf.PI));
-        rb.AddForce(faceDirection, ForceMode.VelocityChange);
+        m_rigidbody.AddForce(faceDirection, ForceMode.VelocityChange);
         StartCoroutine(IceyEffect());
     }
 

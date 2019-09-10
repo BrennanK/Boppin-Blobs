@@ -7,22 +7,22 @@ using UnityStandardAssets.Characters.ThirdPerson;
 public class TagManager : MonoBehaviour
 {
     public GameObject[] allPlayers;
-
     public GameObject player;
     private int scoreNumber;
     public Text scoreText;
+    private int oldTag = 10;
 
     void Start()
     {
         for (int i = 0; i < allPlayers.Length; i++)
         {
-            allPlayers[i].GetComponent<PlayerTag>().TM = this;
+            allPlayers[i].GetComponent<PlayerTag>().tagManager = this;
             allPlayers[i].GetComponent<PlayerTag>().playerNumber = i;
         }
+
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    private int oldTag = 10;
     public void ChangeTag(int num)
     {
         player.GetComponent<ThirdPersonCharacter>().BouncingBack();
@@ -43,6 +43,5 @@ public class TagManager : MonoBehaviour
                 }
             }
         }
-       
     }
 }
