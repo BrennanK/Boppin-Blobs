@@ -19,11 +19,12 @@ public class TaggingIdentifier : MonoBehaviour {
 
     [Header("Tagging Configuration")]
     public TaggingManager taggingManager;
+    public float knockbackDelay = 1.0f;
 
     // Rigidbody is used only for knockback, not for movement
     private Rigidbody m_rigidbodyReference;
 
-    // IBoppable should be implemented by PlayerController and AI Controller so we can handle knockback
+    // IBoppable should be implemented by PlayerController and AI Controller so we can handle attacking and knockback
     private IBoppable m_boppableInterface;
 
     private Renderer m_characterRenderer;
@@ -38,18 +39,19 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
-    private ETaggingBehavior m_currentTaggingState;
     private float m_timeAsTag;
+    public float TimeAsTag {
+        get {
+            return m_timeAsTag;
+        }
+    }
+
+    private ETaggingBehavior m_currentTaggingState;
     protected float m_attackWaitTime;
 
     /*
      * Things that Lin had that I don't (future reference)
      *      TagCanvas
-     *      Bount Force
-     *      Icey Material
-     *      Player Collider
-     *      Icey Time
-     *      Is Hitted
      */
 
     private void Start() {
@@ -83,10 +85,12 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     // TODO This is Temporary
-    public void SetTag() {
+    public void SetAsTag() {
+        // TODO also activate hammer
         m_currentTaggingState = ETaggingBehavior.Tagging;
     }
 
+    #region ATTACKING
     private void TriggerAttackTransition() {
         m_boppableInterface.TriggerAttackTransition();
         m_currentTaggingState = ETaggingBehavior.TaggingAtacking;
@@ -97,10 +101,10 @@ public class TaggingIdentifier : MonoBehaviour {
         Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, attackRadius, attackLayer);
         if (bopCollision.Length > 0) {
             for (int i = 0; i < bopCollision.Length; i++) {
-                // TODO all these get components shouldn't be here
                 TaggingIdentifier playerHitted = bopCollision[i].transform.gameObject.GetComponent<TaggingIdentifier>();
-                if (playerHitted != null && playerHitted.PlayerIdentifier != GetComponent<TaggingIdentifier>().PlayerIdentifier) {
-                    // TODO the knockback force should never be towards player
+                if (playerHitted != null && playerHitted.PlayerIdentifier != playerHitted.PlayerIdentifier) {
+                    // TODO the knockback force should never be towards player'
+                    // TODO at this point we know another character was hit, transfer TAG to it
                     playerHitted.CharacterWasTagged(Color.magenta, new Vector3(Random.Range(.5f, 1f), 0f, Random.Range(.5f, 1f)).normalized);
                     break;
                 }
@@ -111,7 +115,6 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private IEnumerator AttackAnimationRoutine() {
-
         Vector3 originalTransformLocalPosition = hammerTransform.localPosition;
         Vector3 originalLocalEulerAngles = hammerTransform.localEulerAngles;
         hammerTransform.localPosition = new Vector3(hammerBopAim.localPosition.x, hammerBopAim.localPosition.y + 0.25f, hammerBopAim.localPosition.z - 1f);
@@ -131,12 +134,14 @@ public class TaggingIdentifier : MonoBehaviour {
         // TODO Shouldn't return to tagging if hit someone
         m_currentTaggingState = ETaggingBehavior.Tagging;
     }
+    #endregion
 
+    #region TAGGING
     public void CharacterWasTagged(Color _colorToRender, Vector3 _knockbackDirection) {
+        // TODO this character should be tagging now
         Debug.Log($"I ({gameObject.name}) was tagged :(");
 
-        // TODO remove this GetComponent
-        GetComponent<Renderer>().material.color = _colorToRender;
+        m_characterRenderer.material.color = _colorToRender;
         m_boppableInterface.DeactivateController();
 
         m_rigidbodyReference.isKinematic = false;
@@ -145,11 +150,12 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private IEnumerator KnockbackDelay() {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(knockbackDelay);
         GetComponent<Renderer>().material.color = Color.cyan;
         m_rigidbodyReference.isKinematic = true;
         m_boppableInterface.ReactivateController();
     }
+    #endregion
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;

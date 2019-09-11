@@ -152,7 +152,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 50906284}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 040eeb0de0e2e404789c067056f7d046, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -575,7 +575,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 958289012}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 040eeb0de0e2e404789c067056f7d046, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1056,7 +1056,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663721595}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 040eeb0de0e2e404789c067056f7d046, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1147,7 +1147,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1721124779}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 040eeb0de0e2e404789c067056f7d046, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1238,7 +1238,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2009203185}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 040eeb0de0e2e404789c067056f7d046, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1329,7 +1329,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2020073850}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 040eeb0de0e2e404789c067056f7d046, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1495,7 +1495,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2140961878}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 040eeb0de0e2e404789c067056f7d046, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
