@@ -29,7 +29,6 @@ public class PlayerTag : MonoBehaviour
         {
             tagManager.ChangeTag(playerNumber);
             ishitted = true;
-            //Invoke("ReTagOpen",0.5f);
         }
     }
 

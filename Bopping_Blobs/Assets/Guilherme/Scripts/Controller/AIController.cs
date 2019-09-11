@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AIController : MonoBehaviour {
+public class AIController : MonoBehaviour, IBoppable {
     public enum EAIState {
         MonitoringPlayer,
         RunningFromPlayer,
+        Attacking,
         TemporarilyKnocked
     }
 
@@ -78,20 +79,25 @@ public class AIController : MonoBehaviour {
         Gizmos.DrawWireSphere(transform.position, aggroRange);
     }
 
-    public void AIWasTagged(Color _colorToRender, Vector3 _knockbackDirection) {
-        GetComponent<Renderer>().material.color = _colorToRender;
-        m_navMeshAgent.ResetPath();
-        m_navMeshAgent.enabled = false;
-        m_rigibody.isKinematic = false;
-        m_rigibody.velocity = _knockbackDirection * 25f;
-        m_currentState = EAIState.TemporarilyKnocked;
-        StartCoroutine(KnockbackWait());
+    public bool HasAttacked() {
+        return false;
     }
 
-    private IEnumerator KnockbackWait() {
-        yield return new WaitForSeconds(1.0f);
-        GetComponent<Renderer>().material.color = Color.cyan;
-        m_rigibody.isKinematic = true;
+    public void TriggerAttackTransition() {
+        return;
+    }
+
+    public void TriggerEndAttackTransition() {
+        return;
+    }
+
+    public void DeactivateController() {
+        m_navMeshAgent.ResetPath();
+        m_navMeshAgent.enabled = false;
+        m_currentState = EAIState.TemporarilyKnocked;
+    }
+
+    public void ReactivateController() {
         m_navMeshAgent.enabled = true;
         m_currentState = EAIState.RunningFromPlayer;
     }
