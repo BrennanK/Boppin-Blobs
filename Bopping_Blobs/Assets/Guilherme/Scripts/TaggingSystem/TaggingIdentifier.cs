@@ -15,9 +15,12 @@ public class TaggingIdentifier : MonoBehaviour {
     public float attackDistance = 1f;
     public float attackTime = 1f;
     public float attackRadius = 1f;
+
+    [Header("Necessary Dependencies")]
     public Transform hammerTransform;
     public Transform hammerBopAim;
     public Color blobOriginalColor;
+    public GameObject isTagCanvas;
 
     [Header("Tagging Configuration")]
     public TaggingManager taggingManager;
@@ -88,11 +91,13 @@ public class TaggingIdentifier : MonoBehaviour {
 
     public void SetAsTagging() {
         // TODO IBoppable should have a behavior "TaggingTransition"
+        isTagCanvas.SetActive(true);
         m_currentTaggingState = ETaggingBehavior.Tagging;
     }
 
     public void SetAsNotTag() {
         // TODO IBoppable should have a behavior "NotTaggingTransition"
+        isTagCanvas.SetActive(false);
         m_currentTaggingState = ETaggingBehavior.Running;
     }
 

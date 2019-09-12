@@ -37,20 +37,10 @@ public class TaggingManager : MonoBehaviour {
         m_currentPlayerTaggingID = initialTagger.PlayerIdentifier;
     }
 
-    private void Update() {
-        if(Input.GetKeyDown(KeyCode.R)) {
-            UpdateScoreboard();
-        }
-    }
-
     private void UpdateScoreboard() {
         m_playersIdentifiersList.Sort((leftHandSide, rightHandSide) => {
             return leftHandSide.TimeAsTag.CompareTo(rightHandSide.TimeAsTag);
         });
-
-        foreach(TaggingIdentifier identifier in m_playersIdentifiersList) {
-            Debug.Log($"{identifier.gameObject.name}: {identifier.TimeAsTag} ");
-        }
     }
 
     public void PlayerWasTagged(TaggingIdentifier _whoIsTag) {

@@ -97,8 +97,11 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     public void DeactivateController() {
-        m_navMeshAgent.ResetPath();
         m_navMeshAgent.enabled = false;
+        if(m_navMeshAgent.isOnNavMesh) {
+            m_navMeshAgent.ResetPath();
+        }
+
         m_currentState = EAIState.TemporarilyKnocked;
     }
 
