@@ -74,19 +74,16 @@ public class TaggingIdentifier : MonoBehaviour {
             case ETaggingBehavior.Tagging:
                 // Debug.Log($"{gameObject.name} is tagging!!");
                 m_timeAsTag += Time.deltaTime;
-                ProcessTaggingBehavior();
                 break;
+        }
+
+        if (m_boppableInterface.HasAttacked()) {
+            TriggerAttackTransition();
         }
 
         // Drawing Debug Rays
         Debug.DrawRay(transform.position, transform.forward * attackDistance, Color.red);
         Debug.DrawRay(hammerBopAim.position, Vector3.up, Color.blue);
-    }
-
-    private void ProcessTaggingBehavior() {
-        if(m_boppableInterface.HasAttacked()) {
-            TriggerAttackTransition();
-        }
     }
 
     public void SetAsTagging() {
@@ -103,6 +100,7 @@ public class TaggingIdentifier : MonoBehaviour {
     private void TriggerAttackTransition() {
         bool hitAnotherPlayer = false;
         m_boppableInterface.TriggerAttackTransition();
+        ETaggingBehavior previousState = m_currentTaggingState;
         m_currentTaggingState = ETaggingBehavior.TaggingAtacking;
         m_characterRenderer.material.color = Color.red;
         m_attackWaitTime = attackTime;
@@ -113,17 +111,25 @@ public class TaggingIdentifier : MonoBehaviour {
                 TaggingIdentifier playerHitted = bopCollision[i].transform.gameObject.GetComponent<TaggingIdentifier>();
                 if (playerHitted != null && m_playerIdentifier != playerHitted.PlayerIdentifier) {
                     hitAnotherPlayer = true;
+
                     // TODO the knockback force should never be towards player attacking
-                    playerHitted.CharacterWasTagged(Color.magenta, new Vector3(Random.Range(.5f, 1f), 0f, Random.Range(.5f, 1f)).normalized);
+                    playerHitted.KnockbackPlayer(Color.magenta, new Vector3(Random.Range(.5f, 1f), 0f, Random.Range(.5f, 1f)).normalized);
+
+                    // If we are not tag, then we tag the player
+                    if(taggingManager.WhoIsTag == this.m_playerIdentifier) {
+                        playerHitted.Tag();
+                        // and we are not tag anymore
+                        SetAsNotTag();
+                    }
                     break;
                 }
             }
         }
 
-        StartCoroutine(AttackAnimationRoutine(hitAnotherPlayer));
+        StartCoroutine(AttackAnimationRoutine(hitAnotherPlayer, previousState));
     }
 
-    private IEnumerator AttackAnimationRoutine(bool _hitAnotherPlayer) {
+    private IEnumerator AttackAnimationRoutine(bool _hitAnotherPlayer, ETaggingBehavior _previousTaggingState) {
         Vector3 originalTransformLocalPosition = hammerTransform.localPosition;
         Vector3 originalLocalEulerAngles = hammerTransform.localEulerAngles;
         hammerTransform.localPosition = new Vector3(hammerBopAim.localPosition.x, hammerBopAim.localPosition.y + 0.25f, hammerBopAim.localPosition.z - 1f);
@@ -137,25 +143,20 @@ public class TaggingIdentifier : MonoBehaviour {
         m_characterRenderer.material.color = blobOriginalColor;
         hammerTransform.localPosition = originalTransformLocalPosition;
         hammerTransform.localEulerAngles = originalLocalEulerAngles;
-
         m_boppableInterface.TriggerEndAttackTransition();
-
-        if(_hitAnotherPlayer) {
-            // After the other player is knocked back, it will be tagging from that point on, so we are not tagging anymore
-            SetAsNotTag();
-        } else {
-            // TODO maybe call SetAsTagging() here so the behavior is only changed in one script ?!
-            m_currentTaggingState = ETaggingBehavior.Tagging;
-        }
+        m_currentTaggingState = _previousTaggingState;
     }
     #endregion
 
     #region TAGGING
-    public void CharacterWasTagged(Color _colorToRender, Vector3 _knockbackDirection) {
+    public void Tag() {
         Debug.Log($"I ({gameObject.name}) was tagged :(");
         taggingManager.PlayerWasTagged(this);
+        SetAsTagging();
+    }
 
-        m_characterRenderer.material.color = _colorToRender;
+    public void KnockbackPlayer(Color _knockbackColor, Vector3 _knockbackDirection) {
+        m_characterRenderer.material.color = _knockbackColor;
         m_boppableInterface.DeactivateController();
 
         m_rigidbodyReference.isKinematic = false;
@@ -163,16 +164,18 @@ public class TaggingIdentifier : MonoBehaviour {
         StartCoroutine(KnockbackDelay());
     }
 
+
     private IEnumerator KnockbackDelay() {
         yield return new WaitForSeconds(knockbackDelay);
         GetComponent<Renderer>().material.color = blobOriginalColor;
         m_rigidbodyReference.isKinematic = true;
         m_boppableInterface.ReactivateController();
-
-        // This Character now is tagging!
-        SetAsTagging();
     }
 
+    /// <summary>
+    /// Update who the Character Controller identifies as Who Is Tag
+    /// </summary>
+    /// <param name="_identifier">Player who is currently tag</param>
     public void UpdateWhoIsTag(TaggingIdentifier _identifier) {
         m_boppableInterface.UpdateWhoIsTag(_identifier.transform);
     }

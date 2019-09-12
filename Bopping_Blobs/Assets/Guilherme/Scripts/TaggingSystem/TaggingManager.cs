@@ -10,6 +10,13 @@ public class TaggingManager : MonoBehaviour {
     public delegate void DelegateWithTaggingIdentifier(TaggingIdentifier identifier);
     public event DelegateWithTaggingIdentifier OnPlayerWasTagged;
 
+    private int m_currentPlayerTaggingID;
+    public int WhoIsTag {
+        get {
+            return m_currentPlayerTaggingID;
+        }
+    }
+
     // TODO Update UI Scoreboard
     private void Start() {
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>();
@@ -25,7 +32,9 @@ public class TaggingManager : MonoBehaviour {
         }
 
         // TODO Select a Random one to start as tag
-        GameObject.FindGameObjectWithTag("Player").GetComponent<TaggingIdentifier>().SetAsTagging();
+        TaggingIdentifier initialTagger = GameObject.FindGameObjectWithTag("Player").GetComponent<TaggingIdentifier>();
+        initialTagger.SetAsTagging();
+        m_currentPlayerTaggingID = initialTagger.PlayerIdentifier;
     }
 
     private void Update() {
@@ -46,6 +55,7 @@ public class TaggingManager : MonoBehaviour {
 
     public void PlayerWasTagged(TaggingIdentifier _whoIsTag) {
         // TODO Have Visual Cue for the player who is cued
+        m_currentPlayerTaggingID = _whoIsTag.PlayerIdentifier;
         OnPlayerWasTagged?.Invoke(_whoIsTag);
     }
 }
