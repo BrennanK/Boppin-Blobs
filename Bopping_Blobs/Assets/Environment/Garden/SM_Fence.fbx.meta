@@ -1,0 +1,170 @@
+fileFormatVersion: 2
+guid: b67ce1e345520f649956829cb3be8db6
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Fence:group2
+    100002: Fence:group7
+    100004: Fence:group7 1
+    100006: Fence:group8
+    100008: Fence:group8_Fence:group7_Fence:pCube7
+    100010: Fence:group8_Fence:group7_Fence:transform1
+    100012: Fence:group8_Fence:group7_Fence:transform10
+    100014: Fence:group8_Fence:group7_Fence:transform11
+    100016: Fence:group8_Fence:group7_Fence:transform12
+    100018: Fence:group8_Fence:group7_Fence:transform13
+    100020: Fence:group8_Fence:group7_Fence:transform14
+    100022: Fence:group8_Fence:group7_Fence:transform15
+    100024: Fence:group8_Fence:group7_Fence:transform2
+    100026: Fence:group8_Fence:group7_Fence:transform3
+    100028: Fence:group8_Fence:group7_Fence:transform4
+    100030: Fence:group8_Fence:group7_Fence:transform5
+    100032: Fence:group8_Fence:group7_Fence:transform6
+    100034: Fence:group8_Fence:group7_Fence:transform7
+    100036: Fence:group8_Fence:group7_Fence:transform8
+    100038: Fence:group8_Fence:group7_Fence:transform9
+    100040: Fence:group9
+    100042: Fence:pCube3
+    100044: Fence:pCube7
+    100046: Fence:pCube7 1
+    100048: Fence:pCube7 2
+    100050: Fence:pCube7 3
+    100052: Fence:pCube8
+    100054: Fence:pCube8 1
+    100056: Fence:pCube8 2
+    100058: Fence:pCube8 3
+    100060: Fence:pCube9
+    100062: Fence:pCube9 1
+    100064: Fence:pCube9 2
+    100066: Fence:pCube9 3
+    100068: pCube16
+    100070: pCube17
+    100072: //RootNode
+    400000: Fence:group2
+    400002: Fence:group7
+    400004: Fence:group7 1
+    400006: Fence:group8
+    400008: Fence:group8_Fence:group7_Fence:pCube7
+    400010: Fence:group8_Fence:group7_Fence:transform1
+    400012: Fence:group8_Fence:group7_Fence:transform10
+    400014: Fence:group8_Fence:group7_Fence:transform11
+    400016: Fence:group8_Fence:group7_Fence:transform12
+    400018: Fence:group8_Fence:group7_Fence:transform13
+    400020: Fence:group8_Fence:group7_Fence:transform14
+    400022: Fence:group8_Fence:group7_Fence:transform15
+    400024: Fence:group8_Fence:group7_Fence:transform2
+    400026: Fence:group8_Fence:group7_Fence:transform3
+    400028: Fence:group8_Fence:group7_Fence:transform4
+    400030: Fence:group8_Fence:group7_Fence:transform5
+    400032: Fence:group8_Fence:group7_Fence:transform6
+    400034: Fence:group8_Fence:group7_Fence:transform7
+    400036: Fence:group8_Fence:group7_Fence:transform8
+    400038: Fence:group8_Fence:group7_Fence:transform9
+    400040: Fence:group9
+    400042: Fence:pCube3
+    400044: Fence:pCube7
+    400046: Fence:pCube7 1
+    400048: Fence:pCube7 2
+    400050: Fence:pCube7 3
+    400052: Fence:pCube8
+    400054: Fence:pCube8 1
+    400056: Fence:pCube8 2
+    400058: Fence:pCube8 3
+    400060: Fence:pCube9
+    400062: Fence:pCube9 1
+    400064: Fence:pCube9 2
+    400066: Fence:pCube9 3
+    400068: pCube16
+    400070: pCube17
+    400072: //RootNode
+    2100000: Fence_lambert2
+    2100002: lambert1
+    2300000: Fence:group8_Fence:group7_Fence:pCube7
+    3300000: Fence:group8_Fence:group7_Fence:pCube7
+    4300000: Fence:group8_Fence:group7_Fence:pCube7
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
