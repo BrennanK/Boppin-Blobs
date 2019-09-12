@@ -17,16 +17,15 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private NavMeshAgent m_navMeshAgent;
     private Rigidbody m_rigibody;
-    private Transform m_playerReference;
+    private Transform m_playerToRunFrom;
     private Vector3 m_playerAndAIDifference;
     private EAIState m_currentState;
 
     private void Start() {
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         m_rigibody = GetComponent<Rigidbody>();
-        m_playerReference = GameObject.FindGameObjectWithTag("Player").transform;
         m_currentState = EAIState.MonitoringIt;
-
+        m_playerToRunFrom = GameObject.FindGameObjectWithTag("Player").transform;
         m_rigibody.isKinematic = true;
     }
 
@@ -44,23 +43,23 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private void MonitoringItState() {
-        transform.LookAt(m_playerReference.position);
+        transform.LookAt(m_playerToRunFrom.position);
 
-        if(m_playerReference != null && Vector3.Distance(transform.position, m_playerReference.position) < aggroRange) {
+        if(m_playerToRunFrom != null && Vector3.Distance(transform.position, m_playerToRunFrom.position) < aggroRange) {
             m_currentState = EAIState.RunningFromIt;
         }
     }
 
     private void RunningFromItState() {
-        m_playerAndAIDifference = m_playerReference.position - transform.position;
+        m_playerAndAIDifference = m_playerToRunFrom.position - transform.position;
         Vector3 positionToMove = transform.position - m_playerAndAIDifference;
 
-        if (m_playerReference != null && Vector3.Distance(transform.position, m_playerReference.position) < aggroRange) {
+        if (m_playerToRunFrom != null && Vector3.Distance(transform.position, m_playerToRunFrom.position) < aggroRange) {
             NavMeshPath navmeshPath = new NavMeshPath();
             if (m_navMeshAgent.CalculatePath(positionToMove, navmeshPath)) {
                 m_navMeshAgent.SetPath(navmeshPath);
             } else {
-                transform.LookAt(m_playerReference.position);
+                transform.LookAt(m_playerToRunFrom.position);
                 if(m_playerAndAIDifference.x > 0) {
                     m_navMeshAgent.destination = transform.position + (transform.forward + transform.right) * 5f;
                 } else {
@@ -69,7 +68,7 @@ public class AIController : MonoBehaviour, IBoppable {
             }
         }
 
-        if (m_playerReference != null && Vector3.Distance(transform.position, m_playerReference.position) > aggroRange) {
+        if (m_playerToRunFrom != null && Vector3.Distance(transform.position, m_playerToRunFrom.position) > aggroRange) {
             m_navMeshAgent.ResetPath();
             m_currentState = EAIState.MonitoringIt;
         }
@@ -80,6 +79,7 @@ public class AIController : MonoBehaviour, IBoppable {
         Gizmos.DrawWireSphere(transform.position, aggroRange);
     }
 
+    #region IBoppable
     public bool HasAttacked() {
         return false;
     }
@@ -92,6 +92,10 @@ public class AIController : MonoBehaviour, IBoppable {
         return;
     }
 
+    public void UpdateWhoIsTag(Transform _whoIsTag) {
+        m_playerToRunFrom = _whoIsTag;
+    }
+
     public void DeactivateController() {
         m_navMeshAgent.ResetPath();
         m_navMeshAgent.enabled = false;
@@ -102,4 +106,5 @@ public class AIController : MonoBehaviour, IBoppable {
         m_navMeshAgent.enabled = true;
         m_currentState = EAIState.RunningFromIt;
     }
+    #endregion
 }

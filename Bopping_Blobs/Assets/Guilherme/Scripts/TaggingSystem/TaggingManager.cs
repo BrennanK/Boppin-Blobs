@@ -7,6 +7,9 @@ public class TaggingManager : MonoBehaviour {
     private TaggingIdentifier[] m_playersIdentifiers;
     private List<TaggingIdentifier> m_playersIdentifiersList;
 
+    public delegate void DelegateWithTaggingIdentifier(TaggingIdentifier identifier);
+    public event DelegateWithTaggingIdentifier OnPlayerWasTagged;
+
     // TODO Update UI Scoreboard
     private void Start() {
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>();
@@ -16,6 +19,9 @@ public class TaggingManager : MonoBehaviour {
         for(int i = 0; i < m_playersIdentifiers.Length; i++) {
             m_playersIdentifiers[i].PlayerIdentifier = i;
             m_playersIdentifiers[i].taggingManager = this;
+
+            // Every Player Subscribes their UpdateWhoIsTag function into the manager
+            OnPlayerWasTagged += m_playersIdentifiers[i].UpdateWhoIsTag;
         }
 
         // TODO Select a Random one to start as tag
@@ -29,12 +35,17 @@ public class TaggingManager : MonoBehaviour {
     }
 
     private void UpdateScoreboard() {
-        m_playersIdentifiersList.OrderBy((playerIdentifier) => {
-            return playerIdentifier.TimeAsTag;
+        m_playersIdentifiersList.Sort((leftHandSide, rightHandSide) => {
+            return leftHandSide.TimeAsTag.CompareTo(rightHandSide.TimeAsTag);
         });
 
         foreach(TaggingIdentifier identifier in m_playersIdentifiersList) {
             Debug.Log($"{identifier.gameObject.name}: {identifier.TimeAsTag} ");
         }
+    }
+
+    public void PlayerWasTagged(TaggingIdentifier _whoIsTag) {
+        // TODO Have Visual Cue for the player who is cued
+        OnPlayerWasTagged?.Invoke(_whoIsTag);
     }
 }

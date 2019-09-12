@@ -70,10 +70,9 @@ public class TaggingIdentifier : MonoBehaviour {
     private void Update() {
         switch(m_currentTaggingState) {
             case ETaggingBehavior.Running:
-                Debug.Log($"{gameObject.name} is running!!");
                 break;
             case ETaggingBehavior.Tagging:
-                Debug.Log($"{gameObject.name} is tagging!!");
+                // Debug.Log($"{gameObject.name} is tagging!!");
                 m_timeAsTag += Time.deltaTime;
                 ProcessTaggingBehavior();
                 break;
@@ -92,27 +91,12 @@ public class TaggingIdentifier : MonoBehaviour {
 
     public void SetAsTagging() {
         // TODO IBoppable should have a behavior "TaggingTransition"
-        Debug.Log($"Transfering {gameObject.name} to Tagging State");
         m_currentTaggingState = ETaggingBehavior.Tagging;
-
-        UpdateHammerBop(true);
     }
 
     public void SetAsNotTag() {
         // TODO IBoppable should have a behavior "NotTaggingTransition"
-        Debug.Log($"Transfering {gameObject.name} to Running State");
         m_currentTaggingState = ETaggingBehavior.Running;
-
-        UpdateHammerBop(false);
-    }
-
-    private void UpdateHammerBop(bool _value) {
-        if(hammerTransform != null && hammerBopAim != null) {
-            hammerTransform.gameObject.SetActive(_value);
-            hammerBopAim.gameObject.SetActive(_value);
-        } else {
-            Debug.Log($"gameObject.name has invalid Hammer Transform (value: {hammerTransform}) or Hammer Bop Aim (value: {hammerBopAim})");
-        }
     }
 
     #region ATTACKING
@@ -169,6 +153,7 @@ public class TaggingIdentifier : MonoBehaviour {
     #region TAGGING
     public void CharacterWasTagged(Color _colorToRender, Vector3 _knockbackDirection) {
         Debug.Log($"I ({gameObject.name}) was tagged :(");
+        taggingManager.PlayerWasTagged(this);
 
         m_characterRenderer.material.color = _colorToRender;
         m_boppableInterface.DeactivateController();
@@ -184,8 +169,12 @@ public class TaggingIdentifier : MonoBehaviour {
         m_rigidbodyReference.isKinematic = true;
         m_boppableInterface.ReactivateController();
 
-        // This Character now is taking!
+        // This Character now is tagging!
         SetAsTagging();
+    }
+
+    public void UpdateWhoIsTag(TaggingIdentifier _identifier) {
+        m_boppableInterface.UpdateWhoIsTag(_identifier.transform);
     }
     #endregion
 

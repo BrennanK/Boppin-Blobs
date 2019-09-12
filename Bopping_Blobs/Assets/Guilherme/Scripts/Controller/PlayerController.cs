@@ -80,6 +80,11 @@ public class PlayerController : MonoBehaviour, IBoppable {
         m_currentState = ECharacterState.Moving;
     }
 
+    // Not Used on Player Controller
+    public void UpdateWhoIsTag(Transform _whoIsTag) {
+        return;
+    }
+
     public void DeactivateController() {
         m_currentState = ECharacterState.KnockedBack;
     }
