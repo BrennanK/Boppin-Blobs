@@ -20,7 +20,8 @@ public class AchievementManager : MonoBehaviour
         new string[]{"5", "Use (3) powerups in one game", "0", "1", "100", "0"},
         new string[]{"6", "Play a game without being tagged", "0", "1", "100", "0"},
     };
-
+    // Enable or Not
+    public bool achievementActivated = false;
     // References
     public GameObject AchievementPrefab;
     public GameObject AchievementUI;
@@ -137,7 +138,7 @@ public class AchievementManager : MonoBehaviour
     public void OpenAchievement()
     {
         AchievementUI.GetComponent<Animator>().SetBool("Open", true);
-
+        achievementActivated = true;
         //NotCompletedContent.GetComponent<RectTransform>().offsetMax = Vector2.zero;
         //NotCompletedContent.GetComponent<RectTransform>().offsetMin = Vector2.zero;
         //NotCompletedContent.GetComponent<RectTransform>().position = Vector2.zero;
@@ -146,5 +147,6 @@ public class AchievementManager : MonoBehaviour
     public void CloseAchievement()
     {
         AchievementUI.GetComponent<Animator>().SetBool("Open", false);
+        achievementActivated = false;
     }
 }
