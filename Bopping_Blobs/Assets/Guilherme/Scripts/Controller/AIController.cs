@@ -5,8 +5,9 @@ using UnityEngine.AI;
 
 public class AIController : MonoBehaviour, IBoppable {
     public enum EAIState {
-        MonitoringPlayer,
-        RunningFromPlayer,
+        MonitoringIt,
+        RunningFromIt,
+        Tagging,
         Attacking,
         TemporarilyKnocked
     }
@@ -24,33 +25,33 @@ public class AIController : MonoBehaviour, IBoppable {
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         m_rigibody = GetComponent<Rigidbody>();
         m_playerReference = GameObject.FindGameObjectWithTag("Player").transform;
-        m_currentState = EAIState.MonitoringPlayer;
+        m_currentState = EAIState.MonitoringIt;
 
         m_rigibody.isKinematic = true;
     }
 
     private void Update() {
         switch(m_currentState) {
-            case EAIState.MonitoringPlayer:
-                MonitoringPlayerState();
+            case EAIState.MonitoringIt:
+                MonitoringItState();
                 break;
-            case EAIState.RunningFromPlayer:
-                RunningFromPlayerState();
+            case EAIState.RunningFromIt:
+                RunningFromItState();
                 break;
         }
 
         Debug.DrawRay(transform.position, transform.forward * 2f, Color.cyan);
     }
 
-    private void MonitoringPlayerState() {
+    private void MonitoringItState() {
         transform.LookAt(m_playerReference.position);
 
         if(m_playerReference != null && Vector3.Distance(transform.position, m_playerReference.position) < aggroRange) {
-            m_currentState = EAIState.RunningFromPlayer;
+            m_currentState = EAIState.RunningFromIt;
         }
     }
 
-    private void RunningFromPlayerState() {
+    private void RunningFromItState() {
         m_playerAndAIDifference = m_playerReference.position - transform.position;
         Vector3 positionToMove = transform.position - m_playerAndAIDifference;
 
@@ -70,7 +71,7 @@ public class AIController : MonoBehaviour, IBoppable {
 
         if (m_playerReference != null && Vector3.Distance(transform.position, m_playerReference.position) > aggroRange) {
             m_navMeshAgent.ResetPath();
-            m_currentState = EAIState.MonitoringPlayer;
+            m_currentState = EAIState.MonitoringIt;
         }
     }
 
@@ -99,6 +100,6 @@ public class AIController : MonoBehaviour, IBoppable {
 
     public void ReactivateController() {
         m_navMeshAgent.enabled = true;
-        m_currentState = EAIState.RunningFromPlayer;
+        m_currentState = EAIState.RunningFromIt;
     }
 }

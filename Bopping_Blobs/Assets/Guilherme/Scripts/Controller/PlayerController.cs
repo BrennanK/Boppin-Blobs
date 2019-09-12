@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour, IBoppable {
         //
     }
 
-    // IBoppable
+    #region IBoppable Functions
     public bool HasAttacked() {
         return m_joyButtonReference.pressed;
     }
@@ -87,4 +87,5 @@ public class PlayerController : MonoBehaviour, IBoppable {
     public void ReactivateController() {
         m_currentState = ECharacterState.Moving;
     }
+    #endregion
 }

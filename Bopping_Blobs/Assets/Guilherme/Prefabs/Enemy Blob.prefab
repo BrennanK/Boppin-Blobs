@@ -352,7 +352,9 @@ MonoBehaviour:
   attackRadius: 1
   hammerTransform: {fileID: 6082885376101268287}
   hammerBopAim: {fileID: 6082885374619583996}
+  blobOriginalColor: {r: 0.38020647, g: 0.9056604, b: 0.86695313, a: 1}
   taggingManager: {fileID: 0}
+  knockbackDelay: 1
 --- !u!1 &6082885376101268286
 GameObject:
   m_ObjectHideFlags: 0

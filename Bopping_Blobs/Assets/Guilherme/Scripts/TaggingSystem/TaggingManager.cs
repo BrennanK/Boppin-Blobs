@@ -19,10 +19,9 @@ public class TaggingManager : MonoBehaviour {
         }
 
         // TODO Select a Random one to start as tag
-        GameObject.FindGameObjectWithTag("Player").GetComponent<TaggingIdentifier>().SetAsTag();
+        GameObject.FindGameObjectWithTag("Player").GetComponent<TaggingIdentifier>().SetAsTagging();
     }
 
-    // TODO Remove this
     private void Update() {
         if(Input.GetKeyDown(KeyCode.R)) {
             UpdateScoreboard();
@@ -30,8 +29,12 @@ public class TaggingManager : MonoBehaviour {
     }
 
     private void UpdateScoreboard() {
-        m_playersIdentifiersList.Sort((leftHand, rightHand) => {
-            return leftHand.TimeAsTag.CompareTo(rightHand.TimeAsTag);
+        m_playersIdentifiersList.OrderBy((playerIdentifier) => {
+            return playerIdentifier.TimeAsTag;
         });
+
+        foreach(TaggingIdentifier identifier in m_playersIdentifiersList) {
+            Debug.Log($"{identifier.gameObject.name}: {identifier.TimeAsTag} ");
+        }
     }
 }
