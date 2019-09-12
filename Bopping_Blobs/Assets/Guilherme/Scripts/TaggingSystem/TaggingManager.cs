@@ -48,4 +48,16 @@ public class TaggingManager : MonoBehaviour {
         m_currentPlayerTaggingID = _whoIsTag.PlayerIdentifier;
         OnPlayerWasTagged?.Invoke(_whoIsTag);
     }
+
+    public TaggingIdentifier[] GetAllPlayersThatAreNotIt() {
+        List<TaggingIdentifier> playersThatAreNotIt = new List<TaggingIdentifier>();
+
+        foreach(TaggingIdentifier player in m_playersIdentifiers) {
+            if(player.PlayerIdentifier != m_currentPlayerTaggingID) {
+                playersThatAreNotIt.Add(player);
+            }
+        }
+
+        return playersThatAreNotIt.ToArray();
+    }
 }

@@ -21,6 +21,10 @@ public class AIController : MonoBehaviour, IBoppable {
     private Vector3 m_playerAndAIDifference;
     private EAIState m_currentState;
 
+    // Variables for Tagging AI
+    private TaggingIdentifier[] m_notItPlayers;
+    private Transform m_playerCurrentlyBeingFollowed;
+
     private void Start() {
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         m_rigibody = GetComponent<Rigidbody>();
@@ -36,6 +40,16 @@ public class AIController : MonoBehaviour, IBoppable {
                 break;
             case EAIState.RunningFromIt:
                 RunningFromItState();
+                break;
+            case EAIState.Tagging:
+                if(m_playerCurrentlyBeingFollowed == null) {
+                    GetPlayerToFollow();
+                }
+
+                if(m_navMeshAgent.isOnNavMesh) {
+                    m_navMeshAgent.destination = m_playerCurrentlyBeingFollowed.position;
+                }
+
                 break;
         }
 
@@ -92,6 +106,28 @@ public class AIController : MonoBehaviour, IBoppable {
         return;
     }
 
+    public void TriggerIsTagTransition() {
+        GetPlayerToFollow();
+        m_currentState = EAIState.Tagging;
+    }
+
+    private void GetPlayerToFollow() {
+        m_notItPlayers = FindObjectsOfType<TaggingIdentifier>();
+        m_playerCurrentlyBeingFollowed = m_notItPlayers[0].transform;
+
+        /*
+        for(int i = 1; i < m_notItPlayers.Length; i++) {
+            if(Vector3.Distance(m_notItPlayers[i].transform.position, transform.position) < Vector3.Distance(m_playerCurrentlyBeingFollowed.position, transform.position) && m_notItPlayers[i].transform != transform) {
+                m_playerCurrentlyBeingFollowed = m_notItPlayers[i].transform;
+            }
+        }
+        */
+    }
+
+    public void TriggerIsNotTagTransition() {
+        m_currentState = EAIState.RunningFromIt;
+    }
+
     public void UpdateWhoIsTag(Transform _whoIsTag) {
         m_playerToRunFrom = _whoIsTag;
     }
@@ -107,7 +143,6 @@ public class AIController : MonoBehaviour, IBoppable {
 
     public void ReactivateController() {
         m_navMeshAgent.enabled = true;
-        m_currentState = EAIState.RunningFromIt;
     }
     #endregion
 }

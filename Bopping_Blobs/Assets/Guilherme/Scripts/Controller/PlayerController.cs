@@ -85,6 +85,14 @@ public class PlayerController : MonoBehaviour, IBoppable {
         return;
     }
 
+    public void TriggerIsTagTransition() {
+        return;
+    }
+
+    public void TriggerIsNotTagTransition() {
+        return;
+    }
+
     public void DeactivateController() {
         m_currentState = ECharacterState.KnockedBack;
     }

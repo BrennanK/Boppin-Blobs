@@ -90,7 +90,7 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     public void SetAsTagging() {
-        // TODO IBoppable should have a behavior "TaggingTransition"
+        m_boppableInterface.TriggerIsTagTransition();
         isTagCanvas.SetActive(true);
         m_currentTaggingState = ETaggingBehavior.Tagging;
     }
