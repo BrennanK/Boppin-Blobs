@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace BehaviorTree {
+    /// <summary>
+    /// Composites are nodes that can have multiple children.
+    /// </summary>
     public abstract class Composite : Behavior {
         protected List<Behavior> m_childrenBehaviors;
 
