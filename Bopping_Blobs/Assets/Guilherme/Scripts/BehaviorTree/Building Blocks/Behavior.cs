@@ -6,12 +6,25 @@
         SUSPENDED
     }
 
+    /// <summary>
+    /// Behavior is an abstract interface that can activated, run, and deactivated.
+    /// </summary>
     public abstract class Behavior {
-        // Initialize() method should be called once and before any call for the Update() method.
+        /// <summary>
+        /// Initialize the Behavior. It is called once and before any call for the Update() method.
+        /// </summary>
         public abstract void Initialize();
-        // Update() method should be called once every time the behavior tree is updated, until it signals it has terminated
+
+        /// <summary>
+        /// Update the Behavior. Should be called once every time the behavior tree is updated, until it signals it has terminated.
+        /// </summary>
+        /// <returns>Behavior Status (SUCCESS, FAILURE, RUNNING or SUSPENDED)</returns>
         public abstract EReturnStatus Update();
-        // Terminate() is called once after the Update() return a signal that it is no longer running
+
+        /// <summary>
+        /// Terminate the Behavior. Should be called once after the Update() returns a signal that it is no longer running.
+        /// </summary>
+        /// <param name="_status"></param>
         public abstract void Terminate(EReturnStatus _status);
     }
 }
