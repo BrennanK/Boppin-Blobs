@@ -5,14 +5,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class AIController : MonoBehaviour, IBoppable {
-    public enum EAIState {
-        MonitoringIt,
-        RunningFromIt,
-        Tagging,
-        Attacking,
-        TemporarilyKnocked
-    }
-
     [Header("AI Configuration")]
     public float aggroRange = 10f;
 
@@ -20,7 +12,6 @@ public class AIController : MonoBehaviour, IBoppable {
     private Rigidbody m_rigibody;
     private Transform m_playerToRunFrom;
     private Vector3 m_playerAndAIDifference;
-    private EAIState m_currentState;
 
     // Variables for Tagging AI
     // TODO Cross-Reference, that's bad.
@@ -32,7 +23,6 @@ public class AIController : MonoBehaviour, IBoppable {
     private void Start() {
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         m_rigibody = GetComponent<Rigidbody>();
-        m_currentState = EAIState.MonitoringIt;
         m_taggingIdentifier = GetComponent<TaggingIdentifier>();
         m_playerToRunFrom = GameObject.FindGameObjectWithTag("Player").transform;
         m_rigibody.isKinematic = true;
@@ -44,46 +34,16 @@ public class AIController : MonoBehaviour, IBoppable {
                         .Condition("Check if is It", IsIt)
                     // insert behavior in case AI is it
                     .End()
+                    // Search Power Ups ?
+                    // Run from it
                     .Action("Run from It", RunFromIt)
+                    // If everything else fails, just run randomly
                     .Action("Run Randomly", RunRandomly)
                 .End()
                 .Build()
             );
 
         InvokeRepeating("UpdateTree", 0f, .5f);
-    }
-
-    private void Update() {
-        switch(m_currentState) {
-            case EAIState.MonitoringIt:
-                // MonitoringItState();
-                break;
-            case EAIState.RunningFromIt:
-                // RunningFromItState();
-                break;
-            case EAIState.Tagging:
-                /*
-                if(m_playerCurrentlyBeingFollowed == null) {
-                    GetPlayerToFollow();
-                }
-
-                if(m_navMeshAgent.isOnNavMesh) {
-                    m_navMeshAgent.destination = m_playerCurrentlyBeingFollowed.position;
-                }
-                */
-
-                break;
-        }
-
-        Debug.DrawRay(transform.position, transform.forward * 2f, Color.cyan);
-    }
-
-    private void MonitoringItState() {
-        transform.LookAt(m_playerToRunFrom.position);
-
-        if(m_playerToRunFrom != null && Vector3.Distance(transform.position, m_playerToRunFrom.position) < aggroRange) {
-            m_currentState = EAIState.RunningFromIt;
-        }
     }
 
     private void RunningFromItState() {
@@ -106,7 +66,6 @@ public class AIController : MonoBehaviour, IBoppable {
 
         if (m_playerToRunFrom != null && Vector3.Distance(transform.position, m_playerToRunFrom.position) > aggroRange) {
             m_navMeshAgent.ResetPath();
-            m_currentState = EAIState.MonitoringIt;
         }
     }
 
@@ -130,7 +89,6 @@ public class AIController : MonoBehaviour, IBoppable {
 
     public void TriggerIsTagTransition() {
         GetPlayerToFollow();
-        m_currentState = EAIState.Tagging;
     }
 
     private void GetPlayerToFollow() {
@@ -149,7 +107,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     public void TriggerIsNotTagTransition() {
-        m_currentState = EAIState.RunningFromIt;
+        return;
     }
 
     public void UpdateWhoIsTag(Transform _whoIsTag) {
@@ -161,8 +119,6 @@ public class AIController : MonoBehaviour, IBoppable {
         if(m_navMeshAgent.isOnNavMesh) {
             m_navMeshAgent.ResetPath();
         }
-
-        m_currentState = EAIState.TemporarilyKnocked;
     }
 
     public void ReactivateController() {
@@ -184,12 +140,12 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus RunFromIt() {
+        // TODO
         return EReturnStatus.FAILURE;
     }
 
     private EReturnStatus RunRandomly() {
         if(m_navMeshAgent.hasPath) {
-            // Did I arrive?
             if(m_navMeshAgent.remainingDistance > 0.5f) {
                 return EReturnStatus.RUNNING;
             } else {
@@ -198,8 +154,8 @@ public class AIController : MonoBehaviour, IBoppable {
             }
         }
 
-        Vector2 randomPoint = Random.insideUnitCircle * 2f;
-        Vector3 pointToMove = transform.position + new Vector3(randomPoint.x, 0f, randomPoint.y);
+        // TODO get a random point in front of the player, unless it is blocked, which then should get a point backwards...
+        Vector3 pointToMove = transform.position + (transform.forward + new Vector3(Random.value, 0f, Random.value));
         NavMeshPath pathToMove = new NavMeshPath();
 
         if (m_navMeshAgent.CalculatePath(pointToMove, pathToMove)) {
