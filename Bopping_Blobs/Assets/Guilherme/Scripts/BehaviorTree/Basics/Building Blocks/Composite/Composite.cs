@@ -5,10 +5,18 @@ namespace BehaviorTree {
     /// Composites are nodes that can have multiple children.
     /// </summary>
     public abstract class Composite : Behavior {
-        protected List<Behavior> m_childrenBehaviors;
+        protected List<Behavior> m_childrenBehaviors = new List<Behavior>();
 
         public override void Initialize() {
-            m_childrenBehaviors = new List<Behavior>();
+            foreach (Behavior behavior in m_childrenBehaviors) {
+                behavior.Initialize();
+            }
+        }
+
+        public override void Terminate(EReturnStatus _status) {
+            foreach (Behavior behavior in m_childrenBehaviors) {
+                behavior.Terminate(_status);
+            }
         }
 
         public void AddChildBehavior(Behavior _behavior) {

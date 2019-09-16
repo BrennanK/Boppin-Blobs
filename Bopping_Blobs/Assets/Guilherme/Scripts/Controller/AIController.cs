@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using BehaviorTree;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -22,26 +23,46 @@ public class AIController : MonoBehaviour, IBoppable {
     private EAIState m_currentState;
 
     // Variables for Tagging AI
-    private TaggingIdentifier[] m_notItPlayers;
-    private Transform m_playerCurrentlyBeingFollowed;
+    // TODO Cross-Reference, that's bad.
+    private TaggingIdentifier m_taggingIdentifier;
+    // private TaggingIdentifier[] m_notItPlayers;
+    // private Transform m_playerCurrentlyBeingFollowed;
+    private BehaviorTree.BehaviorTree m_behaviorTree;
 
     private void Start() {
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         m_rigibody = GetComponent<Rigidbody>();
         m_currentState = EAIState.MonitoringIt;
+        m_taggingIdentifier = GetComponent<TaggingIdentifier>();
         m_playerToRunFrom = GameObject.FindGameObjectWithTag("Player").transform;
         m_rigibody.isKinematic = true;
+
+        m_behaviorTree = new BehaviorTree.BehaviorTree(
+            new BehaviorTreeBuilder()
+                .Selector()
+                    .Sequence()
+                        .Condition("Check if is It", IsIt)
+                    // insert behavior in case AI is it
+                    .End()
+                    .Action("Run from It", RunFromIt)
+                    .Action("Run Randomly", RunRandomly)
+                .End()
+                .Build()
+            );
+
+        InvokeRepeating("UpdateTree", 0f, .5f);
     }
 
     private void Update() {
         switch(m_currentState) {
             case EAIState.MonitoringIt:
-                MonitoringItState();
+                // MonitoringItState();
                 break;
             case EAIState.RunningFromIt:
-                RunningFromItState();
+                // RunningFromItState();
                 break;
             case EAIState.Tagging:
+                /*
                 if(m_playerCurrentlyBeingFollowed == null) {
                     GetPlayerToFollow();
                 }
@@ -49,6 +70,7 @@ public class AIController : MonoBehaviour, IBoppable {
                 if(m_navMeshAgent.isOnNavMesh) {
                     m_navMeshAgent.destination = m_playerCurrentlyBeingFollowed.position;
                 }
+                */
 
                 break;
         }
@@ -112,8 +134,10 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private void GetPlayerToFollow() {
+        /*
         m_notItPlayers = FindObjectsOfType<TaggingIdentifier>();
         m_playerCurrentlyBeingFollowed = m_notItPlayers[0].transform;
+        */
 
         /*
         for(int i = 1; i < m_notItPlayers.Length; i++) {
@@ -143,6 +167,47 @@ public class AIController : MonoBehaviour, IBoppable {
 
     public void ReactivateController() {
         m_navMeshAgent.enabled = true;
+    }
+    #endregion
+
+    #region BEHAVIOR TREE ACTIONS
+    private void UpdateTree() {
+        m_behaviorTree.Update();
+    }
+
+    private EReturnStatus IsIt() {
+        if(m_taggingIdentifier.AmITag()) {
+            return EReturnStatus.SUCCESS;
+        } else {
+            return EReturnStatus.FAILURE;
+        }
+    }
+
+    private EReturnStatus RunFromIt() {
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus RunRandomly() {
+        if(m_navMeshAgent.hasPath) {
+            // Did I arrive?
+            if(m_navMeshAgent.remainingDistance > 0.5f) {
+                return EReturnStatus.RUNNING;
+            } else {
+                m_navMeshAgent.ResetPath();
+                return EReturnStatus.SUCCESS;
+            }
+        }
+
+        Vector2 randomPoint = Random.insideUnitCircle * 2f;
+        Vector3 pointToMove = transform.position + new Vector3(randomPoint.x, 0f, randomPoint.y);
+        NavMeshPath pathToMove = new NavMeshPath();
+
+        if (m_navMeshAgent.CalculatePath(pointToMove, pathToMove)) {
+            m_navMeshAgent.SetPath(pathToMove);
+            return EReturnStatus.RUNNING;
+        }
+
+        return EReturnStatus.FAILURE;
     }
     #endregion
 }

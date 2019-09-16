@@ -515,9 +515,9 @@ GameObject:
   - component: {fileID: 6082885376086164750}
   - component: {fileID: 6082885376086164749}
   - component: {fileID: 1982545595}
-  - component: {fileID: 6082885376086164747}
   - component: {fileID: 388981814}
   - component: {fileID: 7080687607931861424}
+  - component: {fileID: 6082885376086164747}
   - component: {fileID: 792157179}
   m_Layer: 9
   m_Name: Enemy Blob
@@ -610,19 +610,6 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6082885376086164747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6082885376086164745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3614a9063a8211b4998b271fd01ade6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aggroRange: 7
 --- !u!135 &388981814
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -652,6 +639,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &6082885376086164747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6082885376086164745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3614a9063a8211b4998b271fd01ade6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aggroRange: 7
 --- !u!114 &792157179
 MonoBehaviour:
   m_ObjectHideFlags: 0

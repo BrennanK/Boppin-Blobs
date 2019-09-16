@@ -3,7 +3,8 @@
     /// Sequences execute each of their child behaviors in sequence until all of the children have executed successfully or one of them has failed.
     /// Sequences allows Behavior Trees to follow plans that are specified by the designers.
     /// </summary>
-    public abstract class Sequence : Composite {
+    public class Sequence : Composite {
+
         /// <summary>
         /// Runs all children Update() functions until one of them fails or is still running
         /// </summary>

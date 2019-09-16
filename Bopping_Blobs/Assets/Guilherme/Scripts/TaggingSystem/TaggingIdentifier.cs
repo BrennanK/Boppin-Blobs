@@ -22,8 +22,9 @@ public class TaggingIdentifier : MonoBehaviour {
     public Color blobOriginalColor;
     public GameObject isTagCanvas;
 
-    [Header("Tagging Configuration")]
+    [HideInInspector]
     public TaggingManager taggingManager;
+    [Header("Tagging Configuration")]
     public float knockbackDelay = 1.0f;
 
     // Rigidbody is used only for knockback, not for movement
@@ -183,6 +184,10 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <param name="_identifier">Player who is currently tag</param>
     public void UpdateWhoIsTag(TaggingIdentifier _identifier) {
         m_boppableInterface.UpdateWhoIsTag(_identifier.transform);
+    }
+
+    public bool AmITag() {
+        return (PlayerIdentifier == taggingManager.WhoIsTag);
     }
     #endregion
 
