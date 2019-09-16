@@ -817,37 +817,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6082885374619583995, guid: 533ef3fd6e68fb14cb42a1c9495d11be,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6082885376101268286, guid: 533ef3fd6e68fb14cb42a1c9495d11be,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 49655617, guid: 533ef3fd6e68fb14cb42a1c9495d11be, type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 49655617, guid: 533ef3fd6e68fb14cb42a1c9495d11be, type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1982545595, guid: 533ef3fd6e68fb14cb42a1c9495d11be, type: 3}
-      propertyPath: m_Acceleration
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1982545595, guid: 533ef3fd6e68fb14cb42a1c9495d11be, type: 3}
-      propertyPath: m_Speed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6082885376086164747, guid: 533ef3fd6e68fb14cb42a1c9495d11be,
-        type: 3}
-      propertyPath: behaviorTreeRefreshRate
-      value: 0.1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 533ef3fd6e68fb14cb42a1c9495d11be, type: 3}
 --- !u!4 &1164727331 stripped
@@ -1884,6 +1853,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1409958130, guid: d0facf9541f32bd4bac806a4b6e6afaa, type: 3}
       propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8151648272759377173, guid: d0facf9541f32bd4bac806a4b6e6afaa,
+        type: 3}
+      propertyPath: attackTime
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

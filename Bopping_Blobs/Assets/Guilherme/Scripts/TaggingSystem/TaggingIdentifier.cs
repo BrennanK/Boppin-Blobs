@@ -81,7 +81,7 @@ public class TaggingIdentifier : MonoBehaviour {
                 break;
         }
 
-        if (m_boppableInterface.HasAttacked()) {
+        if (m_boppableInterface.HasAttacked() && m_currentTaggingState != ETaggingBehavior.TaggingAtacking) {
             TriggerAttackTransition();
         }
 
@@ -104,6 +104,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
     #region ATTACKING
     private void TriggerAttackTransition() {
+        Debug.Log("Attacked!");
         bool hitAnotherPlayer = false;
         m_boppableInterface.TriggerAttackTransition();
         ETaggingBehavior previousState = m_currentTaggingState;
@@ -121,8 +122,9 @@ public class TaggingIdentifier : MonoBehaviour {
                     // TODO the knockback force should never be towards player attacking
                     playerHitted.KnockbackPlayer(Color.magenta, new Vector3(Random.Range(.5f, 1f), 0f, Random.Range(.5f, 1f)).normalized);
 
-                    // If we are not tag, then we tag the player
                     if(taggingManager.WhoIsTag == this.m_playerIdentifier) {
+                        // TODO maybe this could go directly to the hitted character
+                        // If we are tag, then we tag the player
                         playerHitted.Tag();
                         // and we are not tag anymore
                         SetAsNotTag();

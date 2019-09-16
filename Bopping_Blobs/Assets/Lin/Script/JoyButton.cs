@@ -3,22 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class JoyButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
+public class JoyButton : MonoBehaviour, IPointerClickHandler {
     public bool pressed;
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.Space)) {
-            pressed = true;
-        } else if(Input.GetKeyUp(KeyCode.Space)) {
-            pressed = false;
+            PressButton();
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData) {
-        pressed = true;
+    public void OnPointerClick(PointerEventData eventData) {
+        // pressed = true;
+        Debug.Log($"On Pointer Click");
+        PressButton();
     }
 
     public void OnPointerUp(PointerEventData eventData) {
+        // pressed = false;
+    }
+
+    private void PressButton() {
+        pressed = true;
+        StartCoroutine(PressDelayCoroutine());
+    }
+
+    private IEnumerator PressDelayCoroutine() {
+        yield return null;
         pressed = false;
     }
 }

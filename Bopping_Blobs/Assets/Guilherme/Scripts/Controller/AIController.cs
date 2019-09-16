@@ -46,7 +46,7 @@ public class AIController : MonoBehaviour, IBoppable {
                 .Build()
             );
 
-        InvokeRepeating("UpdateTree", 0f, Time.deltaTime);
+        InvokeRepeating("UpdateTree", 0f, behaviorTreeRefreshRate);
     }
 
     private void RunningFromItState() {
