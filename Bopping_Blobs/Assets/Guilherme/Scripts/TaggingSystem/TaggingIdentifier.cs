@@ -158,7 +158,6 @@ public class TaggingIdentifier : MonoBehaviour {
     public void Tag() {
         Debug.Log($"I ({gameObject.name}) was tagged :(");
         taggingManager.PlayerWasTagged(this);
-        SetAsTagging();
     }
 
     public void KnockbackPlayer(Color _knockbackColor, Vector3 _knockbackDirection) {

@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class AIController : MonoBehaviour, IBoppable {
     [Header("AI Configuration")]
     public float aggroRange = 10f;
+    public float behaviorTreeRefreshRate = 0.01f;
 
     private NavMeshAgent m_navMeshAgent;
     private Rigidbody m_rigibody;
@@ -16,6 +17,7 @@ public class AIController : MonoBehaviour, IBoppable {
     // Variables for Tagging AI
     // TODO Cross-Reference, that's bad.
     private TaggingIdentifier m_taggingIdentifier;
+
     // private TaggingIdentifier[] m_notItPlayers;
     // private Transform m_playerCurrentlyBeingFollowed;
     private BehaviorTree.BehaviorTree m_behaviorTree;
@@ -38,12 +40,13 @@ public class AIController : MonoBehaviour, IBoppable {
                     // Run from it
                     .Action("Run from It", RunFromIt)
                     // If everything else fails, just run randomly
+                    .Action("Look at It", LookAtIt)
                     .Action("Run Randomly", RunRandomly)
                 .End()
                 .Build()
             );
 
-        InvokeRepeating("UpdateTree", 0f, .5f);
+        InvokeRepeating("UpdateTree", 0f, Time.deltaTime);
     }
 
     private void RunningFromItState() {
@@ -144,9 +147,22 @@ public class AIController : MonoBehaviour, IBoppable {
         return EReturnStatus.FAILURE;
     }
 
+    private EReturnStatus LookAtIt() {
+        if(m_playerToRunFrom == null) {
+            m_playerToRunFrom = m_taggingIdentifier.taggingManager.GetItTransform();
+
+            if(m_playerToRunFrom == null) {
+                return EReturnStatus.FAILURE;
+            }
+        }
+
+        transform.LookAt(m_playerToRunFrom.position);
+        return EReturnStatus.SUCCESS;
+    }
+
     private EReturnStatus RunRandomly() {
         if(m_navMeshAgent.hasPath) {
-            if(m_navMeshAgent.remainingDistance > 0.5f) {
+            if(m_navMeshAgent.remainingDistance > 0.75f) {
                 return EReturnStatus.RUNNING;
             } else {
                 m_navMeshAgent.ResetPath();
