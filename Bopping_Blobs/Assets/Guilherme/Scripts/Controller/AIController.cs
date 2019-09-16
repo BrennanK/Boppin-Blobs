@@ -29,8 +29,8 @@ public class AIController : MonoBehaviour, IBoppable {
 
         m_behaviorTree = new BehaviorTree.BehaviorTree(
             new BehaviorTreeBuilder()
-                .Selector()
-                    .Sequence()
+                .Selector("AI Behavior Main Selector")
+                    .Sequence("Is It Sequence")
                         .Condition("Check if is It", IsIt)
                     // insert behavior in case AI is it
                     .End()

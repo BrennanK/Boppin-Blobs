@@ -9,8 +9,8 @@ namespace BehaviorTree {
         private Behavior m_currentNode = null;
         private Stack<Composite> parentNodeStack = new Stack<Composite>();
 
-        public BehaviorTreeBuilder Sequence() {
-            Sequence newSequenceNode = new Sequence();
+        public BehaviorTreeBuilder Sequence(string _nodeName) {
+            Sequence newSequenceNode = new Sequence(_nodeName);
 
             if(parentNodeStack.Count > 0) {
                 parentNodeStack.Peek().AddChildBehavior(newSequenceNode);
@@ -20,8 +20,8 @@ namespace BehaviorTree {
             return this;
         }
 
-        public BehaviorTreeBuilder Selector() {
-            Selector newSelectorNode = new Selector();
+        public BehaviorTreeBuilder Selector(string _nodeName) {
+            Selector newSelectorNode = new Selector(_nodeName);
 
             if(parentNodeStack.Count > 0) {
                 parentNodeStack.Peek().AddChildBehavior(newSelectorNode);

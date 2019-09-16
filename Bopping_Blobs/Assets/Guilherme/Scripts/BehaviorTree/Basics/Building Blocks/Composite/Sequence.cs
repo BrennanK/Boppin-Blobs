@@ -4,6 +4,9 @@
     /// Sequences allows Behavior Trees to follow plans that are specified by the designers.
     /// </summary>
     public class Sequence : Composite {
+        public Sequence(string _nodeName) : base(_nodeName) {
+            // TODO
+        }
 
         /// <summary>
         /// Runs all children Update() functions until one of them fails or is still running
