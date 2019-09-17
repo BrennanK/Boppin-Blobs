@@ -8,6 +8,7 @@ public class AIController : MonoBehaviour, IBoppable {
     [Header("AI Configuration")]
     public float aggroRange = 10f;
     public float behaviorTreeRefreshRate = 0.01f;
+    public float attackingDistance = 0.5f;
     private BehaviorTree.BehaviorTree m_behaviorTree;
 
     private NavMeshAgent m_navMeshAgent;
@@ -20,6 +21,8 @@ public class AIController : MonoBehaviour, IBoppable {
     private TaggingIdentifier m_taggingIdentifier;
     private TaggingIdentifier[] m_notItPlayers;
     private Transform m_playerCurrentlyBeingFollowed;
+    private bool m_isBeingKnockedBack = false;
+    private bool m_canAttack = false;
 
 
     private void Start() {
@@ -32,6 +35,7 @@ public class AIController : MonoBehaviour, IBoppable {
         m_behaviorTree = new BehaviorTree.BehaviorTree(
             new BehaviorTreeBuilder()
                 .Selector("AI Behavior Main Selector")
+                    .Action("Is Being Knocked Back", IsBeingKnockedBack)
                     .Sequence("Is It Sequence")
                         .Condition("Check if is It", IsIt)
                         .Selector("Select Attack or Follow player")
@@ -68,11 +72,11 @@ public class AIController : MonoBehaviour, IBoppable {
 
     #region IBoppable
     public bool HasAttacked() {
-        return false;
+        return m_canAttack;
     }
 
     public void TriggerAttackTransition() {
-        return;
+        m_canAttack = false;
     }
 
     public void TriggerEndAttackTransition() {
@@ -103,6 +107,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     public void DeactivateController() {
+        m_isBeingKnockedBack = true;
         m_navMeshAgent.enabled = false;
         if(m_navMeshAgent.isOnNavMesh) {
             m_navMeshAgent.ResetPath();
@@ -110,6 +115,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     public void ReactivateController() {
+        m_isBeingKnockedBack = false;
         m_navMeshAgent.enabled = true;
     }
     #endregion
@@ -128,18 +134,36 @@ public class AIController : MonoBehaviour, IBoppable {
         }
     }
 
+    private EReturnStatus IsBeingKnockedBack() {
+        if(m_isBeingKnockedBack) {
+            return EReturnStatus.SUCCESS;
+        } else {
+            return EReturnStatus.FAILURE;
+        }
+    }
+
     private EReturnStatus IsWithinAttackingDistance() {
-        // TODO just check the distance from this AI and the nearest player
+        if (Vector3.Distance(transform.position, m_playerCurrentlyBeingFollowed.position) < attackingDistance) {
+            return EReturnStatus.SUCCESS;
+        }
+
         return EReturnStatus.FAILURE;
     }
 
     private EReturnStatus CanAttack() {
-        // TODO player can attack if it's currently not attacking, else returns running
-        return EReturnStatus.FAILURE;
+        if(m_taggingIdentifier.TaggingState == TaggingIdentifier.ETaggingBehavior.TaggingAtacking) {
+            return EReturnStatus.FAILURE;
+        }
+
+        return EReturnStatus.SUCCESS;
     }
 
     private EReturnStatus AttackNearestPlayer() {
-        // TODO Performs the actual action of attacking
+        if (!m_canAttack) {
+            m_canAttack = true;
+            return EReturnStatus.SUCCESS;
+        }
+
         return EReturnStatus.FAILURE;
     }
 

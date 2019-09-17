@@ -653,6 +653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aggroRange: 7
   behaviorTreeRefreshRate: 0.05
+  attackingDistance: 1.1
 --- !u!114 &792157179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -671,7 +672,7 @@ MonoBehaviour:
   attackDistance: 1
   attackTime: 1
   attackRadius: 1
-  knockbackForceMultiplier: 0
+  knockbackForceMultiplier: 25
   hammerTransform: {fileID: 6082885376101268287}
   hammerBopAim: {fileID: 6082885374619583996}
   blobOriginalColor: {r: 0.38020647, g: 0.9056604, b: 0.86695313, a: 1}

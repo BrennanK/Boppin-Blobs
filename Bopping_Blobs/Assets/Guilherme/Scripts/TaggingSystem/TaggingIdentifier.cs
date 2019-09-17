@@ -56,6 +56,11 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private ETaggingBehavior m_currentTaggingState;
+    public ETaggingBehavior TaggingState {
+        get {
+            return m_currentTaggingState;
+        }
+    }
     protected float m_attackWaitTime;
 
     /*
