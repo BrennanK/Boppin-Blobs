@@ -34,14 +34,17 @@ public class AIController : MonoBehaviour, IBoppable {
                 .Selector("AI Behavior Main Selector")
                     .Sequence("Is It Sequence")
                         .Condition("Check if is It", IsIt)
-                        // TODO Sequence("Attack if Possible")
-                            // TODO Condition("Check Distance to Nearest Player")
-                            // TODO Action("Attack Nearest Player")
-                        // TODO Sequence("Run Towards a Player")
-                            // TODO Condition("Has Player Available")
-                            // TODO Action("Run towards available player")
+                        .Sequence("Attack if possible")
+                            .Condition("Check if within attacking distance", IsWithinAttackingDistance)
+                            .Condition("Check if Player can attack", CanAttack)
+                            .Action("Attack Nearest Player", AttackNearestPlayer)
+                        .End()
+                        .Sequence("Run Towards a Player")
+                            .Condition("Has Player Available", HasPlayerAvailable)
+                            .Action("Run towards available player", RunTowardsPlayer)
+                        .End()
                     .End()
-                    // TODO Sequence("Search for Power Ups")
+                    // TODO Sequence("Search for Power Ups") <- I have to have the power ups first
                     .Action("Run from It", RunFromIt)
                     .Sequence("Look at It")
                         .Action("Look at It", LookAtIt)
@@ -118,6 +121,7 @@ public class AIController : MonoBehaviour, IBoppable {
         m_behaviorTree.Update();
     }
 
+    #region Is It Functions
     private EReturnStatus IsIt() {
         if(m_taggingIdentifier.AmITag()) {
             return EReturnStatus.SUCCESS;
@@ -126,6 +130,34 @@ public class AIController : MonoBehaviour, IBoppable {
         }
     }
 
+    private EReturnStatus IsWithinAttackingDistance() {
+        // TODO just check the distance from this AI and the nearest player
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus CanAttack() {
+        // TODO player can attack if it's currently not attacking, else returns running
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus AttackNearestPlayer() {
+        // TODO Performs the actual action of attacking
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus HasPlayerAvailable() {
+        // TODO Check if there is a non-tag player to go towards
+        
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus RunTowardsPlayer() {
+        // TODO
+        return EReturnStatus.FAILURE;
+    }
+    #endregion
+
+    #region Is Not It Functions
     private EReturnStatus RunFromIt() {
         if(m_playerToRunFrom == null) {
             // TODO get player to run from
@@ -192,5 +224,6 @@ public class AIController : MonoBehaviour, IBoppable {
 
         return EReturnStatus.FAILURE;
     }
+    #endregion
     #endregion
 }
