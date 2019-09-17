@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aggroRange: 7
-  behaviorTreeRefreshRate: 0.1
+  behaviorTreeRefreshRate: 0.01
 --- !u!114 &792157179
 MonoBehaviour:
   m_ObjectHideFlags: 0

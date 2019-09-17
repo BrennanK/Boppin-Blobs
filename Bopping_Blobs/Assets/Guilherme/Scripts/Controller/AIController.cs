@@ -34,42 +34,26 @@ public class AIController : MonoBehaviour, IBoppable {
                 .Selector("AI Behavior Main Selector")
                     .Sequence("Is It Sequence")
                         .Condition("Check if is It", IsIt)
-                    // insert behavior in case AI is it
+                        // TODO Sequence("Attack if Possible")
+                            // TODO Condition("Check Distance to Nearest Player")
+                            // TODO Action("Attack Nearest Player")
+                        // TODO Sequence("Run Towards a Player")
+                            // TODO Condition("Has Player Available")
+                            // TODO Action("Run towards available player")
                     .End()
-                    // Search Power Ups ?
-                    // Run from it
+                    // TODO Sequence("Search for Power Ups")
                     .Action("Run from It", RunFromIt)
-                    // If everything else fails, just run randomly
-                    .Action("Look at It", LookAtIt)
-                    .Action("Run Randomly", RunRandomly)
+                    .Sequence("Look at It")
+                        .Action("Look at It", LookAtIt)
+                    .End()
+                    .Sequence("Run Randomly")
+                        .Action("Run Randomly", RunRandomly)
+                    .End()
                 .End()
                 .Build()
             );
 
         InvokeRepeating("UpdateTree", 0f, behaviorTreeRefreshRate);
-    }
-
-    private void RunningFromItState() {
-        m_playerAndAIDifference = m_playerToRunFrom.position - transform.position;
-        Vector3 positionToMove = transform.position - m_playerAndAIDifference;
-
-        if (m_playerToRunFrom != null && Vector3.Distance(transform.position, m_playerToRunFrom.position) < aggroRange) {
-            NavMeshPath navmeshPath = new NavMeshPath();
-            if (m_navMeshAgent.CalculatePath(positionToMove, navmeshPath)) {
-                m_navMeshAgent.SetPath(navmeshPath);
-            } else {
-                transform.LookAt(m_playerToRunFrom.position);
-                if(m_playerAndAIDifference.x > 0) {
-                    m_navMeshAgent.destination = transform.position + (transform.forward + transform.right) * 5f;
-                } else {
-                    m_navMeshAgent.destination = transform.position + (transform.forward - transform.right) * 5f;
-                }
-            }
-        }
-
-        if (m_playerToRunFrom != null && Vector3.Distance(transform.position, m_playerToRunFrom.position) > aggroRange) {
-            m_navMeshAgent.ResetPath();
-        }
     }
 
     private void OnDrawGizmos() {
@@ -143,7 +127,34 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus RunFromIt() {
-        // TODO
+        if(m_playerToRunFrom == null) {
+            // TODO get player to run from
+            return EReturnStatus.FAILURE;
+        }
+
+        m_playerAndAIDifference = m_playerToRunFrom.position - transform.position;
+        Vector3 positionToMove = transform.position - m_playerAndAIDifference;
+
+        if(Vector3.Distance(transform.position, m_playerToRunFrom.position) < aggroRange) {
+            NavMeshPath path = new NavMeshPath();
+            if(m_navMeshAgent.CalculatePath(positionToMove, path)) {
+                m_navMeshAgent.SetPath(path);
+            } else {
+                transform.LookAt(m_playerToRunFrom.position);
+                if(m_playerAndAIDifference.x > 0) {
+                    m_navMeshAgent.destination = transform.position + ((transform.forward + transform.right) * 5f);
+                } else {
+                    m_navMeshAgent.destination = transform.position + ((transform.forward - transform.right) * 5f);
+                }
+            }
+
+            return EReturnStatus.RUNNING;
+        }
+
+        if(Vector3.Distance(transform.position, m_playerToRunFrom.position) > aggroRange) {
+            m_navMeshAgent.ResetPath();
+        }
+
         return EReturnStatus.FAILURE;
     }
 
