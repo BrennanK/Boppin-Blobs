@@ -40,11 +40,31 @@ public class TaggingManager : MonoBehaviour {
         });
     }
 
-    public void PlayerWasTagged(TaggingIdentifier _whoIsTag) {
-        // TODO Have Visual Cue for the player who is cued
+    public void PlayerWasTagged(TaggingIdentifier _whoIsTag, bool _knockbackEffect = false) {
         m_currentPlayerTaggingID = _whoIsTag.PlayerIdentifier;
         _whoIsTag.SetAsTagging();
         OnPlayerWasTagged?.Invoke(_whoIsTag);
+
+        // TODO improve this
+        // Knockback all players that are not tag
+        if(_knockbackEffect) {
+            StartCoroutine(KnockbackAllPlayerRoutine());
+        }
+    }
+
+    // TODO knockback only within a distance from the player who was tagged
+    private IEnumerator KnockbackAllPlayerRoutine() {
+        Time.timeScale = 1.0f;
+
+        foreach (TaggingIdentifier player in m_playersIdentifiers) {
+            if (player.PlayerIdentifier != m_currentPlayerTaggingID) {
+                Vector3 knockbackDirection = (player.transform.position - GetItTransform().position);
+                player.KnockbackPlayer(Color.magenta, knockbackDirection.normalized);
+            }
+        }
+
+        yield return new WaitForSeconds(1.0f);
+        Time.timeScale = 1.0f;
     }
 
     public Transform GetItTransform() {

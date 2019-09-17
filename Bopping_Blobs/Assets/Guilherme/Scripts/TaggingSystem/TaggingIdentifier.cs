@@ -174,7 +174,7 @@ public class TaggingIdentifier : MonoBehaviour {
     #region TAGGING
     public void Tag() {
         Debug.Log($"I ({gameObject.name}) was tagged =D");
-        taggingManager.PlayerWasTagged(this);
+        taggingManager.PlayerWasTagged(this, true);
     }
 
     /// <summary>
