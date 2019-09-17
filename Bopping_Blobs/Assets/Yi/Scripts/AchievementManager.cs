@@ -11,6 +11,7 @@ using TMPro;
 
 public class AchievementManager : MonoBehaviour
 {
+    #region Variables
     // Serial#, Name, Completed, Needed, Reward, Status
     private List<string[]> Achievements = new List<string[]> {
         new string[]{"1", "Win a game", "0", "1", "100", "0"},
@@ -32,12 +33,12 @@ public class AchievementManager : MonoBehaviour
 
     // Singleton
     public static AchievementManager _instance;
-
+    #endregion
     private void Awake()
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         else
         {
@@ -46,6 +47,8 @@ public class AchievementManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
+    
+    #region Generate Achievements
     // Start is called before the first frame update
     void Start()
     {
@@ -80,7 +83,8 @@ public class AchievementManager : MonoBehaviour
         }
 
     }
-
+    #endregion
+    #region Complete Method
     // Receiving message from other manager to complete achievement
     public void CompleteAchievement(int serialnumber)
     {
@@ -115,7 +119,7 @@ public class AchievementManager : MonoBehaviour
         sampleInventory.ModifiyCoins(number);
 
         // Play Audio
-        audioSource.Play();
+        PausedMenuManager._instance.PlaySFX(0);
 
         // Change Button to Compeleted UI
         GameObject ButtonObject = EventSystem.current.currentSelectedGameObject;
@@ -133,7 +137,8 @@ public class AchievementManager : MonoBehaviour
             }
         }
     }
-
+    #endregion
+    #region UI Staff
     // Enable the UI
     public void OpenAchievement()
     {
@@ -149,4 +154,5 @@ public class AchievementManager : MonoBehaviour
         AchievementUI.GetComponent<Animator>().SetBool("Open", false);
         achievementActivated = false;
     }
+    #endregion
 }
