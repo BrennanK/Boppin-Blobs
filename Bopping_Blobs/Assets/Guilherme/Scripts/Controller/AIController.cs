@@ -36,31 +36,26 @@ public class AIController : MonoBehaviour, IBoppable {
             new BehaviorTreeBuilder()
                 .Selector("AI Behavior Main Selector")
                     .Condition("Is Being Knocked Back", IsBeingKnockedBack)
-                    .Sequence("Is It Sequence")
-                        .Condition("Check if is It", IsIt)
-                        .Selector("Select Attack or Follow player")
+                    .Sequence("Is it Sequence")
+                        .Condition("Check if is it", IsIt)
+                        // TODO run from everyone
+                    .End()
+                    .Sequence("Is not it sequence")
+                        .Condition("Has Player Available", HasPlayerAvailable)
+                        .Selector("Attack or Follow")
                             .Sequence("Attack if possible")
                                 .Condition("Check if within attacking distance", IsWithinAttackingDistance)
                                 .Condition("Check if Player can attack", CanAttack)
-                                .Action("Attack Nearest Player", AttackNearestPlayer)
+                                .Action("Attack It", AttackNearestPlayer)
                             .End()
-                            .Sequence("Run Towards a Player")
-                                .Condition("Has Player Available", HasPlayerAvailable)
-                                .Action("Run towards available player", RunTowardsPlayer)
+                            .Sequence("Run towards It")
+                                    .Action("Run towards available player", RunTowardsPlayer)
                             .End()
                         .End()
                     .End()
-                    // TODO Sequence("Search for Power Ups") <- I have to have the power ups first
-                    .Action("Run from It", RunFromIt)
-                    .Sequence("Look at It")
-                        .Action("Look at It", LookAtIt)
-                    .End()
-                    .Sequence("Run Randomly")
-                        .Action("Run Randomly", RunRandomly)
-                    .End()
                 .End()
                 .Build()
-            );
+            ) ;
 
         InvokeRepeating("UpdateTree", 0f, behaviorTreeRefreshRate);
     }
@@ -103,7 +98,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     public void UpdateWhoIsTag(Transform _whoIsTag) {
-        m_playerToRunFrom = _whoIsTag;
+        m_playerCurrentlyBeingFollowed = _whoIsTag;
     }
 
     public void DeactivateController() {
@@ -169,7 +164,7 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private EReturnStatus HasPlayerAvailable() {
         if(m_playerCurrentlyBeingFollowed == null) {
-            GetPlayerToFollow();
+            m_playerCurrentlyBeingFollowed = m_taggingIdentifier.taggingManager.GetItTransform();
             return EReturnStatus.FAILURE;
         }
 
@@ -177,13 +172,8 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus RunTowardsPlayer() {
-        // TODO Reevaluate which player is being followed, to see if there's one that is closer and then change to that one
-        // TODO this should be done using a parallel
-        foreach(TaggingIdentifier identifier in m_notItPlayers) {
-            if(Vector3.Distance(transform.position, identifier.transform.position) < Vector3.Distance(transform.position, m_playerCurrentlyBeingFollowed.position)) {
-                m_playerCurrentlyBeingFollowed = identifier.transform;
-                break;
-            }
+        if(m_playerCurrentlyBeingFollowed == null) {
+            return EReturnStatus.FAILURE;
         }
 
         m_navMeshAgent.SetDestination(m_playerCurrentlyBeingFollowed.position);

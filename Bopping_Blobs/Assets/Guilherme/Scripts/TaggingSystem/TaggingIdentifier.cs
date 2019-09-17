@@ -129,13 +129,21 @@ public class TaggingIdentifier : MonoBehaviour {
                     Vector3 knockbackVector = playerHitted.transform.position - hammerBopAim.transform.position;
                     playerHitted.KnockbackPlayer(Color.magenta, knockbackVector.normalized);
 
+                    if(taggingManager.WhoIsTag == playerHitted.PlayerIdentifier) {
+                        playerHitted.SetAsNotTag();
+                        Tag();
+                    }
+
+                    /*
                     if(taggingManager.WhoIsTag == this.m_playerIdentifier) {
                         // TODO maybe this could go directly to the hitted character
                         // If we are tag, then we tag the player
                         playerHitted.Tag();
                         // and we are not tag anymore
                         SetAsNotTag();
-                    }
+                    } 
+                    */
+
                     break;
                 }
             }
@@ -165,7 +173,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
     #region TAGGING
     public void Tag() {
-        Debug.Log($"I ({gameObject.name}) was tagged :(");
+        Debug.Log($"I ({gameObject.name}) was tagged =D");
         taggingManager.PlayerWasTagged(this);
     }
 
