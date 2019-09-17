@@ -16,14 +16,18 @@ public class TaggingIdentifier : MonoBehaviour {
     public float attackTime = 1f;
     public float attackRadius = 1f;
 
+    [Header("Knockback")]
+    public float knockbackForceMultiplier = 25f;
+
     [Header("Necessary Dependencies")]
     public Transform hammerTransform;
     public Transform hammerBopAim;
     public Color blobOriginalColor;
     public GameObject isTagCanvas;
 
-    [Header("Tagging Configuration")]
+    [HideInInspector]
     public TaggingManager taggingManager;
+    [Header("Tagging Configuration")]
     public float knockbackDelay = 1.0f;
 
     // Rigidbody is used only for knockback, not for movement
@@ -52,6 +56,11 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private ETaggingBehavior m_currentTaggingState;
+    public ETaggingBehavior TaggingState {
+        get {
+            return m_currentTaggingState;
+        }
+    }
     protected float m_attackWaitTime;
 
     /*
@@ -80,7 +89,7 @@ public class TaggingIdentifier : MonoBehaviour {
                 break;
         }
 
-        if (m_boppableInterface.HasAttacked()) {
+        if (m_boppableInterface.HasAttacked() && m_currentTaggingState != ETaggingBehavior.TaggingAtacking) {
             TriggerAttackTransition();
         }
 
@@ -117,11 +126,12 @@ public class TaggingIdentifier : MonoBehaviour {
                 if (playerHitted != null && m_playerIdentifier != playerHitted.PlayerIdentifier) {
                     hitAnotherPlayer = true;
 
-                    // TODO the knockback force should never be towards player attacking
-                    playerHitted.KnockbackPlayer(Color.magenta, new Vector3(Random.Range(.5f, 1f), 0f, Random.Range(.5f, 1f)).normalized);
+                    Vector3 knockbackVector = playerHitted.transform.position - hammerBopAim.transform.position;
+                    playerHitted.KnockbackPlayer(Color.magenta, knockbackVector.normalized);
 
-                    // If we are not tag, then we tag the player
                     if(taggingManager.WhoIsTag == this.m_playerIdentifier) {
+                        // TODO maybe this could go directly to the hitted character
+                        // If we are tag, then we tag the player
                         playerHitted.Tag();
                         // and we are not tag anymore
                         SetAsNotTag();
@@ -157,15 +167,19 @@ public class TaggingIdentifier : MonoBehaviour {
     public void Tag() {
         Debug.Log($"I ({gameObject.name}) was tagged :(");
         taggingManager.PlayerWasTagged(this);
-        SetAsTagging();
     }
 
+    /// <summary>
+    /// Knockbacks the Player
+    /// </summary>
+    /// <param name="_knockbackColor">Feedback Color for knockbacked player</param>
+    /// <param name="_knockbackDirection">Normalized vector indicating the direction where the player will be knockbacked</param>
     public void KnockbackPlayer(Color _knockbackColor, Vector3 _knockbackDirection) {
         m_characterRenderer.material.color = _knockbackColor;
         m_boppableInterface.DeactivateController();
 
         m_rigidbodyReference.isKinematic = false;
-        m_rigidbodyReference.velocity = _knockbackDirection * 25f;
+        m_rigidbodyReference.velocity = _knockbackDirection * knockbackForceMultiplier;
         StartCoroutine(KnockbackDelay());
     }
 
@@ -183,6 +197,10 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <param name="_identifier">Player who is currently tag</param>
     public void UpdateWhoIsTag(TaggingIdentifier _identifier) {
         m_boppableInterface.UpdateWhoIsTag(_identifier.transform);
+    }
+
+    public bool AmITag() {
+        return (PlayerIdentifier == taggingManager.WhoIsTag);
     }
     #endregion
 

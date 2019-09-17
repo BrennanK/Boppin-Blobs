@@ -4,8 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 public class TaggingManager : MonoBehaviour {
-    private TaggingIdentifier[] m_playersIdentifiers;
-    private List<TaggingIdentifier> m_playersIdentifiersList;
+    private List<TaggingIdentifier> m_playersIdentifiers;
 
     public delegate void DelegateWithTaggingIdentifier(TaggingIdentifier identifier);
     public event DelegateWithTaggingIdentifier OnPlayerWasTagged;
@@ -19,26 +18,24 @@ public class TaggingManager : MonoBehaviour {
 
     // TODO Update UI Scoreboard
     private void Start() {
-        m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>();
-        m_playersIdentifiersList = m_playersIdentifiers.ToList();
+        m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
 
         // Inject all ids into tagging identifiers
-        for(int i = 0; i < m_playersIdentifiers.Length; i++) {
+        for(int i = 0; i < m_playersIdentifiers.Count; i++) {
             m_playersIdentifiers[i].PlayerIdentifier = i;
             m_playersIdentifiers[i].taggingManager = this;
 
-            // Every Player Subscribes their UpdateWhoIsTag function into the manager
+            // Subscribing every player's UpdateWhoIsTag function into the manager
             OnPlayerWasTagged += m_playersIdentifiers[i].UpdateWhoIsTag;
         }
 
         // TODO Select a Random one to start as tag
         TaggingIdentifier initialTagger = GameObject.FindGameObjectWithTag("Player").GetComponent<TaggingIdentifier>();
-        initialTagger.SetAsTagging();
-        m_currentPlayerTaggingID = initialTagger.PlayerIdentifier;
+        PlayerWasTagged(initialTagger);
     }
 
     private void UpdateScoreboard() {
-        m_playersIdentifiersList.Sort((leftHandSide, rightHandSide) => {
+        m_playersIdentifiers.Sort((leftHandSide, rightHandSide) => {
             return leftHandSide.TimeAsTag.CompareTo(rightHandSide.TimeAsTag);
         });
     }
@@ -46,7 +43,18 @@ public class TaggingManager : MonoBehaviour {
     public void PlayerWasTagged(TaggingIdentifier _whoIsTag) {
         // TODO Have Visual Cue for the player who is cued
         m_currentPlayerTaggingID = _whoIsTag.PlayerIdentifier;
+        _whoIsTag.SetAsTagging();
         OnPlayerWasTagged?.Invoke(_whoIsTag);
+    }
+
+    public Transform GetItTransform() {
+        foreach(TaggingIdentifier identifier in m_playersIdentifiers) {
+            if(identifier.PlayerIdentifier == m_currentPlayerTaggingID) {
+                return identifier.transform;
+            }
+        }
+
+        return null;
     }
 
     public TaggingIdentifier[] GetAllPlayersThatAreNotIt() {

@@ -3,6 +3,8 @@
     /// Monitors continuously check if an assumption is valid
     /// </summary>
     public abstract class Monitor : Behavior {
-        // NOT IMPLEMENTED
+        public Monitor(string _nodeName) : base(_nodeName) {
+            // TODO
+        }
     }
 }
