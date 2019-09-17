@@ -107,7 +107,6 @@ public class TaggingIdentifier : MonoBehaviour {
 
     #region ATTACKING
     private void TriggerAttackTransition() {
-        Debug.Log("Attacked!");
         bool hitAnotherPlayer = false;
         m_boppableInterface.TriggerAttackTransition();
         ETaggingBehavior previousState = m_currentTaggingState;
@@ -122,7 +121,6 @@ public class TaggingIdentifier : MonoBehaviour {
                 if (playerHitted != null && m_playerIdentifier != playerHitted.PlayerIdentifier) {
                     hitAnotherPlayer = true;
 
-                    // TODO the knockback force should never be towards player attacking
                     Vector3 knockbackVector = playerHitted.transform.position - hammerBopAim.transform.position;
                     playerHitted.KnockbackPlayer(Color.magenta, knockbackVector.normalized);
 

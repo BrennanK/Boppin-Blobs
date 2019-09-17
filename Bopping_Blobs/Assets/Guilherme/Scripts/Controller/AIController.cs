@@ -8,6 +8,7 @@ public class AIController : MonoBehaviour, IBoppable {
     [Header("AI Configuration")]
     public float aggroRange = 10f;
     public float behaviorTreeRefreshRate = 0.01f;
+    private BehaviorTree.BehaviorTree m_behaviorTree;
 
     private NavMeshAgent m_navMeshAgent;
     private Rigidbody m_rigibody;
@@ -17,10 +18,9 @@ public class AIController : MonoBehaviour, IBoppable {
     // Variables for Tagging AI
     // TODO Cross-Reference, that's bad.
     private TaggingIdentifier m_taggingIdentifier;
+    private TaggingIdentifier[] m_notItPlayers;
+    private Transform m_playerCurrentlyBeingFollowed;
 
-    // private TaggingIdentifier[] m_notItPlayers;
-    // private Transform m_playerCurrentlyBeingFollowed;
-    private BehaviorTree.BehaviorTree m_behaviorTree;
 
     private void Start() {
         m_navMeshAgent = GetComponent<NavMeshAgent>();
@@ -34,14 +34,16 @@ public class AIController : MonoBehaviour, IBoppable {
                 .Selector("AI Behavior Main Selector")
                     .Sequence("Is It Sequence")
                         .Condition("Check if is It", IsIt)
-                        .Sequence("Attack if possible")
-                            .Condition("Check if within attacking distance", IsWithinAttackingDistance)
-                            .Condition("Check if Player can attack", CanAttack)
-                            .Action("Attack Nearest Player", AttackNearestPlayer)
-                        .End()
-                        .Sequence("Run Towards a Player")
-                            .Condition("Has Player Available", HasPlayerAvailable)
-                            .Action("Run towards available player", RunTowardsPlayer)
+                        .Selector("Select Attack or Follow player")
+                            .Sequence("Attack if possible")
+                                .Condition("Check if within attacking distance", IsWithinAttackingDistance)
+                                .Condition("Check if Player can attack", CanAttack)
+                                .Action("Attack Nearest Player", AttackNearestPlayer)
+                            .End()
+                            .Sequence("Run Towards a Player")
+                                .Condition("Has Player Available", HasPlayerAvailable)
+                                .Action("Run towards available player", RunTowardsPlayer)
+                            .End()
                         .End()
                     .End()
                     // TODO Sequence("Search for Power Ups") <- I have to have the power ups first
@@ -82,18 +84,14 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private void GetPlayerToFollow() {
-        /*
-        m_notItPlayers = FindObjectsOfType<TaggingIdentifier>();
+        m_notItPlayers = m_taggingIdentifier.taggingManager.GetAllPlayersThatAreNotIt();
         m_playerCurrentlyBeingFollowed = m_notItPlayers[0].transform;
-        */
 
-        /*
         for(int i = 1; i < m_notItPlayers.Length; i++) {
             if(Vector3.Distance(m_notItPlayers[i].transform.position, transform.position) < Vector3.Distance(m_playerCurrentlyBeingFollowed.position, transform.position) && m_notItPlayers[i].transform != transform) {
                 m_playerCurrentlyBeingFollowed = m_notItPlayers[i].transform;
             }
         }
-        */
     }
 
     public void TriggerIsNotTagTransition() {
@@ -146,14 +144,26 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus HasPlayerAvailable() {
-        // TODO Check if there is a non-tag player to go towards
-        
-        return EReturnStatus.FAILURE;
+        if(m_playerCurrentlyBeingFollowed == null) {
+            GetPlayerToFollow();
+            return EReturnStatus.FAILURE;
+        }
+
+        return EReturnStatus.SUCCESS;
     }
 
     private EReturnStatus RunTowardsPlayer() {
-        // TODO
-        return EReturnStatus.FAILURE;
+        // TODO Reevaluate which player is being followed, to see if there's one that is closer and then change to that one
+        // TODO this should be done using a parallel
+        foreach(TaggingIdentifier identifier in m_notItPlayers) {
+            if(Vector3.Distance(transform.position, identifier.transform.position) < Vector3.Distance(transform.position, m_playerCurrentlyBeingFollowed.position)) {
+                m_playerCurrentlyBeingFollowed = identifier.transform;
+                break;
+            }
+        }
+
+        m_navMeshAgent.SetDestination(m_playerCurrentlyBeingFollowed.position);
+        return EReturnStatus.RUNNING;
     }
     #endregion
 

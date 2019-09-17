@@ -15,8 +15,9 @@ public class TagManagerInspector : Editor {
         gStyle.normal.background = MakeTex(200, 50, Color.gray);
         GUILayout.BeginHorizontal(gStyle);
         GUILayout.Label("Player Name", GUILayout.Width(200));
-        GUILayout.Label("Player Identifier", GUILayout.Width(100));
+        GUILayout.Label("Player ID", GUILayout.Width(75));
         GUILayout.Label("Is It?", GUILayout.Width(50));
+        GUILayout.Label("Time as It", GUILayout.Width(75));
         GUILayout.EndHorizontal();
 
         foreach (TaggingIdentifier identifier in identifiers) {
@@ -30,8 +31,9 @@ public class TagManagerInspector : Editor {
 
             GUILayout.BeginHorizontal(gStyle);
             GUILayout.Label(identifier.gameObject.name, GUILayout.Width(200));
-            GUILayout.Label(identifier.PlayerIdentifier.ToString(), GUILayout.Width(100));
+            GUILayout.Label(identifier.PlayerIdentifier.ToString(), GUILayout.Width(75));
             GUILayout.Label(isIt.ToString(), GUILayout.Width(50));
+            GUILayout.Label(identifier.TimeAsTag.ToString(), GUILayout.Width(75));
             GUILayout.EndHorizontal();
         }
 
