@@ -35,7 +35,7 @@ public class AIController : MonoBehaviour, IBoppable {
         m_behaviorTree = new BehaviorTree.BehaviorTree(
             new BehaviorTreeBuilder()
                 .Selector("AI Behavior Main Selector")
-                    .Action("Is Being Knocked Back", IsBeingKnockedBack)
+                    .Condition("Is Being Knocked Back", IsBeingKnockedBack)
                     .Sequence("Is It Sequence")
                         .Condition("Check if is It", IsIt)
                         .Selector("Select Attack or Follow player")
