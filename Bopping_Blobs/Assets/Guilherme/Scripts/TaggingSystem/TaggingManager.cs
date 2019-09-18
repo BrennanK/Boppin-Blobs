@@ -6,6 +6,12 @@ using UnityEngine;
 public class TaggingManager : MonoBehaviour {
     private List<TaggingIdentifier> m_playersIdentifiers;
 
+    [Header("Tagging Configuration")]
+    public float isTagSpeed = 6f;
+    public float isNotTagSpeed = 4f;
+    [Tooltip("When a player is tagged, everyone within the radius will be knocked back")]
+    public float knockbackRadius = 25f;
+
     public delegate void DelegateWithTaggingIdentifier(TaggingIdentifier identifier);
     public event DelegateWithTaggingIdentifier OnPlayerWasTagged;
 
@@ -45,6 +51,13 @@ public class TaggingManager : MonoBehaviour {
         _whoIsTag.SetAsTagging();
         OnPlayerWasTagged?.Invoke(_whoIsTag);
 
+        // TODO knockback and changing speed could be on the same loop
+        foreach(TaggingIdentifier player in m_playersIdentifiers) {
+            if(player.PlayerIdentifier != m_currentPlayerTaggingID) {
+                player.SetAsNotTag();
+            }
+        }
+
         // TODO improve this
         // Knockback all players that are not tag
         if(_knockbackEffect) {
@@ -56,8 +69,9 @@ public class TaggingManager : MonoBehaviour {
     private IEnumerator KnockbackAllPlayerRoutine() {
         Time.timeScale = 1.0f;
 
+        Transform whoIsTag = GetItTransform();
         foreach (TaggingIdentifier player in m_playersIdentifiers) {
-            if (player.PlayerIdentifier != m_currentPlayerTaggingID) {
+            if (player.PlayerIdentifier != m_currentPlayerTaggingID && Vector3.Distance(player.transform.position, whoIsTag.position) < knockbackRadius) {
                 Vector3 knockbackDirection = (player.transform.position - GetItTransform().position);
                 player.KnockbackPlayer(Color.magenta, knockbackDirection.normalized);
             }

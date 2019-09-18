@@ -99,12 +99,14 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     public void SetAsTagging() {
+        m_boppableInterface.ChangeSpeed(taggingManager.isTagSpeed);
         m_boppableInterface.TriggerIsTagTransition();
         isTagCanvas.SetActive(true);
         m_currentTaggingState = ETaggingBehavior.Tagging;
     }
 
     public void SetAsNotTag() {
+        m_boppableInterface.ChangeSpeed(taggingManager.isNotTagSpeed);
         // TODO IBoppable should have a behavior "NotTaggingTransition"
         isTagCanvas.SetActive(false);
         m_currentTaggingState = ETaggingBehavior.Running;
@@ -133,16 +135,6 @@ public class TaggingIdentifier : MonoBehaviour {
                         playerHitted.SetAsNotTag();
                         Tag();
                     }
-
-                    /*
-                    if(taggingManager.WhoIsTag == this.m_playerIdentifier) {
-                        // TODO maybe this could go directly to the hitted character
-                        // If we are tag, then we tag the player
-                        playerHitted.Tag();
-                        // and we are not tag anymore
-                        SetAsNotTag();
-                    } 
-                    */
 
                     break;
                 }

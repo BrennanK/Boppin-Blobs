@@ -12,7 +12,6 @@ namespace BehaviorTree {
 
         public void Update() {
             m_treeRoot.Update();
-            // Debug.Log($"{m_treeRoot.Update()}");
         }
     }
 }

@@ -101,6 +101,11 @@ public class AIController : MonoBehaviour, IBoppable {
         m_playerCurrentlyBeingFollowed = _whoIsTag;
     }
 
+    public void ChangeSpeed(float _newSpeed) {
+        m_navMeshAgent.speed = _newSpeed;
+        m_navMeshAgent.acceleration = _newSpeed * 2f;
+    }
+
     public void DeactivateController() {
         m_isBeingKnockedBack = true;
         m_navMeshAgent.enabled = false;
@@ -155,6 +160,7 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private EReturnStatus AttackNearestPlayer() {
         if (!m_canAttack) {
+            transform.LookAt(m_playerCurrentlyBeingFollowed);
             m_canAttack = true;
             return EReturnStatus.SUCCESS;
         }
@@ -167,6 +173,12 @@ public class AIController : MonoBehaviour, IBoppable {
             m_playerCurrentlyBeingFollowed = m_taggingIdentifier.taggingManager.GetItTransform();
             return EReturnStatus.FAILURE;
         }
+
+        
+        if(Vector3.Angle(transform.forward, m_playerCurrentlyBeingFollowed.position) > 135f) {
+            transform.LookAt(m_playerCurrentlyBeingFollowed);
+        }
+        
 
         return EReturnStatus.SUCCESS;
     }

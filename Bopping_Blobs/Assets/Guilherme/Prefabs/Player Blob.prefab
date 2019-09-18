@@ -649,7 +649,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f3f4e35aa2a00445ad5c433545e4c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterSpeed: 6
   groundDamping: 0.05
   fallingGravityMultiplier: 3
 --- !u!54 &2039946328
@@ -667,7 +666,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 84
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!114 &8151648272759377173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -684,7 +683,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   attackDistance: 1
-  attackTime: 1
+  attackTime: 0.5
   attackRadius: 1
   knockbackForceMultiplier: 25
   hammerTransform: {fileID: 2263749497900523398}
@@ -692,7 +691,7 @@ MonoBehaviour:
   blobOriginalColor: {r: 0.5035531, g: 0.38416696, b: 0.8396226, a: 1}
   isTagCanvas: {fileID: 723191398}
   taggingManager: {fileID: 0}
-  knockbackDelay: 1
+  knockbackDelay: 0.5
 --- !u!1 &2263749499221799621
 GameObject:
   m_ObjectHideFlags: 0

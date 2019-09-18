@@ -8,6 +8,7 @@ public interface IBoppable {
     void TriggerIsTagTransition();
     void TriggerIsNotTagTransition();
     void UpdateWhoIsTag(Transform _whoIsTag);
+    void ChangeSpeed(float _newSpeed);
 
     // Knockback
     void DeactivateController();

@@ -10,8 +10,8 @@ public class PlayerController : MonoBehaviour, IBoppable {
         KnockedBack
     }
 
+    private float m_characterSpeed = 10f;
     [Header("Ground Movement")]
-    public float characterSpeed;
     [Range(0, 1)]
     public float groundDamping;
     public float fallingGravityMultiplier = 3f;
@@ -59,12 +59,11 @@ public class PlayerController : MonoBehaviour, IBoppable {
 
     private void HandleMovement() {
         // Getting Plane Movement
-        m_movementVector.x = m_digitalJoystickReference.Horizontal * characterSpeed;
-        m_movementVector.z = m_digitalJoystickReference.Vertical * characterSpeed;
+        m_movementVector.x = m_digitalJoystickReference.Horizontal * m_characterSpeed;
+        m_movementVector.z = m_digitalJoystickReference.Vertical * m_characterSpeed;
         
         // Looking at the position we are moving to
         transform.LookAt(transform.position + new Vector3(m_movementVector.x, 0f, m_movementVector.z));
-        //
     }
 
     #region IBoppable Functions
@@ -93,11 +92,17 @@ public class PlayerController : MonoBehaviour, IBoppable {
         return;
     }
 
+    public void ChangeSpeed(float _newSpeed) {
+        m_characterSpeed = _newSpeed;
+    }
+
     public void DeactivateController() {
+        m_characterControllerReference.enabled = false;
         m_currentState = ECharacterState.KnockedBack;
     }
 
     public void ReactivateController() {
+        m_characterControllerReference.enabled = true;
         m_currentState = ECharacterState.Moving;
     }
     #endregion
