@@ -147,6 +147,7 @@ public class PausedMenuManager : MonoBehaviour
 				BGMPlayer.Stop();
 				BGMPlayer.clip = MainMenu;
 				BGMPlayer.Play();
+                OptionButton.SetActive(false);
                 ReturnToMainMenuButton.SetActive(false);
                 CreditsButton.SetActive(true);
 				break;
