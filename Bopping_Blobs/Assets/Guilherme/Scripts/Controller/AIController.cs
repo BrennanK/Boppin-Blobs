@@ -38,7 +38,7 @@ public class AIController : MonoBehaviour, IBoppable {
                     .Condition("Is Being Knocked Back", IsBeingKnockedBack)
                     .Sequence("Is it Sequence")
                         .Condition("Check if is it", IsIt)
-                        // TODO run from everyone
+                        .Action("Run from Everyone", RunAwayFromEveryone)
                     .End()
                     .Sequence("Is not it sequence")
                         .Condition("Has Player Available", HasPlayerAvailable)
@@ -55,7 +55,7 @@ public class AIController : MonoBehaviour, IBoppable {
                     .End()
                 .End()
                 .Build()
-            ) ;
+            );
 
         InvokeRepeating("UpdateTree", 0f, behaviorTreeRefreshRate);
     }
@@ -79,7 +79,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     public void TriggerIsTagTransition() {
-        GetPlayerToFollow();
+        // GetPlayerToFollow();
     }
 
     private void GetPlayerToFollow() {
@@ -135,11 +135,29 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus IsBeingKnockedBack() {
-        if(m_isBeingKnockedBack) {
+        if (m_isBeingKnockedBack) {
             return EReturnStatus.SUCCESS;
         } else {
             return EReturnStatus.FAILURE;
         }
+    }
+
+    /// <summary>
+    /// <para>Finds a point to run to.</para>
+    /// <para>It is assumed the point maximizes the distance from all agents</para>
+    /// </summary>
+    /// <returns>SUCCESS if finds a path, FAILURE otherwise</returns>
+    private EReturnStatus RunAwayFromEveryone() {
+        if(RunAwayFromCenterOfMass()) {
+            return EReturnStatus.SUCCESS;
+        }
+
+        return EReturnStatus.FAILURE;
+    }
+
+    private bool RunAwayFromCenterOfMass() {
+        Debug.Log($"Trying to run...");
+        return false;
     }
 
     private EReturnStatus IsWithinAttackingDistance() {

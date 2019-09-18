@@ -16,9 +16,6 @@ public class TaggingIdentifier : MonoBehaviour {
     public float attackTime = 1f;
     public float attackRadius = 1f;
 
-    [Header("Knockback")]
-    public float knockbackForceMultiplier = 25f;
-
     [Header("Necessary Dependencies")]
     public Transform hammerTransform;
     public Transform hammerBopAim;
@@ -173,13 +170,13 @@ public class TaggingIdentifier : MonoBehaviour {
     /// Knockbacks the Player
     /// </summary>
     /// <param name="_knockbackColor">Feedback Color for knockbacked player</param>
-    /// <param name="_knockbackDirection">Normalized vector indicating the direction where the player will be knockbacked</param>
+    /// <param name="_knockbackDirection">vector indicating the direction where the player will be knockbacked</param>
     public void KnockbackPlayer(Color _knockbackColor, Vector3 _knockbackDirection) {
         m_characterRenderer.material.color = _knockbackColor;
         m_boppableInterface.DeactivateController();
 
         m_rigidbodyReference.isKinematic = false;
-        m_rigidbodyReference.velocity = _knockbackDirection * knockbackForceMultiplier;
+        m_rigidbodyReference.velocity = _knockbackDirection;
         StartCoroutine(KnockbackDelay());
     }
 

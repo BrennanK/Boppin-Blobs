@@ -10,7 +10,8 @@ public class TaggingManager : MonoBehaviour {
     public float isTagSpeed = 6f;
     public float isNotTagSpeed = 4f;
     [Tooltip("When a player is tagged, everyone within the radius will be knocked back")]
-    public float knockbackRadius = 25f;
+    public float knockbackRadius = 10f;
+    public float knockbackForce = 10f;
 
     public delegate void DelegateWithTaggingIdentifier(TaggingIdentifier identifier);
     public event DelegateWithTaggingIdentifier OnPlayerWasTagged;
@@ -73,7 +74,7 @@ public class TaggingManager : MonoBehaviour {
         foreach (TaggingIdentifier player in m_playersIdentifiers) {
             if (player.PlayerIdentifier != m_currentPlayerTaggingID && Vector3.Distance(player.transform.position, whoIsTag.position) < knockbackRadius) {
                 Vector3 knockbackDirection = (player.transform.position - GetItTransform().position);
-                player.KnockbackPlayer(Color.magenta, knockbackDirection.normalized);
+                player.KnockbackPlayer(Color.magenta, knockbackDirection.normalized * knockbackForce);
             }
         }
 
