@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IBoppable {
-    // TODO separate the hammer/tag/it logic from the base controller
     public enum ECharacterState {
         Moving,
         Attacking,

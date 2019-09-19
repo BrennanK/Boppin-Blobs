@@ -1,7 +1,7 @@
 ﻿namespace BehaviorTree {
     /// <summary>
-    /// Conditions are leaf nodes and it is the primary way the tree can check information in the world.
-    /// They rely on the tree's return statuses (SUCCESS and FAILURE) to signal true and false
+    /// <para>Conditions are leaf nodes and it is the primary way the tree can check information in the world.</para>
+    /// <para>They rely on the tree's return statuses (SUCCESS and FAILURE) to signal true and false.</para>
     /// </summary>
     public class Condition : Behavior {
         private BehaviorTreeAction m_nodeBehavior;

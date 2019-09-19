@@ -11,6 +11,11 @@ namespace BehaviorTree {
         }
 
         public void Update() {
+            if(m_treeRoot == null) {
+                Debug.LogError("Behavior Tree Root is null! Are you sure you built it correctly?");
+                return;
+            }
+
             m_treeRoot.Update();
         }
     }
