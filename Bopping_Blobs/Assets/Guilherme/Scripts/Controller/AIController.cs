@@ -238,12 +238,7 @@ public class AIController : MonoBehaviour, IBoppable {
         if (m_navMeshAgent.CalculatePath(positionToMove, path)) {
             m_navMeshAgent.SetPath(path);
         } else {
-            transform.LookAt(closestPlayer.position);
-            if (m_playerAndAIDifference.x > 0) {
-                m_navMeshAgent.destination = transform.position + ((transform.forward + transform.right) * 5f);
-            } else {
-                m_navMeshAgent.destination = transform.position + ((transform.forward - transform.right) * 5f);
-            }
+            SetARandomPointOnMavMesh();
         }
 
         return true;
@@ -317,5 +312,20 @@ public class AIController : MonoBehaviour, IBoppable {
     }
     #endregion
 
+    #endregion
+
+    #region Helper Functions
+    private void SetARandomPointOnMavMesh() {
+        float range = 5f;
+        for(int i = 0; i < 10; i++) {
+            Vector3 randomPoint = transform.position + Random.insideUnitSphere * range;
+            NavMeshHit hit;
+
+            if(NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)) {
+                m_navMeshAgent.SetDestination(hit.position);
+                return;
+            }
+        }
+    }
     #endregion
 }
