@@ -28,8 +28,7 @@ public class AchievementManager : MonoBehaviour
     public GameObject AchievementUI;
     public Transform NotCompletedContent;
     public Transform CompletedContent;
-    // Temple Audio Player
-    public AudioSource audioSource;
+    public Sprite CompletedImage;
 
     // Singleton
     public static AchievementManager _instance;
@@ -126,7 +125,8 @@ public class AchievementManager : MonoBehaviour
         ButtonObject.GetComponent<Image>().color = Color.grey;
         ButtonObject.GetComponent<Button>().onClick.RemoveAllListeners();
         ButtonObject.GetComponent<Button>().interactable = false;
-        ButtonObject.transform.SetParent(CompletedContent);
+        ButtonObject.GetComponent<Image>().sprite = CompletedImage;
+        //ButtonObject.transform.SetParent(CompletedContent);
         string ButtonNumber = ButtonObject.name.Split(' ').Last();
 
         for (int i = 0; i < Achievements.Count; i++)
