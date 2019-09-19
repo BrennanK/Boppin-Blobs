@@ -62,8 +62,8 @@ public class PausedMenuManager : MonoBehaviour
 		BGMSlider.value = PlayerPrefs.GetFloat("MusicVolume", 0.75f);
 		SFXSlider.value = PlayerPrefs.GetFloat("SoundVolume", 0.75f);
 
-		AudioController.SetFloat("BackgroundMusic", Mathf.Log10(BGMSlider.value) * 20);
-		AudioController.SetFloat("SoundEffect", Mathf.Log10(SFXSlider.value) * 20);
+		AudioController.SetFloat("BGMMixer", Mathf.Log10(BGMSlider.value) * 20);
+		AudioController.SetFloat("SFXMixer", Mathf.Log10(SFXSlider.value) * 20);
 	}
 
 	// Update is called once per frame

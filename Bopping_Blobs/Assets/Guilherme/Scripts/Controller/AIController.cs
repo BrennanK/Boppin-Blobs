@@ -139,83 +139,26 @@ public class AIController : MonoBehaviour, IBoppable {
         }
     }
 
-    /// <summary>
-    /// <para>Finds a point to run to.</para>
-    /// <para>It is assumed the point maximizes the distance from all agents</para>
-    /// </summary>
-    /// <returns>SUCCESS if finds a path, FAILURE otherwise</returns>
     private EReturnStatus RunAwayFromEveryone() {
-        /*
-         * Running Away from Center of Mass is pretty bad
-        if(RunAwayFromCenterOfMass()) {
-            return EReturnStatus.SUCCESS;
-        }
-        */
-
         if(RunAwayFromClosestPlayer()) {
             return EReturnStatus.RUNNING;
         }
 
-        /*
-        if(RunAwayInASmartWay()) {
-            return EReturnStatus.RUNNING;
-        }
-        */
-
         return EReturnStatus.FAILURE;
     }
 
+    /*
+     *  Run in a Smart Way:
+     *  - Get closest player and see at which direction I can go to avoid it
+     *  - Get second closest player and see at which direction I can go to avoid it
+     *  - Do the same for third, fourth, ... player
+     *  - All that while checking if there a path for that point or direction
+     *  - Also checking if there's no collision directly in front of me
+     */
     private bool RunAwayInASmartWay() {
         // 1. Get Possible Running Directions considering closest enemy
-        if (m_notItPlayers == null) {
-            GetPlayerToFollow();
-        }
-
-        // Getting closest player...
-        Transform closestPlayer = m_notItPlayers[0].transform;
-        for (int i = 1; i < m_notItPlayers.Length; i++) {
-            if (Vector3.Distance(transform.position, m_notItPlayers[i].transform.position) < Vector3.Distance(transform.position, closestPlayer.position)) {
-                closestPlayer = m_notItPlayers[i].transform;
-            }
-        }
-
-        // Vector from AI to Threat
-        m_playerAndAIDifference = closestPlayer.position - transform.position;
-        List<Vector3> possibleRunawayDirections = new List<Vector3> {
-            -m_playerAndAIDifference.normalized,
-            transform.right,
-            -transform.right,
-        };
-
-        Debug.Log($"Trying to run smart...");
-
-        float distanceToCheckCollision = 3f;
-        float distanceMultiplier = 2f;
-        Vector3 chosenDirection = Vector3.zero;
-
-        foreach (Vector3 direction in possibleRunawayDirections) {
-            RaycastHit[] allHits = Physics.RaycastAll(transform.position, direction * distanceToCheckCollision);
-
-            foreach(RaycastHit hit in allHits) {
-                Debug.Log($"Hit: {hit.transform.name}");
-            }
-
-            if (allHits.Length == 1 && allHits[0].transform == this.transform) {
-                // that's me!
-                Debug.DrawRay(transform.position, direction * distanceToCheckCollision, Color.green);
-                chosenDirection = direction;
-                break;
-            }
-        }
-
-        if(chosenDirection == Vector3.zero) {
-            return false;
-        }
-
-        m_navMeshAgent.SetDestination(transform.position + (chosenDirection * distanceMultiplier));
-        // (Optional) 2. Eliminate possible running directions considering second, third, ..., closest enemies
-        // 3. Raycast on that direction, if there is something, choose another direction
-        return true;
+        // TODO
+        return false;
     }
 
     private bool RunAwayFromClosestPlayer() {
@@ -241,25 +184,6 @@ public class AIController : MonoBehaviour, IBoppable {
             SetARandomPointOnMavMesh();
         }
 
-        return true;
-    }
-
-    private bool RunAwayFromCenterOfMass() {
-        if(m_notItPlayers == null) {
-            GetPlayerToFollow();
-        }
-
-        if(m_notItPlayers.Length == 0) {
-            return false;
-        }
-
-        Vector3 runPosition = (m_notItPlayers[0].transform.position - transform.position);
-
-        for(int i = 1; i < m_notItPlayers.Length; i++) {
-            runPosition += (m_notItPlayers[i].transform.position - transform.position);
-        }
-
-        m_navMeshAgent.SetDestination(transform.position + runPosition);
         return true;
     }
     #endregion
@@ -315,6 +239,8 @@ public class AIController : MonoBehaviour, IBoppable {
     #endregion
 
     #region Helper Functions
+    // TODO Get a random point given two angles (input: I want to escape considering these two angles)
+    // TODO Get a random point biased towards a point (input: "I WANT TO GO TO THIS DIRECTION, btw here's my position", output: "here's a point =))
     private void SetARandomPointOnMavMesh() {
         float range = 5f;
         for(int i = 0; i < 10; i++) {
