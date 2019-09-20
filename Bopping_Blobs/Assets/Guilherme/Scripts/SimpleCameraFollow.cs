@@ -6,7 +6,7 @@ public class SimpleCameraFollow : MonoBehaviour  {
     public Transform toFollow;
     private float zOffset;
 
-    private void Start() {
+    private void Awake() {
         zOffset = transform.position.z - toFollow.position.z;
     }
 

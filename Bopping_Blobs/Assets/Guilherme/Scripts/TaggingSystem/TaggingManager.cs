@@ -23,6 +23,12 @@ public class TaggingManager : MonoBehaviour {
         }
     }
 
+    private SpawnPointManager m_spawnPointManager;
+
+    private void Awake() {
+        m_spawnPointManager = FindObjectOfType<SpawnPointManager>();
+    }
+
     // TODO Update UI Scoreboard
     private void Start() {
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
@@ -61,14 +67,16 @@ public class TaggingManager : MonoBehaviour {
 
         // TODO improve this
         // Knockback all players that are not tag
+        
         if(_knockbackEffect) {
             StartCoroutine(KnockbackAllPlayerRoutine());
         }
+        
     }
 
     // TODO knockback only within a distance from the player who was tagged
     private IEnumerator KnockbackAllPlayerRoutine() {
-        Time.timeScale = 1.0f;
+        Time.timeScale = 0.25f;
 
         Transform whoIsTag = GetItTransform();
         foreach (TaggingIdentifier player in m_playersIdentifiers) {
@@ -78,8 +86,8 @@ public class TaggingManager : MonoBehaviour {
             }
         }
 
-        yield return new WaitForSeconds(1.0f);
-        Time.timeScale = 1.0f;
+        yield return new WaitForSecondsRealtime(1.0f);
+        m_spawnPointManager.RespawnAllPlayersWithDelay(0.5f);
     }
 
     public Transform GetItTransform() {

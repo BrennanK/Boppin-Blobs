@@ -34,6 +34,9 @@ public class AIController : MonoBehaviour, IBoppable {
                     .Condition("Is Being Knocked Back", IsBeingKnockedBack)
                     .Sequence("Is IT Sequence")
                         .Condition("Check if is IT", IsIt)
+                        // TODO "break run from everyone" into different tasks
+                        // Run from closest player
+                        // Run to random point (this can be biased or not)
                         .Action("Run from Everyone", RunAwayFromEveryone)
                     .End()
                     .Sequence("Is not IT sequence")
