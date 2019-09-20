@@ -20,7 +20,6 @@ public class TaggingIdentifier : MonoBehaviour {
     public Transform hammerTransform;
     public Transform hammerBopAim;
     public Color blobOriginalColor;
-    public GameObject isTagCanvas;
 
     [HideInInspector]
     public TaggingManager taggingManager;
@@ -29,6 +28,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
     // Rigidbody is used only for knockback, not for movement
     private Rigidbody m_rigidbodyReference;
+    private PlayerInfoUI m_playerInfo;
 
     // IBoppable should be implemented by PlayerController and AI Controller so we can handle attacking and knockback
     private IBoppable m_boppableInterface;
@@ -58,12 +58,8 @@ public class TaggingIdentifier : MonoBehaviour {
             return m_currentTaggingState;
         }
     }
-    protected float m_attackWaitTime;
 
-    /*
-     * Things that Lin had that I don't (future reference)
-     *      TagCanvas
-     */
+    protected float m_attackWaitTime;
 
     private void Start() {
         m_boppableInterface = GetComponent<IBoppable>();
@@ -93,19 +89,19 @@ public class TaggingIdentifier : MonoBehaviour {
         // Drawing Debug Rays
         Debug.DrawRay(transform.position, transform.forward * attackDistance, Color.red);
         Debug.DrawRay(hammerBopAim.position, Vector3.up, Color.blue);
+
+        m_playerInfo?.UpdateInfo(transform.position, AmITag());
     }
 
     public void SetAsTagging() {
         m_boppableInterface.ChangeSpeed(taggingManager.isTagSpeed);
         m_boppableInterface.TriggerIsTagTransition();
-        isTagCanvas.SetActive(true);
         m_currentTaggingState = ETaggingBehavior.Tagging;
     }
 
     public void SetAsNotTag() {
         m_boppableInterface.ChangeSpeed(taggingManager.isNotTagSpeed);
         // TODO IBoppable should have a behavior "NotTaggingTransition"
-        isTagCanvas.SetActive(false);
         m_currentTaggingState = ETaggingBehavior.Running;
     }
 
@@ -207,5 +203,9 @@ public class TaggingIdentifier : MonoBehaviour {
         if(hammerBopAim.gameObject.activeSelf) {
             Gizmos.DrawWireSphere(hammerBopAim.transform.position, attackRadius);
         }
+    }
+
+    public void AssignPlayerInfo(PlayerInfoUI _info) {
+        m_playerInfo = _info;
     }
 }

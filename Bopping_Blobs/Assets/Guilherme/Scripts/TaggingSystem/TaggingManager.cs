@@ -32,6 +32,7 @@ public class TaggingManager : MonoBehaviour {
     // TODO Update UI Scoreboard
     private void Start() {
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
+        PlayerInfoUI[] playerInfoUI = FindObjectsOfType<PlayerInfoUI>();
 
         // Inject all ids into tagging identifiers
         for(int i = 0; i < m_playersIdentifiers.Count; i++) {
@@ -40,6 +41,13 @@ public class TaggingManager : MonoBehaviour {
 
             // Subscribing every player's UpdateWhoIsTag function into the manager
             OnPlayerWasTagged += m_playersIdentifiers[i].UpdateWhoIsTag;
+        }
+
+        // Inject all PlayerInfoUI to Players
+        if(playerInfoUI.Length == m_playersIdentifiers.Count) {
+            for(int i = 0; i < m_playersIdentifiers.Count; i++) {
+                m_playersIdentifiers[i].AssignPlayerInfo(playerInfoUI[i]);
+            }
         }
 
         // TODO Select a Random one to start as tag
