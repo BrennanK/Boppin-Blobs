@@ -4,7 +4,10 @@ using UnityEngine.AI;
 
 public class AIController : MonoBehaviour, IBoppable {
     [Header("AI Configuration")]
-    public float behaviorTreeRefreshRate = 0.01f;
+    public float baseReactionTime = 0.35f;
+    public float reactionTimeVariation = 0.05f;
+    public float minStartTime = 0.15f;
+    public float maxStartTime = 0.35f;
     public float attackingDistance = 0.5f;
     private BehaviorTree.BehaviorTree m_behaviorTree;
 
@@ -52,7 +55,7 @@ public class AIController : MonoBehaviour, IBoppable {
                 .Build()
             );
 
-        InvokeRepeating("UpdateTree", 0f, behaviorTreeRefreshRate);
+        InvokeRepeating("UpdateTree", Random.Range(minStartTime, maxStartTime), (baseReactionTime + Random.Range(-reactionTimeVariation, reactionTimeVariation)) );
     }
 
     #region IBoppable Functions

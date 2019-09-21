@@ -651,7 +651,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3614a9063a8211b4998b271fd01ade6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behaviorTreeRefreshRate: 0.02
+  baseReactionTime: 0.4
+  reactionTimeVariation: 0.1
+  minStartTime: 0.15
+  maxStartTime: 0.35
   attackingDistance: 1.1
 --- !u!114 &792157179
 MonoBehaviour:

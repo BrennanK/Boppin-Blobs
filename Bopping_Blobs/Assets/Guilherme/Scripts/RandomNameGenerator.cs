@@ -15,11 +15,10 @@ public class RandomNameGenerator {
         while(!reader.EndOfStream) {
             string line = reader.ReadLine();
 
-            if (line.Length == 1 || line.Equals("(Male)") || line.Equals("(Female)")) {
+            if (line.Length == 1 || line.Equals("(Male)") || line.Equals("(Female)") || line.Equals(" ")) {
                 continue;
             }
 
-            Debug.Log($"{line}");
             m_allPossibleNames.Add(line);
         }
 

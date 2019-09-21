@@ -51,7 +51,9 @@ public class PlayerController : MonoBehaviour, IBoppable {
         m_movementVector.y = 0;
         m_movementVector.z = Mathf.Lerp(m_characterControllerReference.velocity.z, m_movementVector.z, groundDamping * dampingMultiplier);
 
-        m_characterControllerReference.SimpleMove(m_movementVector);
+        if(m_characterControllerReference.enabled) {
+            m_characterControllerReference.SimpleMove(m_movementVector);
+        }
     }
 
     private void HandleMovement() {
