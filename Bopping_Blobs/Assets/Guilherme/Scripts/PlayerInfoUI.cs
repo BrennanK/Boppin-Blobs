@@ -10,6 +10,10 @@ public class PlayerInfoUI : MonoBehaviour {
         m_rectTransform = GetComponent<RectTransform>();
     }
 
+    /// <summary>
+    /// <para>Update player name on the UI.</para>
+    /// </summary>
+    /// <param name="_playerName">Player's name.</param>
     public void UpdateInfo(string _playerName) {
         playerNameText.text = _playerName;
     }

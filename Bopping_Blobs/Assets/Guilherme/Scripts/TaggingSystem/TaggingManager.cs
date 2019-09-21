@@ -27,6 +27,7 @@ public class TaggingManager : MonoBehaviour {
     private List<TaggingIdentifier> m_playersIdentifiers;
     private SpawnPointManager m_spawnPointManager;
     private UIManager m_UIManager;
+    private RandomNameGenerator m_randomNameGenerator;
 
     private void Awake() {
         m_spawnPointManager = FindObjectOfType<SpawnPointManager>();
@@ -38,6 +39,8 @@ public class TaggingManager : MonoBehaviour {
     }
 
     private void Start() {
+        m_randomNameGenerator = new RandomNameGenerator($"{Application.dataPath}/Resources/baby-names.csv");
+
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
         PlayerInfoUI[] playerInfoUI = FindObjectsOfType<PlayerInfoUI>();
 
@@ -45,7 +48,7 @@ public class TaggingManager : MonoBehaviour {
         if (playerInfoUI.Length == m_playersIdentifiers.Count) {
             for (int i = 0; i < m_playersIdentifiers.Count; i++) {
                 m_playersIdentifiers[i].PlayerInfo = playerInfoUI[i];
-                m_playersIdentifiers[i].PlayerName = "Jerry";
+                m_playersIdentifiers[i].PlayerName = m_randomNameGenerator.GetRandomName();
             }
         } else {
             Debug.LogWarning($"There are more or less PlayerInfo scripts than Players in the scene!! You have {m_playersIdentifiers.Count} players and {playerInfoUI.Length} info scripts!");
