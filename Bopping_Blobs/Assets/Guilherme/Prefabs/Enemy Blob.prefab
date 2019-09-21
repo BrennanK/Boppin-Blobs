@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseReactionTime: 0.4
-  reactionTimeVariation: 0.1
+  reactionTimeVariation: 0.3
   minStartTime: 0.15
   maxStartTime: 0.35
   attackingDistance: 1.1

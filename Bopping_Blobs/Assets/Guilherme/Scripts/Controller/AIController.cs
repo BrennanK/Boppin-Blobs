@@ -1,5 +1,6 @@
 ﻿using BehaviorTree;
 using UnityEngine;
+using System.Collections;
 using UnityEngine.AI;
 
 public class AIController : MonoBehaviour, IBoppable {
@@ -55,7 +56,7 @@ public class AIController : MonoBehaviour, IBoppable {
                 .Build()
             );
 
-        InvokeRepeating("UpdateTree", Random.Range(minStartTime, maxStartTime), (baseReactionTime + Random.Range(-reactionTimeVariation, reactionTimeVariation)) );
+        StartCoroutine(UpdateTreeRoutine(Random.Range(minStartTime, maxStartTime)));
     }
 
     #region IBoppable Functions
@@ -96,6 +97,12 @@ public class AIController : MonoBehaviour, IBoppable {
     #endregion
 
     #region BEHAVIOR TREE ACTIONS
+    private IEnumerator UpdateTreeRoutine(float _delay) {
+        yield return new WaitForSeconds(_delay);
+        UpdateTree();
+        StartCoroutine(UpdateTreeRoutine(baseReactionTime + Random.Range(-reactionTimeVariation, reactionTimeVariation)));
+    }
+
     private void UpdateTree() {
         m_behaviorTree.Update();
     }
