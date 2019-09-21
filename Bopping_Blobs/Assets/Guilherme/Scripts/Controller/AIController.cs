@@ -12,7 +12,6 @@ public class AIController : MonoBehaviour, IBoppable {
     private Rigidbody m_rigibody;
 
     // Variables for Tagging AI
-    // TODO Cross-Reference, that's bad.
     private TaggingIdentifier m_taggingIdentifier;
     private TaggingIdentifier[] m_notItPlayers;
     private Transform m_playerCurrentlyBeingFollowed;
@@ -56,7 +55,7 @@ public class AIController : MonoBehaviour, IBoppable {
         InvokeRepeating("UpdateTree", 0f, behaviorTreeRefreshRate);
     }
 
-    #region IBoppable
+    #region IBoppable Functions
     public bool HasAttacked() {
         return m_canAttack;
     }

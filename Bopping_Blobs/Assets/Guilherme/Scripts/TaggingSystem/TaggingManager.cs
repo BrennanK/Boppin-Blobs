@@ -71,28 +71,21 @@ public class TaggingManager : MonoBehaviour {
         });
     }
 
+    /// <summary>
+    /// <para>Communicates to the Tagging Manager a specific player was tagged.</para>
+    /// </summary>
+    /// <param name="_whoIsTag">Player that was tagged.</param>
+    /// <param name="_knockbackEffect">Knockback players or not.</param>
     public void PlayerWasTagged(TaggingIdentifier _whoIsTag, bool _knockbackEffect = false) {
         m_currentPlayerTaggingID = _whoIsTag.PlayerIdentifier;
         _whoIsTag.SetAsTagging();
         OnPlayerWasTagged?.Invoke(_whoIsTag);
 
-        // TODO knockback and changing speed could be on the same loop
-        foreach(TaggingIdentifier player in m_playersIdentifiers) {
-            if(player.PlayerIdentifier != m_currentPlayerTaggingID) {
-                player.SetAsNotTag();
-            }
-        }
-
-        // TODO improve this
-        // Knockback all players that are not tag
-        
         if(_knockbackEffect) {
             StartCoroutine(KnockbackAllPlayerRoutine());
         }
-        
     }
 
-    // TODO knockback only within a distance from the player who was tagged
     private IEnumerator KnockbackAllPlayerRoutine() {
         Time.timeScale = 0.25f;
 
@@ -104,10 +97,14 @@ public class TaggingManager : MonoBehaviour {
             }
         }
 
-        yield return new WaitForSecondsRealtime(1.0f);
-        m_spawnPointManager.RespawnAllPlayersWithDelay(0.5f);
+        yield return new WaitForSecondsRealtime(knockbackDelayTime * 2f);
+        m_spawnPointManager.RespawnAllPlayers();
     }
 
+    /// <summary>
+    /// <para>Get the transform for the player that is currently TAG.</para>
+    /// </summary>
+    /// <returns>TAG player transform.</returns>
     public Transform GetItTransform() {
         foreach(TaggingIdentifier identifier in m_playersIdentifiers) {
             if(identifier.PlayerIdentifier == m_currentPlayerTaggingID) {
@@ -118,6 +115,10 @@ public class TaggingManager : MonoBehaviour {
         return null;
     }
 
+    /// <summary>
+    /// <para>Returns all players that are not TAG.</para>
+    /// </summary>
+    /// <returns>List of all players that are no TAG</returns>
     public TaggingIdentifier[] GetAllPlayersThatAreNotIt() {
         List<TaggingIdentifier> playersThatAreNotIt = new List<TaggingIdentifier>();
 

@@ -15,6 +15,8 @@ public class TaggingIdentifier : MonoBehaviour {
     public float attackDistance = 1f;
     public float attackTime = 1f;
     public float attackRadius = 1f;
+    private Vector3 m_originalHammerLocalPosition;
+    private Vector3 m_originalHammerLocalEulerAngles;
 
     [Header("Necessary Dependencies")]
     public Transform hammerTransform;
@@ -23,8 +25,6 @@ public class TaggingIdentifier : MonoBehaviour {
 
     [HideInInspector]
     public TaggingManager taggingManager;
-    [Header("Tagging Configuration")]
-    public float knockbackDelay = 1.0f;
 
     // Rigidbody is used only for knockback, not for movement
     private Rigidbody m_rigidbodyReference;
@@ -37,7 +37,6 @@ public class TaggingIdentifier : MonoBehaviour {
 
     // IBoppable should be implemented by PlayerController and AI Controller so we can handle attacking and knockback
     private IBoppable m_boppableInterface;
-
     private Renderer m_characterRenderer;
 
     private int m_playerIdentifier;
@@ -68,11 +67,14 @@ public class TaggingIdentifier : MonoBehaviour {
         m_boppableInterface = GetComponent<IBoppable>();
         m_rigidbodyReference = GetComponent<Rigidbody>();
         m_characterRenderer = GetComponent<Renderer>();
+
         m_rigidbodyReference.isKinematic = true;
         m_timeAsTag = 0;
 
         m_characterRenderer.material.color = blobOriginalColor;
         hammerBopAim.localPosition = new Vector3(0, -0.5f, attackDistance);
+        m_originalHammerLocalPosition = hammerTransform.localPosition;
+        m_originalHammerLocalEulerAngles = hammerTransform.localEulerAngles;
     }
 
     private void Update() {
@@ -84,6 +86,7 @@ public class TaggingIdentifier : MonoBehaviour {
                 break;
         }
 
+        // TODO I don't like this here
         if (m_boppableInterface.HasAttacked() && m_currentTaggingState != ETaggingBehavior.TaggingAtacking) {
             TriggerAttackTransition();
         }
@@ -91,11 +94,17 @@ public class TaggingIdentifier : MonoBehaviour {
         m_playerInfo?.UpdateInfo(transform.position);
     }
 
+    /// <summary>
+    /// <para>Set this player as TAG</para>
+    /// </summary>
     public void SetAsTagging() {
         m_boppableInterface.ChangeSpeed(taggingManager.isTagSpeed);
         m_currentTaggingState = ETaggingBehavior.Tagging;
     }
 
+    /// <summary>
+    /// <para>Set this player as NOT TAG</para>
+    /// </summary>
     public void SetAsNotTag() {
         m_boppableInterface.ChangeSpeed(taggingManager.isNotTagSpeed);
         m_currentTaggingState = ETaggingBehavior.Running;
@@ -116,7 +125,7 @@ public class TaggingIdentifier : MonoBehaviour {
                 if (playerHitted != null && m_playerIdentifier != playerHitted.PlayerIdentifier) {
 
                     Vector3 knockbackVector = playerHitted.transform.position - hammerBopAim.transform.position;
-                    playerHitted.KnockbackPlayer(Color.magenta, knockbackVector.normalized);
+                    playerHitted.KnockbackPlayer(Color.magenta, knockbackVector.normalized * taggingManager.knockbackForce);
 
                     if(taggingManager.WhoIsTag == playerHitted.PlayerIdentifier) {
                         playerHitted.SetAsNotTag();
@@ -132,18 +141,14 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private IEnumerator AttackAnimationRoutine(ETaggingBehavior _previousTaggingState) {
-        Vector3 originalTransformLocalPosition = hammerTransform.localPosition;
-        Vector3 originalLocalEulerAngles = hammerTransform.localEulerAngles;
         hammerTransform.localPosition = new Vector3(hammerBopAim.localPosition.x, hammerBopAim.localPosition.y + 0.25f, hammerBopAim.localPosition.z - 1f);
         hammerTransform.localEulerAngles = new Vector3(90, 0, 0);
 
-        for(float waitingTime = 0f; waitingTime < attackTime; waitingTime += Time.deltaTime) {
-            yield return null;
-        }
+        yield return new WaitForSecondsRealtime(attackTime);
 
         m_characterRenderer.material.color = blobOriginalColor;
-        hammerTransform.localPosition = originalTransformLocalPosition;
-        hammerTransform.localEulerAngles = originalLocalEulerAngles;
+        hammerTransform.localPosition = m_originalHammerLocalPosition;
+        hammerTransform.localEulerAngles = m_originalHammerLocalEulerAngles;
         m_boppableInterface.TriggerEndAttackTransition();
         m_currentTaggingState = _previousTaggingState;
     }
@@ -151,21 +156,21 @@ public class TaggingIdentifier : MonoBehaviour {
 
     #region TAGGING
     /// <summary>
-    /// Knockbacks the Player
+    /// <para>Knockbacks the Player</para>
     /// </summary>
     /// <param name="_knockbackColor">Feedback Color for knockbacked player</param>
-    /// <param name="_knockbackDirection">vector indicating the direction where the player will be knockbacked</param>
-    public void KnockbackPlayer(Color _knockbackColor, Vector3 _knockbackDirection) {
+    /// <param name="_knockbackIntensity">Direction and intensity player will be knocked back</param>
+    public void KnockbackPlayer(Color _knockbackColor, Vector3 _knockbackIntensity) {
         m_characterRenderer.material.color = _knockbackColor;
         m_boppableInterface.DeactivateController();
 
         m_rigidbodyReference.isKinematic = false;
-        m_rigidbodyReference.velocity = _knockbackDirection;
+        m_rigidbodyReference.velocity = _knockbackIntensity;
         StartCoroutine(KnockbackDelay());
     }
 
     private IEnumerator KnockbackDelay() {
-        yield return new WaitForSeconds(knockbackDelay);
+        yield return new WaitForSeconds(taggingManager.knockbackDelayTime);
         GetComponent<Renderer>().material.color = blobOriginalColor;
         m_rigidbodyReference.isKinematic = true;
         m_boppableInterface.ReactivateController();
@@ -180,6 +185,10 @@ public class TaggingIdentifier : MonoBehaviour {
         m_boppableInterface.UpdateWhoIsTag(_identifier.transform);
     }
 
+    /// <summary>
+    /// <para>Returns whether or not this player is TAG</para>
+    /// </summary>
+    /// <returns>true if player is TAG, false otherwise</returns>
     public bool AmITag() {
         return (PlayerIdentifier == taggingManager.WhoIsTag);
     }

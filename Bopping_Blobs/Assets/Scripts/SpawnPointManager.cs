@@ -28,12 +28,11 @@ public class SpawnPointManager : MonoBehaviour {
         }
     }
 
-    public void RespawnAllPlayersWithDelay(float _delay, float _timeScaleToSet = 1.0f) {
-        StartCoroutine(RespawnAllPlayersWithDelayRoutine(_delay, _timeScaleToSet));
-    }
-
-    public IEnumerator RespawnAllPlayersWithDelayRoutine(float _delay, float _timeScaleToSet) {
-        yield return new WaitForSecondsRealtime(_delay);
+    /// <summary>
+    /// <para>Respawn all players in the scene.</para>
+    /// </summary>
+    /// <param name="_timeScaleToSet">Set timescale after respawning all players. Default to 1.0</param>
+    public void RespawnAllPlayers(float _timeScaleToSet = 1.0f) {
         SpawnPlayers();
         Time.timeScale = _timeScaleToSet;
     }

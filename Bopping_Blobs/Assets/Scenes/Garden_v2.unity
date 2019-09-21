@@ -12079,10 +12079,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63ebc7d2241e36c4889bd4b98d7798a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTagSpeed: 6
-  isNotTagSpeed: 6
+  isTagSpeed: 9
+  isNotTagSpeed: 9
   knockbackRadius: 10
   knockbackForce: 10
+  knockbackDelayTime: 0.5
 --- !u!4 &606314865
 Transform:
   m_ObjectHideFlags: 0
