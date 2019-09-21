@@ -1,5 +1,4 @@
 ﻿using BehaviorTree;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,13 +10,11 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private NavMeshAgent m_navMeshAgent;
     private Rigidbody m_rigibody;
-    private Vector3 m_playerAndAIDifference;
 
     // Variables for Tagging AI
     // TODO Cross-Reference, that's bad.
     private TaggingIdentifier m_taggingIdentifier;
     private TaggingIdentifier[] m_notItPlayers;
-    private Transform m_playerToRunFrom;
     private Transform m_playerCurrentlyBeingFollowed;
     private bool m_isBeingKnockedBack = false;
     private bool m_canAttack = false;
@@ -40,7 +37,7 @@ public class AIController : MonoBehaviour, IBoppable {
                         .Action("Run from Everyone", RunAwayFromEveryone)
                     .End()
                     .Sequence("Is not IT sequence")
-                        .Condition("Has Player Available", HasPlayerAvailable)
+                        .Condition("Has Player Available", HasPlayerToFollow)
                         .Selector("Attack or Follow")
                             .Sequence("Attack if possible")
                                 .Condition("Check if within attacking distance", IsWithinAttackingDistance)
@@ -48,7 +45,7 @@ public class AIController : MonoBehaviour, IBoppable {
                                 .Action("Attack It", AttackNearestPlayer)
                             .End()
                             .Sequence("Run towards It")
-                                .Action("Run towards available player", RunTowardsPlayer)
+                                .Action("Run towards available player", RunTowardsPlayerToBeFollowed)
                             .End()
                         .End()
                     .End()
@@ -72,31 +69,6 @@ public class AIController : MonoBehaviour, IBoppable {
         return;
     }
 
-    public void TriggerIsTagTransition() {
-        return;
-    }
-
-    /// <summary>
-    /// <para>Fill the m_notItPlayers vector and set the playerCurrentlyBeingFollowed to the closest player</para>
-    /// </summary>
-    
-    // TODO
-    // This functions does 2 things and has a behavior that misleads the programmer, fix it
-    private void GetPlayerToFollow() {
-        m_notItPlayers = m_taggingIdentifier.taggingManager.GetAllPlayersThatAreNotIt();
-        m_playerCurrentlyBeingFollowed = m_notItPlayers[0].transform;
-
-        for(int i = 1; i < m_notItPlayers.Length; i++) {
-            if(Vector3.Distance(m_notItPlayers[i].transform.position, transform.position) < Vector3.Distance(m_playerCurrentlyBeingFollowed.position, transform.position) && m_notItPlayers[i].transform != transform) {
-                m_playerCurrentlyBeingFollowed = m_notItPlayers[i].transform;
-            }
-        }
-    }
-
-    public void TriggerIsNotTagTransition() {
-        return;
-    }
-
     public void UpdateWhoIsTag(Transform _whoIsTag) {
         m_playerCurrentlyBeingFollowed = _whoIsTag;
     }
@@ -109,6 +81,7 @@ public class AIController : MonoBehaviour, IBoppable {
     public void DeactivateController() {
         m_isBeingKnockedBack = true;
         m_navMeshAgent.enabled = false;
+
         if(m_navMeshAgent.isOnNavMesh) {
             m_navMeshAgent.ResetPath();
         }
@@ -150,23 +123,9 @@ public class AIController : MonoBehaviour, IBoppable {
         return EReturnStatus.FAILURE;
     }
 
-    /*
-     *  Run in a Smart Way:
-     *  - Get closest player and see at which direction I can go to avoid it
-     *  - Get second closest player and see at which direction I can go to avoid it
-     *  - Do the same for third, fourth, ... player
-     *  - All that while checking if there a path for that point or direction
-     *  - Also checking if there's no collision directly in front of me
-     */
-    private bool RunAwayInASmartWay() {
-        // 1. Get Possible Running Directions considering closest enemy
-        // TODO
-        return false;
-    }
-
     private bool RunAwayFromClosestPlayer() {
         if(m_notItPlayers == null) {
-            GetPlayerToFollow();
+            m_notItPlayers = m_taggingIdentifier.taggingManager.GetAllPlayersThatAreNotIt();
         }
 
         // Getting closest player...
@@ -177,10 +136,8 @@ public class AIController : MonoBehaviour, IBoppable {
             }
         }
 
-        m_playerAndAIDifference = closestPlayer.position - transform.position;
-        Vector3 positionToMove = transform.position - m_playerAndAIDifference;
+        Vector3 positionToMove = transform.position - (closestPlayer.position - transform.position);
         NavMeshPath path = new NavMeshPath();
-
         if (m_navMeshAgent.CalculatePath(positionToMove, path)) {
             m_navMeshAgent.SetPath(path);
         } else {
@@ -192,20 +149,16 @@ public class AIController : MonoBehaviour, IBoppable {
     #endregion
 
     #region Is Not Functions
-    private EReturnStatus HasPlayerAvailable() {
+    private EReturnStatus HasPlayerToFollow() {
         if (m_playerCurrentlyBeingFollowed == null) {
             m_playerCurrentlyBeingFollowed = m_taggingIdentifier.taggingManager.GetItTransform();
             return EReturnStatus.FAILURE;
         }
 
-        if (Vector3.Angle(transform.forward, m_playerCurrentlyBeingFollowed.position) > 135f) {
-            transform.LookAt(m_playerCurrentlyBeingFollowed);
-        }
-
         return EReturnStatus.SUCCESS;
     }
 
-    private EReturnStatus RunTowardsPlayer() {
+    private EReturnStatus RunTowardsPlayerToBeFollowed() {
         m_navMeshAgent.SetDestination(m_playerCurrentlyBeingFollowed.position);
         return EReturnStatus.RUNNING;
     }
@@ -230,7 +183,6 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private EReturnStatus AttackNearestPlayer() {
         if (!m_canAttack) {
-            transform.LookAt(m_playerCurrentlyBeingFollowed);
             m_canAttack = true;
             return EReturnStatus.SUCCESS;
         }

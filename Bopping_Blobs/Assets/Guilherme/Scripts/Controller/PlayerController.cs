@@ -13,13 +13,14 @@ public class PlayerController : MonoBehaviour, IBoppable {
     [Header("Ground Movement")]
     [Range(0, 1)]
     public float groundDamping;
-    public float fallingGravityMultiplier = 3f;
+    private const float km_fallingGravityMultiplier = 3f;
 
     // Cached References
     private CharacterController m_characterControllerReference;
     private Vector3 m_movementVector;
     private DigitalJoystick m_digitalJoystickReference;
     private JoyButton m_joyButtonReference;
+    private Transform m_whoIsTag;
 
     // Tracking Current State
     private ECharacterState m_currentState;
@@ -78,17 +79,8 @@ public class PlayerController : MonoBehaviour, IBoppable {
         m_currentState = ECharacterState.Moving;
     }
 
-    // Not Used on Player Controller
     public void UpdateWhoIsTag(Transform _whoIsTag) {
-        return;
-    }
-
-    public void TriggerIsTagTransition() {
-        return;
-    }
-
-    public void TriggerIsNotTagTransition() {
-        return;
+        m_whoIsTag = _whoIsTag;
     }
 
     public void ChangeSpeed(float _newSpeed) {

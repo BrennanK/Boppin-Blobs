@@ -4,17 +4,15 @@ using System.Linq;
 using UnityEngine;
 
 public class TaggingManager : MonoBehaviour {
-    private List<TaggingIdentifier> m_playersIdentifiers;
-
     [Header("Tagging Configuration")]
     public float isTagSpeed = 6f;
     public float isNotTagSpeed = 4f;
     [Tooltip("When a player is tagged, everyone within the radius will be knocked back")]
     public float knockbackRadius = 10f;
-    public float knockbackForce = 10f;
+    public float knockbackForce = 5f;
 
-    public delegate void DelegateWithTaggingIdentifier(TaggingIdentifier identifier);
-    public event DelegateWithTaggingIdentifier OnPlayerWasTagged;
+    [Header("Knockback Configuration")]
+    public float knockbackDelayTime = 0.5f;
 
     private int m_currentPlayerTaggingID;
     public int WhoIsTag {
@@ -23,6 +21,10 @@ public class TaggingManager : MonoBehaviour {
         }
     }
 
+    public delegate void DelegateWithTaggingIdentifier(TaggingIdentifier identifier);
+    public event DelegateWithTaggingIdentifier OnPlayerWasTagged;
+
+    private List<TaggingIdentifier> m_playersIdentifiers;
     private SpawnPointManager m_spawnPointManager;
 
     private void Awake() {
@@ -33,7 +35,6 @@ public class TaggingManager : MonoBehaviour {
         }
     }
 
-    // TODO Update UI Scoreboard
     private void Start() {
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
         PlayerInfoUI[] playerInfoUI = FindObjectsOfType<PlayerInfoUI>();
@@ -50,7 +51,7 @@ public class TaggingManager : MonoBehaviour {
         // Inject all PlayerInfoUI to Players
         if(playerInfoUI.Length == m_playersIdentifiers.Count) {
             for(int i = 0; i < m_playersIdentifiers.Count; i++) {
-                m_playersIdentifiers[i].AssignPlayerInfo(playerInfoUI[i]);
+                m_playersIdentifiers[i].PlayerInfo = playerInfoUI[i];
             }
         } else {
             Debug.LogWarning($"There are more or less PlayerInfo scripts than Players in the scene!! You have {m_playersIdentifiers.Count} players and {playerInfoUI.Length} info scripts!");

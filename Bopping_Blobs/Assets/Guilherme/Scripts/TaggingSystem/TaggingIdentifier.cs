@@ -29,6 +29,11 @@ public class TaggingIdentifier : MonoBehaviour {
     // Rigidbody is used only for knockback, not for movement
     private Rigidbody m_rigidbodyReference;
     private PlayerInfoUI m_playerInfo;
+    public PlayerInfoUI PlayerInfo {
+        set {
+            m_playerInfo = value;
+        }
+    }
 
     // IBoppable should be implemented by PlayerController and AI Controller so we can handle attacking and knockback
     private IBoppable m_boppableInterface;
@@ -59,8 +64,6 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
-    protected float m_attackWaitTime;
-
     private void Start() {
         m_boppableInterface = GetComponent<IBoppable>();
         m_rigidbodyReference = GetComponent<Rigidbody>();
@@ -77,7 +80,6 @@ public class TaggingIdentifier : MonoBehaviour {
             case ETaggingBehavior.Running:
                 break;
             case ETaggingBehavior.Tagging:
-                // Debug.Log($"{gameObject.name} is tagging!!");
                 m_timeAsTag += Time.deltaTime;
                 break;
         }
@@ -86,47 +88,39 @@ public class TaggingIdentifier : MonoBehaviour {
             TriggerAttackTransition();
         }
 
-        // Drawing Debug Rays
-        Debug.DrawRay(transform.position, transform.forward * attackDistance, Color.red);
-        Debug.DrawRay(hammerBopAim.position, Vector3.up, Color.blue);
-
-        m_playerInfo?.UpdateInfo(transform.position, AmITag());
+        m_playerInfo?.UpdateInfo(transform.position);
     }
 
     public void SetAsTagging() {
         m_boppableInterface.ChangeSpeed(taggingManager.isTagSpeed);
-        m_boppableInterface.TriggerIsTagTransition();
         m_currentTaggingState = ETaggingBehavior.Tagging;
     }
 
     public void SetAsNotTag() {
         m_boppableInterface.ChangeSpeed(taggingManager.isNotTagSpeed);
-        // TODO IBoppable should have a behavior "NotTaggingTransition"
         m_currentTaggingState = ETaggingBehavior.Running;
     }
 
     #region ATTACKING
     private void TriggerAttackTransition() {
-        bool hitAnotherPlayer = false;
         m_boppableInterface.TriggerAttackTransition();
         ETaggingBehavior previousState = m_currentTaggingState;
         m_currentTaggingState = ETaggingBehavior.TaggingAtacking;
+
         m_characterRenderer.material.color = Color.red;
-        m_attackWaitTime = attackTime;
 
         Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, attackRadius, attackLayer);
         if (bopCollision.Length > 0) {
             for (int i = 0; i < bopCollision.Length; i++) {
                 TaggingIdentifier playerHitted = bopCollision[i].transform.gameObject.GetComponent<TaggingIdentifier>();
                 if (playerHitted != null && m_playerIdentifier != playerHitted.PlayerIdentifier) {
-                    hitAnotherPlayer = true;
 
                     Vector3 knockbackVector = playerHitted.transform.position - hammerBopAim.transform.position;
                     playerHitted.KnockbackPlayer(Color.magenta, knockbackVector.normalized);
 
                     if(taggingManager.WhoIsTag == playerHitted.PlayerIdentifier) {
                         playerHitted.SetAsNotTag();
-                        Tag();
+                        taggingManager.PlayerWasTagged(this, true);
                     }
 
                     break;
@@ -134,17 +128,16 @@ public class TaggingIdentifier : MonoBehaviour {
             }
         }
 
-        StartCoroutine(AttackAnimationRoutine(hitAnotherPlayer, previousState));
+        StartCoroutine(AttackAnimationRoutine(previousState));
     }
 
-    private IEnumerator AttackAnimationRoutine(bool _hitAnotherPlayer, ETaggingBehavior _previousTaggingState) {
+    private IEnumerator AttackAnimationRoutine(ETaggingBehavior _previousTaggingState) {
         Vector3 originalTransformLocalPosition = hammerTransform.localPosition;
         Vector3 originalLocalEulerAngles = hammerTransform.localEulerAngles;
         hammerTransform.localPosition = new Vector3(hammerBopAim.localPosition.x, hammerBopAim.localPosition.y + 0.25f, hammerBopAim.localPosition.z - 1f);
         hammerTransform.localEulerAngles = new Vector3(90, 0, 0);
 
-        while (m_attackWaitTime > 0) {
-            m_attackWaitTime -= Time.deltaTime;
+        for(float waitingTime = 0f; waitingTime < attackTime; waitingTime += Time.deltaTime) {
             yield return null;
         }
 
@@ -157,11 +150,6 @@ public class TaggingIdentifier : MonoBehaviour {
     #endregion
 
     #region TAGGING
-    public void Tag() {
-        Debug.Log($"I ({gameObject.name}) was tagged =D");
-        taggingManager.PlayerWasTagged(this, true);
-    }
-
     /// <summary>
     /// Knockbacks the Player
     /// </summary>
@@ -176,7 +164,6 @@ public class TaggingIdentifier : MonoBehaviour {
         StartCoroutine(KnockbackDelay());
     }
 
-
     private IEnumerator KnockbackDelay() {
         yield return new WaitForSeconds(knockbackDelay);
         GetComponent<Renderer>().material.color = blobOriginalColor;
@@ -189,6 +176,7 @@ public class TaggingIdentifier : MonoBehaviour {
     /// </summary>
     /// <param name="_identifier">Player who is currently tag</param>
     public void UpdateWhoIsTag(TaggingIdentifier _identifier) {
+        m_playerInfo.UpdateInfo(transform.position, AmITag());
         m_boppableInterface.UpdateWhoIsTag(_identifier.transform);
     }
 
@@ -203,9 +191,5 @@ public class TaggingIdentifier : MonoBehaviour {
         if(hammerBopAim.gameObject.activeSelf) {
             Gizmos.DrawWireSphere(hammerBopAim.transform.position, attackRadius);
         }
-    }
-
-    public void AssignPlayerInfo(PlayerInfoUI _info) {
-        m_playerInfo = _info;
     }
 }

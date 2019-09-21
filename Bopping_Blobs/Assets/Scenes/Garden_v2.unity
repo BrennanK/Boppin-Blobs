@@ -12080,7 +12080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTagSpeed: 6
-  isNotTagSpeed: 4
+  isNotTagSpeed: 6
   knockbackRadius: 10
   knockbackForce: 10
 --- !u!4 &606314865
