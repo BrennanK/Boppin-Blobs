@@ -27,6 +27,10 @@ public class TaggingManager : MonoBehaviour {
 
     private void Awake() {
         m_spawnPointManager = FindObjectOfType<SpawnPointManager>();
+
+        if(m_spawnPointManager == null) {
+            Debug.LogError($"There is no spawn point manager in the scene!");
+        }
     }
 
     // TODO Update UI Scoreboard
@@ -47,6 +51,11 @@ public class TaggingManager : MonoBehaviour {
         if(playerInfoUI.Length == m_playersIdentifiers.Count) {
             for(int i = 0; i < m_playersIdentifiers.Count; i++) {
                 m_playersIdentifiers[i].AssignPlayerInfo(playerInfoUI[i]);
+            }
+        } else {
+            Debug.LogWarning($"There are more or less PlayerInfo scripts than Players in the scene!! You have {m_playersIdentifiers.Count} players and {playerInfoUI.Length} info scripts!");
+            foreach(PlayerInfoUI infoUI in playerInfoUI) {
+                infoUI.gameObject.SetActive(false);
             }
         }
 

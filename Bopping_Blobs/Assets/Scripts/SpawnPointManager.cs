@@ -10,13 +10,14 @@ public class SpawnPointManager : MonoBehaviour {
     private void Start() {
         m_startPoints = GameObject.FindGameObjectsWithTag("SpawnPoint").ToList();
         m_players = GameObject.FindObjectsOfType<TaggingIdentifier>().ToList();
+
+        if(m_startPoints.Count == 0) {
+            Debug.LogError($"There are no Start Points in the scene.");
+        }
         SpawnPlayers();
     }
 
     private void SpawnPlayers() {
-        Debug.Log($"Players: {m_players.Count}");
-        Debug.Log($"Start Points: {m_startPoints.Count}");
-
         List<GameObject> tempStartPoints = new List<GameObject>(m_startPoints);
 
         foreach (TaggingIdentifier player in m_players) {
