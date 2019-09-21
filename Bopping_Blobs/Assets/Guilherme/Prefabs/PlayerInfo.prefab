@@ -89,7 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2837c561067845e41a79ec807f6e9d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tagTextObject: {fileID: 8022172867589340152}
+  playerNameText: {fileID: 154444463002084590}
+  tagText: {fileID: 8022172867589340154}
 --- !u!1 &154444463002084588
 GameObject:
   m_ObjectHideFlags: 0

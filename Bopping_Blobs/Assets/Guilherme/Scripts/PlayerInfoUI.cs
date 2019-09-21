@@ -1,11 +1,17 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class PlayerInfoUI : MonoBehaviour {
-    public GameObject tagTextObject;
+    public TextMeshProUGUI playerNameText;
+    public TextMeshProUGUI tagText;
     private RectTransform m_rectTransform;
 
     private void Start() {
         m_rectTransform = GetComponent<RectTransform>();
+    }
+
+    public void UpdateInfo(string _playerName) {
+        playerNameText.text = _playerName;
     }
 
     /// <summary>
@@ -22,7 +28,7 @@ public class PlayerInfoUI : MonoBehaviour {
     /// <param name="_playerPosition">World Position to put in the UI panel.</param>
     /// <param name="_isTag">Whether is tag or not.</param>
     public void UpdateInfo(Vector3 _playerPosition, bool _isTag) {
-        m_rectTransform.position = Camera.main.WorldToScreenPoint(_playerPosition);
-        tagTextObject.SetActive(_isTag);
+        tagText.gameObject.SetActive(_isTag);
+        UpdateInfo(_playerPosition);
     }
 }

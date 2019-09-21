@@ -35,6 +35,20 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
+    private string m_playerName;
+    public string PlayerName {
+        get {
+            return m_playerName;
+        }
+        set {
+            m_playerName = value;
+
+            if(m_playerInfo) {
+                m_playerInfo.UpdateInfo(m_playerName);
+            }
+        }
+    }
+
     // IBoppable should be implemented by PlayerController and AI Controller so we can handle attacking and knockback
     private IBoppable m_boppableInterface;
     private Renderer m_characterRenderer;

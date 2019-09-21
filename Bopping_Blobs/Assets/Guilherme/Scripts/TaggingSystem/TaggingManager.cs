@@ -26,9 +26,11 @@ public class TaggingManager : MonoBehaviour {
 
     private List<TaggingIdentifier> m_playersIdentifiers;
     private SpawnPointManager m_spawnPointManager;
+    private UIManager m_UIManager;
 
     private void Awake() {
         m_spawnPointManager = FindObjectOfType<SpawnPointManager>();
+        m_UIManager = FindObjectOfType<UIManager>();
 
         if(m_spawnPointManager == null) {
             Debug.LogError($"There is no spawn point manager in the scene!");
@@ -39,8 +41,21 @@ public class TaggingManager : MonoBehaviour {
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
         PlayerInfoUI[] playerInfoUI = FindObjectsOfType<PlayerInfoUI>();
 
+        // Inject all PlayerInfoUI to Players
+        if (playerInfoUI.Length == m_playersIdentifiers.Count) {
+            for (int i = 0; i < m_playersIdentifiers.Count; i++) {
+                m_playersIdentifiers[i].PlayerInfo = playerInfoUI[i];
+                m_playersIdentifiers[i].PlayerName = "Jerry";
+            }
+        } else {
+            Debug.LogWarning($"There are more or less PlayerInfo scripts than Players in the scene!! You have {m_playersIdentifiers.Count} players and {playerInfoUI.Length} info scripts!");
+            foreach (PlayerInfoUI infoUI in playerInfoUI) {
+                infoUI.gameObject.SetActive(false);
+            }
+        }
+
         // Inject all ids into tagging identifiers
-        for(int i = 0; i < m_playersIdentifiers.Count; i++) {
+        for (int i = 0; i < m_playersIdentifiers.Count; i++) {
             m_playersIdentifiers[i].PlayerIdentifier = i;
             m_playersIdentifiers[i].taggingManager = this;
 
@@ -48,21 +63,12 @@ public class TaggingManager : MonoBehaviour {
             OnPlayerWasTagged += m_playersIdentifiers[i].UpdateWhoIsTag;
         }
 
-        // Inject all PlayerInfoUI to Players
-        if(playerInfoUI.Length == m_playersIdentifiers.Count) {
-            for(int i = 0; i < m_playersIdentifiers.Count; i++) {
-                m_playersIdentifiers[i].PlayerInfo = playerInfoUI[i];
-            }
-        } else {
-            Debug.LogWarning($"There are more or less PlayerInfo scripts than Players in the scene!! You have {m_playersIdentifiers.Count} players and {playerInfoUI.Length} info scripts!");
-            foreach(PlayerInfoUI infoUI in playerInfoUI) {
-                infoUI.gameObject.SetActive(false);
-            }
-        }
-
         // TODO Select a Random one to start as tag
         TaggingIdentifier initialTagger = GameObject.FindGameObjectWithTag("Player").GetComponent<TaggingIdentifier>();
         PlayerWasTagged(initialTagger);
+        foreach(TaggingIdentifier notItPlayer in GetAllPlayersThatAreNotIt()) {
+            notItPlayer.SetAsNotTag();
+        }
     }
 
     private void UpdateScoreboard() {
@@ -80,8 +86,9 @@ public class TaggingManager : MonoBehaviour {
         m_currentPlayerTaggingID = _whoIsTag.PlayerIdentifier;
         _whoIsTag.SetAsTagging();
         OnPlayerWasTagged?.Invoke(_whoIsTag);
+        m_UIManager.ShowPlayerTaggedText(_whoIsTag.PlayerName, knockbackDelayTime * 2f);
 
-        if(_knockbackEffect) {
+        if (_knockbackEffect) {
             StartCoroutine(KnockbackAllPlayerRoutine());
         }
     }
