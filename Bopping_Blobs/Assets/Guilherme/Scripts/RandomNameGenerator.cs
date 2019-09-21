@@ -10,11 +10,27 @@ public class RandomNameGenerator {
         m_allPossibleNames = new List<string>();
 
         reader.ReadLine();
+
+        // Reading from NamesList.txt
+        while(!reader.EndOfStream) {
+            string line = reader.ReadLine();
+
+            if (line.Length == 1 || line.Equals("(Male)") || line.Equals("(Female)")) {
+                continue;
+            }
+
+            Debug.Log($"{line}");
+            m_allPossibleNames.Add(line);
+        }
+
+        /*
+         * Read from the baby-files.csv
         while(!reader.EndOfStream) {
             string line = reader.ReadLine().Split(',')[1];
             string name = line.Substring(1, line.Length - 2);
             m_allPossibleNames.Add(name);
         }
+        */
 
         // Avoiding leaks
         reader.Close();

@@ -39,7 +39,7 @@ public class TaggingManager : MonoBehaviour {
     }
 
     private void Start() {
-        m_randomNameGenerator = new RandomNameGenerator($"{Application.dataPath}/Resources/baby-names.csv");
+        m_randomNameGenerator = new RandomNameGenerator($"{Application.dataPath}/Resources/NameList.txt");
 
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
         PlayerInfoUI[] playerInfoUI = FindObjectsOfType<PlayerInfoUI>();
