@@ -72,12 +72,16 @@ public class TaggingManager : MonoBehaviour {
         foreach(TaggingIdentifier notItPlayer in GetAllPlayersThatAreNotIt()) {
             notItPlayer.SetAsNotTag();
         }
+
+        InvokeRepeating("UpdateScoreboard", 0f, 0.5f);
     }
 
     private void UpdateScoreboard() {
         m_playersIdentifiers.Sort((leftHandSide, rightHandSide) => {
-            return leftHandSide.TimeAsTag.CompareTo(rightHandSide.TimeAsTag);
+            return rightHandSide.TimeAsTag.CompareTo(leftHandSide.TimeAsTag);
         });
+
+        m_UIManager.UpdateScoreboard(m_playersIdentifiers.ToArray());
     }
 
     /// <summary>
