@@ -5,8 +5,17 @@ using UnityEngine;
 public class UIManager : MonoBehaviour {
     public TextMeshProUGUI playerWasTaggedText;
 
+    [Header("Scoreboard Scripts")]
+    public PlayerScoreUI[] playerScores;
+
     private void Start() {
         playerWasTaggedText.gameObject.SetActive(false);
+    }
+
+    public void UpdateScoreboard(TaggingIdentifier[] _players) {
+        for(int i = 0; i < _players.Length; i++) {
+            playerScores[i].RefreshPlayerScore(i, _players[i].PlayerName, _players[i].TimeAsTag);
+        }
     }
 
     public void ShowPlayerTaggedText(string _playerName, float _timeToShow) {

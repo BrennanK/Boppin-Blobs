@@ -127,7 +127,7 @@ public class TaggingIdentifier : MonoBehaviour {
     #region ATTACKING
     private void TriggerAttackTransition() {
         m_boppableInterface.TriggerAttackTransition();
-        ETaggingBehavior previousState = m_currentTaggingState;
+        ETaggingBehavior currentTaggingState = m_currentTaggingState;
         m_currentTaggingState = ETaggingBehavior.TaggingAtacking;
 
         m_characterRenderer.material.color = Color.red;
@@ -144,6 +144,9 @@ public class TaggingIdentifier : MonoBehaviour {
                     if(taggingManager.WhoIsTag == playerHitted.PlayerIdentifier) {
                         playerHitted.SetAsNotTag();
                         taggingManager.PlayerWasTagged(this, true);
+
+                        // Updating tagging state because we are tag now.
+                        currentTaggingState = m_currentTaggingState;
                     }
 
                     break;
@@ -151,10 +154,10 @@ public class TaggingIdentifier : MonoBehaviour {
             }
         }
 
-        StartCoroutine(AttackAnimationRoutine(previousState));
+        StartCoroutine(AttackAnimationRoutine(currentTaggingState));
     }
 
-    private IEnumerator AttackAnimationRoutine(ETaggingBehavior _previousTaggingState) {
+    private IEnumerator AttackAnimationRoutine(ETaggingBehavior _nextTaggingState) {
         hammerTransform.localPosition = new Vector3(hammerBopAim.localPosition.x, hammerBopAim.localPosition.y + 0.25f, hammerBopAim.localPosition.z - 1f);
         hammerTransform.localEulerAngles = new Vector3(90, 0, 0);
 
@@ -164,7 +167,7 @@ public class TaggingIdentifier : MonoBehaviour {
         hammerTransform.localPosition = m_originalHammerLocalPosition;
         hammerTransform.localEulerAngles = m_originalHammerLocalEulerAngles;
         m_boppableInterface.TriggerEndAttackTransition();
-        m_currentTaggingState = _previousTaggingState;
+        m_currentTaggingState = _nextTaggingState;
     }
     #endregion
 
