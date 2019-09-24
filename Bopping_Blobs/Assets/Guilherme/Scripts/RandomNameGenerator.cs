@@ -15,7 +15,7 @@ public class RandomNameGenerator {
         while(!reader.EndOfStream) {
             string line = reader.ReadLine();
 
-            if (line.Length == 1 || line.Equals("(Male)") || line.Equals("(Female)") || line.Equals(" ")) {
+            if (line.Length == 1 || line.Length == 0 || line.Equals("(Male)") || line.Equals("(Female)") || line.Equals(" ")) {
                 continue;
             }
 
