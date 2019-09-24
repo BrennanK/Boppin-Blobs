@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FancyScrollView.Example03
+namespace FancyScrollView.CustomizationMenu
 {
     public class Context
     {

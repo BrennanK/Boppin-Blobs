@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using EasingCore;
 
-namespace FancyScrollView.Example03
+namespace FancyScrollView.CustomizationMenu
 {
     public class ScrollView : FancyScrollView<ItemData, Context>
     {
         [SerializeField] Scroller scroller = default;
         [SerializeField] GameObject cellPrefab = default;
+
+        Action<int> onSelectionChanged;
 
         protected override GameObject CellPrefab => cellPrefab;
 
@@ -31,12 +34,19 @@ namespace FancyScrollView.Example03
 
             Context.SelectedIndex = index;
             Refresh();
+
+            onSelectionChanged?.Invoke(index);
         }
 
         public void UpdateData(IList<ItemData> items)
         {
             UpdateContents(items);
             scroller.SetTotalCount(items.Count);
+        }
+
+        public void OnSelectionChanged(Action<int> callback)
+        {
+            onSelectionChanged = callback;
         }
 
         public void SelectCell(int index)

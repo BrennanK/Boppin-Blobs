@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace FancyScrollView.Example03
+namespace FancyScrollView.CustomizationMenu
 {
-    public class Cell : FancyScrollViewCell<ItemData, Context>
+    public class CustomizationItem1 : FancyScrollViewCell<ItemData, Context>
     {
         [SerializeField] Animator animator = default;
         [SerializeField] Text message = default;
@@ -11,6 +11,7 @@ namespace FancyScrollView.Example03
         [SerializeField] Image image = default;
         [SerializeField] Image imageLarge = default;
         [SerializeField] Button button = default;
+        [SerializeField] Sprite[] Covers;
 
         static class AnimatorHash
         {
@@ -27,9 +28,14 @@ namespace FancyScrollView.Example03
             message.text = itemData.Message;
             messageLarge.text = Index.ToString();
 
+            image.sprite = Covers[Index];
+
             var selected = Context.SelectedIndex == Index;
-            imageLarge.color = image.color = selected
+            imageLarge.color = selected
                 ? new Color32(0, 255, 255, 100)
+                : new Color32(255, 255, 255, 77);
+            image.color = selected
+                ? new Color32(255, 255, 255, 255)
                 : new Color32(255, 255, 255, 77);
         }
 

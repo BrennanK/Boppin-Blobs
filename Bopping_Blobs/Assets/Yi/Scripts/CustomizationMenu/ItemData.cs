@@ -1,4 +1,4 @@
-﻿namespace FancyScrollView.Example03
+﻿namespace FancyScrollView.CustomizationMenu
 {
     public class ItemData
     {
