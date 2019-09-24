@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour, IBoppable {
     // Tracking Current State
     private ECharacterState m_currentState;
 
-    private void Start() {
+    private void Awake() {
         m_characterControllerReference = GetComponent<CharacterController>();
         m_currentState = ECharacterState.Moving;
         m_digitalJoystickReference = FindObjectOfType<DigitalJoystick>();

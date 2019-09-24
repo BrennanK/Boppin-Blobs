@@ -22,39 +22,41 @@ public class AIController : MonoBehaviour, IBoppable {
     private bool m_isBeingKnockedBack = false;
     private bool m_canAttack = false;
 
-    private void Start() {
+    private void Awake() {
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         m_rigibody = GetComponent<Rigidbody>();
         m_taggingIdentifier = GetComponent<TaggingIdentifier>();
         m_rigibody.isKinematic = true;
+    }
 
+    private void Start() {
         m_behaviorTree = new BehaviorTree.BehaviorTree(
-            new BehaviorTreeBuilder()
-                .Selector("AI Behavior Main Selector")
-                    .Condition("Is Being Knocked Back", IsBeingKnockedBack)
-                    .Sequence("Is IT Sequence")
-                        .Condition("Check if is IT", IsIt)
-                        // TODO "break run from everyone" into different tasks
-                        // Run from closest player
-                        // Run to random point (this can be biased or not)
-                        .Action("Run from Everyone", RunAwayFromEveryone)
-                    .End()
-                    .Sequence("Is not IT sequence")
-                        .Condition("Has Player Available", HasPlayerToFollow)
-                        .Selector("Attack or Follow")
-                            .Sequence("Attack if possible")
-                                .Condition("Check if within attacking distance", IsWithinAttackingDistance)
-                                .Condition("Check if Player can attack", CanAttack)
-                                .Action("Attack It", AttackNearestPlayer)
-                            .End()
-                            .Sequence("Run towards It")
-                                .Action("Run towards available player", RunTowardsPlayerToBeFollowed)
-                            .End()
-                        .End()
-                    .End()
-                .End()
-                .Build()
-            );
+           new BehaviorTreeBuilder()
+               .Selector("AI Behavior Main Selector")
+                   .Condition("Is Being Knocked Back", IsBeingKnockedBack)
+                   .Sequence("Is IT Sequence")
+                       .Condition("Check if is IT", IsIt)
+                       // TODO "break run from everyone" into different tasks
+                       // Run from closest player
+                       // Run to random point (this can be biased or not)
+                       .Action("Run from Everyone", RunAwayFromEveryone)
+                   .End()
+                   .Sequence("Is not IT sequence")
+                       .Condition("Has Player Available", HasPlayerToFollow)
+                       .Selector("Attack or Follow")
+                           .Sequence("Attack if possible")
+                               .Condition("Check if within attacking distance", IsWithinAttackingDistance)
+                               .Condition("Check if Player can attack", CanAttack)
+                               .Action("Attack It", AttackNearestPlayer)
+                           .End()
+                           .Sequence("Run towards It")
+                               .Action("Run towards available player", RunTowardsPlayerToBeFollowed)
+                           .End()
+                       .End()
+                   .End()
+               .End()
+               .Build()
+           );
 
         StartCoroutine(UpdateTreeRoutine(Random.Range(minStartTime, maxStartTime)));
     }
@@ -168,8 +170,12 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus RunTowardsPlayerToBeFollowed() {
-        m_navMeshAgent.SetDestination(m_playerCurrentlyBeingFollowed.position);
-        return EReturnStatus.RUNNING;
+        if(m_navMeshAgent.isOnNavMesh) {
+            m_navMeshAgent.SetDestination(m_playerCurrentlyBeingFollowed.position);
+            return EReturnStatus.SUCCESS;
+        }
+
+        return EReturnStatus.FAILURE;
     }
     #endregion
 

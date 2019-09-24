@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4960b3ab97a50cf459f35bb9f5186cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerWasTaggedText: {fileID: 1999106653682154922}
+  centerScreenText: {fileID: 1999106653682154922}
   playerScores:
   - {fileID: 8064612735397393707}
   - {fileID: 4633306101958262419}
@@ -245,6 +245,10 @@ PrefabInstance:
     - target: {fileID: 1833925572, guid: fff8b646f22991149bc0e159b675a987, type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1077788983, guid: fff8b646f22991149bc0e159b675a987, type: 3}
+      propertyPath: m_Name
+      value: Center Screen Text
       objectReference: {fileID: 0}
     - target: {fileID: 1077788984, guid: fff8b646f22991149bc0e159b675a987, type: 3}
       propertyPath: m_AnchoredPosition.x

@@ -77,7 +77,7 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
-    private void Start() {
+    private void Awake() {
         m_boppableInterface = GetComponent<IBoppable>();
         m_rigidbodyReference = GetComponent<Rigidbody>();
         m_characterRenderer = GetComponent<Renderer>();
@@ -86,7 +86,7 @@ public class TaggingIdentifier : MonoBehaviour {
         m_timeAsTag = 0;
 
         m_characterRenderer.material.color = blobOriginalColor;
-        hammerBopAim.localPosition = new Vector3(0, -0.5f, attackDistance);
+        hammerBopAim.localPosition = new Vector3(0, -0.25f, attackDistance);
         m_originalHammerLocalPosition = hammerTransform.localPosition;
         m_originalHammerLocalEulerAngles = hammerTransform.localEulerAngles;
     }
@@ -211,6 +211,15 @@ public class TaggingIdentifier : MonoBehaviour {
     }
     #endregion
 
+    #region Helpers
+    public void DeactivatePlayer() {
+        m_boppableInterface.DeactivateController();
+    }
+
+    public void ActivatePlayer() {
+        m_boppableInterface.ReactivateController();
+    }
+    #endregion
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
 

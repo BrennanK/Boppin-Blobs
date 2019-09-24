@@ -25,6 +25,16 @@ public class TaggingManager : MonoBehaviour {
     public event DelegateWithTaggingIdentifier OnPlayerWasTagged;
 
     private List<TaggingIdentifier> m_playersIdentifiers;
+    public List<TaggingIdentifier> Players {
+        get {
+            m_playersIdentifiers.Sort((leftHandSide, rightHandSide) => {
+                return rightHandSide.TimeAsTag.CompareTo(leftHandSide.TimeAsTag);
+            });
+
+            return m_playersIdentifiers;
+        }
+    }
+
     private SpawnPointManager m_spawnPointManager;
     private UIManager m_UIManager;
     private RandomNameGenerator m_randomNameGenerator;
@@ -36,9 +46,7 @@ public class TaggingManager : MonoBehaviour {
         if(m_spawnPointManager == null) {
             Debug.LogError($"There is no spawn point manager in the scene!");
         }
-    }
 
-    private void Start() {
         m_randomNameGenerator = new RandomNameGenerator($"{Application.dataPath}/Resources/NameList.txt");
 
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
@@ -65,23 +73,18 @@ public class TaggingManager : MonoBehaviour {
             // Subscribing every player's UpdateWhoIsTag function into the manager
             OnPlayerWasTagged += m_playersIdentifiers[i].UpdateWhoIsTag;
         }
+    }
 
+    /// <summary>
+    /// <para>Set the first player as tag, use this to initialize the game</para>
+    /// </summary>
+    public void StartTagging() {
         // TODO Select a Random one to start as tag
         TaggingIdentifier initialTagger = GameObject.FindGameObjectWithTag("Player").GetComponent<TaggingIdentifier>();
         PlayerWasTagged(initialTagger);
-        foreach(TaggingIdentifier notItPlayer in GetAllPlayersThatAreNotIt()) {
+        foreach (TaggingIdentifier notItPlayer in GetAllPlayersThatAreNotIt()) {
             notItPlayer.SetAsNotTag();
         }
-
-        InvokeRepeating("UpdateScoreboard", 0f, 0.5f);
-    }
-
-    private void UpdateScoreboard() {
-        m_playersIdentifiers.Sort((leftHandSide, rightHandSide) => {
-            return rightHandSide.TimeAsTag.CompareTo(leftHandSide.TimeAsTag);
-        });
-
-        m_UIManager.UpdateScoreboard(m_playersIdentifiers.ToArray());
     }
 
     /// <summary>
@@ -143,5 +146,23 @@ public class TaggingManager : MonoBehaviour {
         }
 
         return playersThatAreNotIt.ToArray();
+    }
+
+    /// <summary>
+    /// <para>Deactivate all players controllers</para>
+    /// </summary>
+    public void FreezeAllPlayers() {
+        foreach(TaggingIdentifier player in m_playersIdentifiers) {
+            player.DeactivatePlayer();
+        }
+    }
+
+    /// <summary>
+    /// <para>Activate all players controllers</para>
+    /// </summary>
+    public void EnableAllPlayers() {
+        foreach(TaggingIdentifier player in m_playersIdentifiers) {
+            player.ActivatePlayer();
+        }
     }
 }

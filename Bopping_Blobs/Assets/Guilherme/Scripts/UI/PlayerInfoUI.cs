@@ -6,8 +6,9 @@ public class PlayerInfoUI : MonoBehaviour {
     public TextMeshProUGUI tagText;
     private RectTransform m_rectTransform;
 
-    private void Start() {
+    private void Awake() {
         m_rectTransform = GetComponent<RectTransform>();
+        tagText.gameObject.SetActive(false);
     }
 
     /// <summary>
