@@ -13,6 +13,15 @@ public class UIManager : MonoBehaviour {
     [Header("Timer")]
     public TextMeshProUGUI timerText;
 
+    [Header("Game Over Screen")]
+    public GameObject gameOverPanel;
+    public PlayerScoreUI[] finalPlayerScores;
+    public GameObject[] deactivateWhenGameIsOver;
+
+    private void Start() {
+        gameOverPanel.SetActive(false);
+    }
+
     /// <summary>
     /// <para>Update timer on screen</para>
     /// </summary>
@@ -63,5 +72,17 @@ public class UIManager : MonoBehaviour {
         centerScreenText.text = $"{_playerName} got TAG!";
         yield return new WaitForSecondsRealtime(_timeToShow);
         centerScreenText.gameObject.SetActive(false);
+    }
+
+    public void ShowGameOverPanel(TaggingIdentifier[] _finalPlayerArray) {
+        foreach(GameObject deactivate in deactivateWhenGameIsOver) {
+            deactivate.SetActive(false);
+        }
+
+        gameOverPanel.SetActive(true);
+
+        for(int i = 0; i <_finalPlayerArray.Length; i++) {
+            finalPlayerScores[i].RefreshPlayerScore(i, _finalPlayerArray[i].PlayerName, _finalPlayerArray[i].TimeAsTag);
+        }
     }
 }

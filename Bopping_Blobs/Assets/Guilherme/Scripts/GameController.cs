@@ -50,6 +50,7 @@ public class GameController : MonoBehaviour {
             m_currentGameTime = 0f;
             m_isGameRunning = false;
             m_taggingManager.FreezeAllPlayers();
+            m_UIManager.ShowGameOverPanel(m_taggingManager.Players.ToArray());
         }
 
         m_UIManager.UpdateTimerText(m_currentGameTime);
