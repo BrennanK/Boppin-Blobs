@@ -80,7 +80,7 @@ public class TaggingIdentifier : MonoBehaviour {
     private void Awake() {
         m_boppableInterface = GetComponent<IBoppable>();
         m_rigidbodyReference = GetComponent<Rigidbody>();
-        m_characterRenderer = GetComponent<Renderer>();
+        m_characterRenderer = GetComponentInChildren<Renderer>();
 
         m_rigidbodyReference.isKinematic = true;
         m_timeAsTag = 0;

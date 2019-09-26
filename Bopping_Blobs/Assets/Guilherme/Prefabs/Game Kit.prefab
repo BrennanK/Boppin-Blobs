@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2885185798831976085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 493468001434881770}
+  m_Layer: 0
+  m_Name: Power Up Boxes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &493468001434881770
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2885185798831976085}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6837564553101952591}
+  m_Father: {fileID: 2060634864621259798}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6837564551312686733
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,11 +89,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6837564551723667559}
-  - {fileID: 6837564551525940777}
-  - {fileID: 6837564553101952591}
+  - {fileID: 2060634864621259798}
   - {fileID: 6837564553057464587}
   - {fileID: 6837564553090633263}
-  - {fileID: 6837564552564003874}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -145,8 +174,8 @@ Transform:
   - {fileID: 759182812037137882}
   - {fileID: 759182811206584290}
   - {fileID: 759182812208296883}
-  m_Father: {fileID: 6837564551437817989}
-  m_RootOrder: 1
+  m_Father: {fileID: 2060634864621259798}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6837564551706041829
 GameObject:
@@ -489,8 +518,8 @@ Transform:
   - {fileID: 6837564551890348356}
   - {fileID: 6837564551312686730}
   - {fileID: 6837564551706041826}
-  m_Father: {fileID: 6837564551437817989}
-  m_RootOrder: 5
+  m_Father: {fileID: 2060634864621259798}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6837564553057464586
 GameObject:
@@ -523,7 +552,7 @@ Transform:
   - {fileID: 6837564551941724461}
   - {fileID: 6837564551494164380}
   m_Father: {fileID: 6837564551437817989}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6837564553101952579
 GameObject:
@@ -556,8 +585,8 @@ Transform:
   m_LocalPosition: {x: 0.16, y: 0.99, z: 18.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6837564551437817989}
-  m_RootOrder: 2
+  m_Father: {fileID: 493468001434881770}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 45, z: 0}
 --- !u!33 &6837564553101952590
 MeshFilter:
@@ -689,6 +718,39 @@ Transform:
   m_Father: {fileID: 6837564552564003874}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &8994843154169795648
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2060634864621259798}
+  m_Layer: 0
+  m_Name: Gameplay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2060634864621259798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8994843154169795648}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6837564551525940777}
+  - {fileID: 6837564552564003874}
+  - {fileID: 493468001434881770}
+  m_Father: {fileID: 6837564551437817989}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4998336235958443910
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -739,7 +801,7 @@ PrefabInstance:
     - target: {fileID: 1999106653793882537, guid: b8abfb2debed2e54ba08f31734034943,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1999106653793882537, guid: b8abfb2debed2e54ba08f31734034943,
         type: 3}
