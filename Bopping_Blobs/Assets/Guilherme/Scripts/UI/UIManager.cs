@@ -32,6 +32,10 @@ public class UIManager : MonoBehaviour {
     /// </summary>
     /// <param name="_time">Time (in seconds) to set</param>
     public void UpdateTimerText(float _time) {
+        if (_time == 0) {
+            timerText.text = "0:00";
+        }
+
         string time = _time.ToString();
         string[] splittedTime = time.Split('.');
 
@@ -79,6 +83,10 @@ public class UIManager : MonoBehaviour {
         centerScreenText.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// <para>Deactivate all UI elements and activates the game over panel</para>
+    /// </summary>
+    /// <param name="_finalPlayerArray">Final player array as of the end of the game</param>
     public void ShowGameOverPanel(TaggingIdentifier[] _finalPlayerArray) {
         foreach(GameObject deactivate in deactivateWhenGameIsOver) {
             deactivate.SetActive(false);
