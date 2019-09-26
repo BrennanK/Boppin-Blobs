@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 2263749498911334794}
   - component: {fileID: 2039946328}
   - component: {fileID: 8151648272759377173}
+  - component: {fileID: 123534463}
   m_Layer: 9
   m_Name: Player Blob
   m_TagString: Player
@@ -315,7 +316,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundDamping: 0.05
-  fallingGravityMultiplier: 3
 --- !u!54 &2039946328
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -353,9 +353,19 @@ MonoBehaviour:
   hammerTransform: {fileID: 2263749497900523398}
   hammerBopAim: {fileID: 2263749497187115727}
   blobOriginalColor: {r: 0.5035531, g: 0.38416696, b: 0.8396226, a: 1}
-  isTagCanvas: {fileID: 0}
   taggingManager: {fileID: 0}
-  knockbackDelay: 0.5
+--- !u!114 &123534463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2263749498911334795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec4d7fd55017ba458c86217fe26ac34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2263749499221799621
 GameObject:
   m_ObjectHideFlags: 0
