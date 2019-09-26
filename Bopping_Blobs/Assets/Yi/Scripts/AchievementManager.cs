@@ -1,7 +1,6 @@
 ﻿// Author: Yi Li
 // Date: 08.26.2019
 // Purpose: Controller achievement system
-using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +12,7 @@ public class AchievementManager : MonoBehaviour
 {
     #region Variables
     // Serial#, Name, Completed, Needed, Reward, Status
-    private List<string[]> Achievements = new List<string[]> {
+    public List<string[]> Achievements = new List<string[]> {
         new string[]{"1", "Win a game", "0", "1", "100", "0"},
         new string[]{"2", "Lose a game", "0", "1", "100", "0"},
         new string[]{"3", "Place 7th in a game", "0", "1", "100", "0"},
@@ -32,6 +31,8 @@ public class AchievementManager : MonoBehaviour
 
     // Singleton
     public static AchievementManager _instance;
+    // Reference of inventory
+    private SampleInventory sampleInventory;
     #endregion
     private void Awake()
     {
@@ -51,6 +52,7 @@ public class AchievementManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        sampleInventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<SampleInventory>();
         CreateAchievementPrefabs();
     }
 
@@ -114,7 +116,6 @@ public class AchievementManager : MonoBehaviour
     {
         Debug.Log("Getting coins!");
         // Inventory Script
-        SampleInventory sampleInventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<SampleInventory>();
         sampleInventory.ModifiyCoins(number);
 
         // Play Audio
