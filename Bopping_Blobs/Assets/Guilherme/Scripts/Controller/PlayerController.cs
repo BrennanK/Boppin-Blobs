@@ -80,7 +80,11 @@ public class PlayerController : MonoBehaviour, IBoppable {
     }
 
     public void ChangeSpeed(float _newSpeed) {
-        m_characterSpeed = _newSpeed * 1.1f;
+        m_characterSpeed = _newSpeed;
+    }
+
+    public float GetSpeed() {
+        return m_characterSpeed;
     }
 
     public void DeactivateController() {
