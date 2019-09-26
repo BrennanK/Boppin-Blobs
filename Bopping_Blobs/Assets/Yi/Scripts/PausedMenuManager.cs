@@ -151,7 +151,15 @@ public class PausedMenuManager : MonoBehaviour
                 ReturnToMainMenuButton.SetActive(false);
                 CreditsButton.SetActive(true);
 				break;
-			default:
+            case "Garden_v2":
+                BGMPlayer.Stop();
+                BGMPlayer.clip = Level1;
+                BGMPlayer.Play();
+                OptionButton.SetActive(true);
+                ReturnToMainMenuButton.SetActive(true);
+                CreditsButton.SetActive(false);
+                break;
+            default:
 				Debug.Log("No BGM Played!");
 				break;
 		}
