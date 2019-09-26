@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour {
 
     private void Start() {
         m_currentGameTime = gameTime;
-        InvokeRepeating("UpdateScoreboard", 0f, 1f);
+        InvokeRepeating("UpdateScoreboard", 0f, .25f);
         m_taggingManager.FreezeAllPlayers();
         StartCoroutine(StartGameRoutine());
     }

@@ -37,7 +37,15 @@ public class PlayerScoreUI : MonoBehaviour {
     }
 
     private string GetTimeStringFromFloat(float _time) {
+        // Special case for 0
+        if(_time == 0) {
+            return "0:00";
+        }
+
+        string time = _time.ToString();
+        string[] splittedTime = time.Split('.');
+
         // TODO improve this
-        return Mathf.Round(_time).ToString();
+        return $"{splittedTime[0]}:{splittedTime[1].Substring(0,2)}";
     }
 }

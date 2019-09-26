@@ -26,6 +26,10 @@ public class UIManager : MonoBehaviour {
     /// </summary>
     /// <param name="_time">Time (in seconds) to set</param>
     public void UpdateTimerText(float _time) {
+        if(_time == 0) {
+            timerText.text = "0:00";
+        }
+
         string time = _time.ToString();
         string[] splittedTime = time.Split('.');
 
