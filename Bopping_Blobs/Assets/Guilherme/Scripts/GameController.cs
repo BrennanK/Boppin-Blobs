@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
     [Header("General Game Configurations")]
@@ -27,7 +26,7 @@ public class GameController : MonoBehaviour {
 
     private void Start() {
         m_currentGameTime = gameTime;
-        InvokeRepeating("UpdateScoreboard", 0f, .25f);
+        InvokeRepeating("UpdateScoreboard", 0f, 1f);
         m_taggingManager.FreezeAllPlayers();
         StartCoroutine(StartGameRoutine());
     }
@@ -59,9 +58,5 @@ public class GameController : MonoBehaviour {
 
     private void UpdateScoreboard() {
         m_UIManager.UpdateScoreboard(m_taggingManager.Players.ToArray());
-    }
-
-    public void GoToMainMenu() {
-        SceneManager.LoadScene("MainMenu");
     }
 }
