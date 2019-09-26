@@ -1,8 +1,6 @@
 ﻿// Author: Yi Li
 // Date: 09/12/2019
 // Purpose: Functions for main menu
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
