@@ -1,7 +1,6 @@
 ﻿using TMPro;
 using System.Collections;
 using UnityEngine;
-
 // TODO DOTween
 
 public class UIManager : MonoBehaviour {
@@ -74,6 +73,10 @@ public class UIManager : MonoBehaviour {
         centerScreenText.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// <para>Deactivate all UI elements and activates the game over panel</para>
+    /// </summary>
+    /// <param name="_finalPlayerArray">Final player array as of the end of the game</param>
     public void ShowGameOverPanel(TaggingIdentifier[] _finalPlayerArray) {
         foreach(GameObject deactivate in deactivateWhenGameIsOver) {
             deactivate.SetActive(false);

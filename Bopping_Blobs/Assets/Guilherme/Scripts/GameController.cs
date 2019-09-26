@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
     [Header("General Game Configurations")]
@@ -58,5 +59,9 @@ public class GameController : MonoBehaviour {
 
     private void UpdateScoreboard() {
         m_UIManager.UpdateScoreboard(m_taggingManager.Players.ToArray());
+    }
+
+    public void GoToMainMenu() {
+        SceneManager.LoadScene("MainMenu");
     }
 }
