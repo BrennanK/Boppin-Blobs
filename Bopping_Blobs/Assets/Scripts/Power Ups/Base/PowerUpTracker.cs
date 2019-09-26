@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace PowerUp {
     public class PowerUpHolder {
@@ -18,13 +16,24 @@ namespace PowerUp {
         }
     }
 
+    public enum EPowerUps {
+        SUPER_SLAM = 1,
+        SUPER_SPEED = 2,
+        FREEZE = 3,
+        BACK_OFF = 4,
+        IMMUNITY = 5
+    }
+
     public class PowerUpTracker : MonoBehaviour {
         public PowerUpHolder slot1 = new PowerUpHolder();
         public PowerUpHolder slot2 = new PowerUpHolder();
+
+        private IBoppable m_boppableInterface;
         private bool m_isPlayer;
         private UIManager m_UIManager;
 
         private void Start() {
+            m_boppableInterface = GetComponent<IBoppable>();
             m_UIManager = FindObjectOfType<UIManager>();
 
             if(this.tag == "Player") {
@@ -58,6 +67,13 @@ namespace PowerUp {
         }
 
         public void AddPowerUp(PowerUp _powerUp) {
+            switch(_powerUp.powerUp) {
+                case EPowerUps.SUPER_SPEED:
+                    _powerUp.activatePowerUpAction += ActivateSuperSpeed;
+                    _powerUp.resetPowerUpAction += ResetSuperSpeed;
+                    break;
+            }
+
             if (slot1.powerUp == null) {
                 Debug.Log($"Adding power up to slot 1");
                 slot1.powerUp = _powerUp;
@@ -101,6 +117,19 @@ namespace PowerUp {
                 }
             }
         }
+
+        #region Power Up Functions
+        // TODO
+        // ATTENTION!! IMPORTANT!!
+        // IF SOMEONE HAVE ACTIVATE SUPER SPEED AND GET TAGGED, THEIR SPEED WILL BE SET TO THE NORMAL AFTER THAT, AND THEN THE SUPER SPEED WILL RESET, MAKING THEIR BASE SPEED LOWER THAN WHAT IT SHOULD BE!!!
+        public void ActivateSuperSpeed(float _value) {
+            m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() * _value);
+        }
+
+        public void ResetSuperSpeed(float _value) {
+            m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() / _value);
+        }
+        #endregion
 
     }
 }

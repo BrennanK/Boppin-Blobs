@@ -7,6 +7,7 @@ public interface IBoppable {
     void TriggerEndAttackTransition();
     void UpdateWhoIsTag(Transform _whoIsTag);
     void ChangeSpeed(float _newSpeed);
+    float GetSpeed();
 
     // Knockback
     void DeactivateController();

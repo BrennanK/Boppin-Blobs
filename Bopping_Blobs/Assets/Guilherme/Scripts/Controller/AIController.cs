@@ -83,6 +83,10 @@ public class AIController : MonoBehaviour, IBoppable {
         m_navMeshAgent.acceleration = _newSpeed * 2f;
     }
 
+    public float GetSpeed() {
+        return m_navMeshAgent.speed;
+    }
+
     public void DeactivateController() {
         m_isBeingKnockedBack = true;
         m_navMeshAgent.enabled = false;
