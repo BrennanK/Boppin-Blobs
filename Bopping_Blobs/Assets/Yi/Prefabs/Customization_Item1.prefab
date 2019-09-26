@@ -285,11 +285,11 @@ MonoBehaviour:
   imageLarge: {fileID: 1026950252174855705}
   button: {fileID: 114221931273792762}
   Covers:
-  - {fileID: 21300000, guid: 2b9134e61f45b4b93b1bef1ee9eaae1c, type: 3}
-  - {fileID: 21300000, guid: 37682e53d9de2472e88f5596f364d116, type: 3}
-  - {fileID: 21300000, guid: 2d1672b5497a94b9889a395bed41a411, type: 3}
-  - {fileID: 21300000, guid: 354714d636e364935a95ff6328b8c655, type: 3}
-  - {fileID: 21300000, guid: a6fd7499000c54ba18ff517443b9d08e, type: 3}
+  - {fileID: 21300000, guid: 57386425b6a0b464a82fb10a7836e061, type: 3}
+  - {fileID: 21300000, guid: f81ffa3bafa7b4941852ce4227e3c3db, type: 3}
+  - {fileID: 21300000, guid: 17ad73ba864844248aa6ec8997c1b3c6, type: 3}
+  - {fileID: 21300000, guid: 6dc0da9473894430da64591d3a872e3b, type: 3}
+  - {fileID: 21300000, guid: fa0c1a602d6e646c0bc4d08249c0681b, type: 3}
 --- !u!225 &225474622916379966
 CanvasGroup:
   m_ObjectHideFlags: 0
