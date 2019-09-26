@@ -188,7 +188,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
     private IEnumerator KnockbackDelay() {
         yield return new WaitForSeconds(taggingManager.knockbackDelayTime);
-        GetComponent<Renderer>().material.color = blobOriginalColor;
+        m_characterRenderer.material.color = blobOriginalColor;
         m_rigidbodyReference.isKinematic = true;
         m_boppableInterface.ReactivateController();
     }
