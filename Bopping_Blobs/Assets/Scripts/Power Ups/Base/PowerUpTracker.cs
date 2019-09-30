@@ -19,9 +19,7 @@ namespace PowerUp {
     public enum EPowerUps {
         SUPER_SLAM = 1,
         SUPER_SPEED = 2,
-        FREEZE = 3,
-        BACK_OFF = 4,
-        IMMUNITY = 5
+        BACK_OFF = 3,
     }
 
     public class PowerUpTracker : MonoBehaviour {
@@ -71,6 +69,10 @@ namespace PowerUp {
                 case EPowerUps.SUPER_SPEED:
                     _powerUp.activatePowerUpAction += ActivateSuperSpeed;
                     _powerUp.resetPowerUpAction += ResetSuperSpeed;
+                    break;
+                case EPowerUps.SUPER_SLAM:
+                    break;
+                case EPowerUps.BACK_OFF:
                     break;
             }
 

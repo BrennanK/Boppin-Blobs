@@ -23,9 +23,14 @@ public class UIManager : MonoBehaviour {
     public PlayerScoreUI[] finalPlayerScores;
     public GameObject[] deactivateWhenGameIsOver;
 
+    private void OnValidate() {
+        centerScreenText.raycastTarget = false;
+    }
+
     private void Start() {
         gameOverPanel.SetActive(false);
     }
+
 
     /// <summary>
     /// <para>Update timer on screen</para>
