@@ -4,9 +4,9 @@ using System.Linq;
 using UnityEngine;
 
 public class TaggingManager : MonoBehaviour {
-    [Header("Tagging Configuration")]
-    public float isTagSpeed = 6f;
-    public float isNotTagSpeed = 4f;
+    [Header("King Mode Configuration")]
+    public float baseSpeed = 10f;
+    public float kingSpeedMultiplier = 0.85f;
 
     [Header("Knockback Configuration")]
     [Tooltip("When a player is tagged, everyone within the radius will be knocked back")]

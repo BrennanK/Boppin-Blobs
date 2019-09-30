@@ -112,7 +112,7 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <para>Set this player as TAG</para>
     /// </summary>
     public void SetAsTagging() {
-        m_boppableInterface.ChangeSpeed(taggingManager.isTagSpeed);
+        m_boppableInterface.ChangeSpeed(taggingManager.baseSpeed * taggingManager.kingSpeedMultiplier);
         m_currentTaggingState = ETaggingBehavior.Tagging;
     }
 
@@ -120,7 +120,7 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <para>Set this player as NOT TAG</para>
     /// </summary>
     public void SetAsNotTag() {
-        m_boppableInterface.ChangeSpeed(taggingManager.isNotTagSpeed);
+        m_boppableInterface.ChangeSpeed(taggingManager.baseSpeed);
         m_currentTaggingState = ETaggingBehavior.Running;
     }
 
