@@ -7,12 +7,12 @@ public class TaggingManager : MonoBehaviour {
     [Header("Tagging Configuration")]
     public float isTagSpeed = 6f;
     public float isNotTagSpeed = 4f;
-    [Tooltip("When a player is tagged, everyone within the radius will be knocked back")]
-    public float knockbackRadius = 10f;
-    public float knockbackForce = 5f;
 
     [Header("Knockback Configuration")]
-    public float knockbackDelayTime = 0.5f;
+    [Tooltip("When a player is tagged, everyone within the radius will be knocked back")]
+    public float knockbackDelayTime = 2.0f;
+    public float knockbackRadius = 10f;
+    public float knockbackForce = 5f;
 
     private int m_currentPlayerTaggingID;
     public int WhoIsTag {
@@ -96,7 +96,7 @@ public class TaggingManager : MonoBehaviour {
         m_currentPlayerTaggingID = _whoIsTag.PlayerIdentifier;
         _whoIsTag.SetAsTagging();
         OnPlayerWasTagged?.Invoke(_whoIsTag);
-        m_UIManager.ShowPlayerTaggedText(_whoIsTag.PlayerName, knockbackDelayTime * 2f);
+        m_UIManager.ShowPlayerTaggedText(_whoIsTag.PlayerName, knockbackDelayTime);
 
         if (_knockbackEffect) {
             StartCoroutine(KnockbackAllPlayerRoutine());
@@ -110,12 +110,12 @@ public class TaggingManager : MonoBehaviour {
         foreach (TaggingIdentifier player in m_playersIdentifiers) {
             if (player.PlayerIdentifier != m_currentPlayerTaggingID && Vector3.Distance(player.transform.position, whoIsTag.position) < knockbackRadius) {
                 Vector3 knockbackDirection = (player.transform.position - GetItTransform().position);
-                player.KnockbackPlayer(Color.magenta, knockbackDirection.normalized * knockbackForce);
+                player.KnockbackPlayer(Color.magenta, knockbackDirection.normalized * knockbackForce, knockbackDelayTime);
             }
         }
 
-        yield return new WaitForSecondsRealtime(knockbackDelayTime * 2f);
-        m_spawnPointManager.RespawnAllPlayers();
+        yield return new WaitForSecondsRealtime(knockbackDelayTime / 2.0f);
+        Time.timeScale = 1.0f;
     }
 
     /// <summary>

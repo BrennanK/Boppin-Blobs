@@ -138,9 +138,6 @@ public class TaggingIdentifier : MonoBehaviour {
                 TaggingIdentifier playerHitted = bopCollision[i].transform.gameObject.GetComponent<TaggingIdentifier>();
                 if (playerHitted != null && m_playerIdentifier != playerHitted.PlayerIdentifier) {
 
-                    Vector3 knockbackVector = playerHitted.transform.position - hammerBopAim.transform.position;
-                    playerHitted.KnockbackPlayer(Color.magenta, knockbackVector.normalized * taggingManager.knockbackForce);
-
                     if(taggingManager.WhoIsTag == playerHitted.PlayerIdentifier) {
                         playerHitted.SetAsNotTag();
                         taggingManager.PlayerWasTagged(this, true);
@@ -177,17 +174,17 @@ public class TaggingIdentifier : MonoBehaviour {
     /// </summary>
     /// <param name="_knockbackColor">Feedback Color for knockbacked player</param>
     /// <param name="_knockbackIntensity">Direction and intensity player will be knocked back</param>
-    public void KnockbackPlayer(Color _knockbackColor, Vector3 _knockbackIntensity) {
+    public void KnockbackPlayer(Color _knockbackColor, Vector3 _knockbackIntensity, float _delayTime) {
         m_characterRenderer.material.color = _knockbackColor;
         m_boppableInterface.DeactivateController();
 
         m_rigidbodyReference.isKinematic = false;
         m_rigidbodyReference.velocity = _knockbackIntensity;
-        StartCoroutine(KnockbackDelay());
+        StartCoroutine(KnockbackDelay(_delayTime));
     }
 
-    private IEnumerator KnockbackDelay() {
-        yield return new WaitForSeconds(taggingManager.knockbackDelayTime);
+    private IEnumerator KnockbackDelay(float _delayTime) {
+        yield return new WaitForSeconds(_delayTime);
         m_characterRenderer.material.color = blobOriginalColor;
         m_rigidbodyReference.isKinematic = true;
         m_boppableInterface.ReactivateController();
