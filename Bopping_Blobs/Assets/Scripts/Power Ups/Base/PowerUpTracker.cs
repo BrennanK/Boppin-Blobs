@@ -26,11 +26,13 @@ namespace PowerUp {
         public PowerUpHolder slot1 = new PowerUpHolder();
         public PowerUpHolder slot2 = new PowerUpHolder();
 
+        private TaggingManager m_taggingManager;
         private IBoppable m_boppableInterface;
         private bool m_isPlayer;
         private UIManager m_UIManager;
 
         private void Start() {
+            m_taggingManager = FindObjectOfType<TaggingManager>();
             m_boppableInterface = GetComponent<IBoppable>();
             m_UIManager = FindObjectOfType<UIManager>();
 
@@ -44,6 +46,14 @@ namespace PowerUp {
         }
 
         private void Update() {
+            if(Input.GetKeyDown(KeyCode.Q)) {
+                ActivatePowerUp1();
+            }
+
+            if(Input.GetKeyDown(KeyCode.E)) {
+                ActivatePowerUp2();
+            }
+
             CheckPowerUp(slot1);
             CheckPowerUp(slot2);
         }
@@ -125,11 +135,11 @@ namespace PowerUp {
         // ATTENTION!! IMPORTANT!!
         // IF SOMEONE HAVE ACTIVATE SUPER SPEED AND GET TAGGED, THEIR SPEED WILL BE SET TO THE NORMAL AFTER THAT, AND THEN THE SUPER SPEED WILL RESET, MAKING THEIR BASE SPEED LOWER THAN WHAT IT SHOULD BE!!!
         public void ActivateSuperSpeed(float _value) {
-            m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() * _value);
+            m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() + (m_taggingManager.baseSpeed * _value));
         }
 
         public void ResetSuperSpeed(float _value) {
-            m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() / _value);
+            m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() - (m_taggingManager.baseSpeed * _value));
         }
         #endregion
 

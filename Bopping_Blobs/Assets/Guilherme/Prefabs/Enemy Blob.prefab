@@ -517,6 +517,7 @@ GameObject:
   - component: {fileID: 7080687607931861424}
   - component: {fileID: 6082885376086164747}
   - component: {fileID: 792157179}
+  - component: {fileID: 6157029889411830316}
   m_Layer: 9
   m_Name: Enemy Blob
   m_TagString: Untagged
@@ -632,6 +633,18 @@ MonoBehaviour:
   hammerBopAim: {fileID: 6082885374619583996}
   blobOriginalColor: {r: 0.38020647, g: 0.9056604, b: 0.86695313, a: 1}
   taggingManager: {fileID: 0}
+--- !u!114 &6157029889411830316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6082885376086164745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec4d7fd55017ba458c86217fe26ac34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6082885376101268286
 GameObject:
   m_ObjectHideFlags: 0

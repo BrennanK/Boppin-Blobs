@@ -19,7 +19,7 @@ namespace PowerUp {
 
         private void Start() {
             m_powerUps = new PowerUp[1];
-            m_powerUps[0] = new PowerUp("Super Speed", true, 5f, 1.25f, EPowerUps.SUPER_SPEED);
+            m_powerUps[0] = new PowerUp("Super Speed", true, 5f, 0.25f, EPowerUps.SUPER_SPEED);
 
             m_disableTimer = m_disableTimerStart;
         }

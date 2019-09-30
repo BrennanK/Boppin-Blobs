@@ -57,12 +57,19 @@ public class PlayerController : MonoBehaviour, IBoppable {
     }
 
     private void HandleMovement() {
-        m_movementVector.x = m_digitalJoystickReference.Horizontal * m_characterSpeed;
-        m_movementVector.z = m_digitalJoystickReference.Vertical * m_characterSpeed;
+        // TEMP
+        if(m_digitalJoystickReference.Horizontal == 0 && m_digitalJoystickReference.Vertical == 0) {
+            m_movementVector.x = Input.GetAxis("Horizontal") * m_characterSpeed;
+            m_movementVector.z = Input.GetAxis("Vertical") * m_characterSpeed;
+        } else {
+            m_movementVector.x = m_digitalJoystickReference.Horizontal * m_characterSpeed;
+            m_movementVector.z = m_digitalJoystickReference.Vertical * m_characterSpeed;
+        }
+
         transform.LookAt(transform.position + new Vector3(m_movementVector.x, 0f, m_movementVector.z));
     }
 
-    #region IBoppable Functions
+#region IBoppable Functions
     public bool HasAttacked() {
         return m_joyButtonReference.pressed;
     }
@@ -96,5 +103,5 @@ public class PlayerController : MonoBehaviour, IBoppable {
         m_characterControllerReference.enabled = true;
         m_currentState = ECharacterState.Moving;
     }
-    #endregion
+#endregion
 }
