@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace PowerUp {
     public class PowerUpHolder {
@@ -81,9 +83,11 @@ namespace PowerUp {
                     _powerUp.activatePowerUpAction += ActivateSuperSpeed;
                     _powerUp.resetPowerUpAction += ResetSuperSpeed;
                     break;
-                case EPowerUps.SUPER_SLAM:
+                case EPowerUps.SUPER_SLAM:                    
                     break;
                 case EPowerUps.BACK_OFF:
+                    _powerUp.activatePowerUpAction += ActivateBackOff;
+                    _powerUp.resetPowerUpAction += ResetBackOff;
                     break;
             }
 
@@ -113,16 +117,15 @@ namespace PowerUp {
         private void ActivatePowerUp(ref PowerUpHolder _slot) {
             if(_slot.canActivate) {
                 if(_slot.powerUp != null) {
+                    _slot.canActivate = false;
+                    _slot.powerUp.ActivatePowerUp();
 
-                    if(_slot.powerUp.hasDuration) {
+                    if (_slot.powerUp.hasDuration) {
                         _slot.powerUpTimer = _slot.powerUp.duration;
                         _slot.activated = true;
                     } else {
                         _slot.powerUp = null;
                     }
-
-                    _slot.canActivate = false;
-                    _slot.powerUp.ActivatePowerUp();
 
                     if(m_isPlayer) {
                         m_UIManager.UpdatePowerUpUI(slot1, slot2);
@@ -143,6 +146,21 @@ namespace PowerUp {
         public void ResetSuperSpeed(float _value) {
             Debug.Log($"Resetting Super Speed ({m_boppableInterface.GetSpeed()}, {m_taggingManager.baseSpeed}, {_value}) - Speed will be {m_boppableInterface.GetSpeed() - (m_taggingManager.baseSpeed * _value)}");
             m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() - (m_taggingManager.baseSpeed * _value));
+        }
+
+        public void ActivateBackOff(float _value) {
+            List<TaggingIdentifier> taggingIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
+            taggingIdentifiers.Remove(this.GetComponent<TaggingIdentifier>());
+
+            foreach(TaggingIdentifier player in taggingIdentifiers) {
+                if(Vector3.Distance(player.transform.position, transform.position) < m_taggingManager.knockbackRadius) {
+                    player.KnockbackPlayer(Color.magenta, (player.transform.position - transform.position).normalized * m_taggingManager.knockbackForce * 2f, _value);
+                }
+            }
+        }
+
+        public void ResetBackOff(float _value) {
+            // nope!
         }
         #endregion
 

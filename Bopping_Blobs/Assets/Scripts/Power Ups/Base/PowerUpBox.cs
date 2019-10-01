@@ -18,8 +18,9 @@ namespace PowerUp {
         private int m_itemNumber;
 
         private void Start() {
-            m_powerUps = new PowerUp[1];
+            m_powerUps = new PowerUp[2];
             m_powerUps[0] = new PowerUp("Super Speed", true, 5f, 0.25f, EPowerUps.SUPER_SPEED);
+            m_powerUps[1] = new PowerUp("Back Off", false, 0.0f, 1f, EPowerUps.BACK_OFF);
 
             m_disableTimer = m_disableTimerStart;
         }
@@ -39,7 +40,7 @@ namespace PowerUp {
 
             if(powerUpTracker != null) {
                 Debug.Log($"Power Up Box Collected!: {m_powerUps[0].GetHashCode()}");
-                powerUpTracker.AddPowerUp(m_powerUps[0].Clone());
+                powerUpTracker.AddPowerUp(m_powerUps[Random.Range(0, m_powerUps.Length)].Clone());
                 DisablePowerUp();
             }
 
