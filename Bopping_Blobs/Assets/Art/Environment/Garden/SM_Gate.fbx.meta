@@ -1,22 +1,67 @@
 fileFormatVersion: 2
-guid: 0974cb3ac8df4b44ca81ea853425de55
+guid: d95cec9361663ef43b80cd63e9fa23bb
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: Fence:pCube1
-    100002: //RootNode
-    400000: Fence:pCube1
-    400002: //RootNode
-    2100000: Fence_lambert2
-    2300000: Fence:pCube1
-    3300000: Fence:pCube1
-    4300000: Fence:pCube1
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Fence_lambert2
-    second: {fileID: 2100000, guid: e613dfd208b388547aaec160d13b8313, type: 2}
+    100000: pCube18
+    100002: pCube19
+    100004: pCube20
+    100006: pCube68
+    100008: pCube69
+    100010: pCube70
+    100012: pPlane1
+    100014: pPlane2
+    100016: pPlane3
+    100018: pPlane4
+    100020: pPlane5
+    100022: pPlane6
+    100024: pPlane7
+    100026: //RootNode
+    100028: transform1
+    100030: transform10
+    100032: transform11
+    100034: transform2
+    100036: transform3
+    100038: transform4
+    100040: transform5
+    100042: transform6
+    100044: transform7
+    100046: transform8
+    100048: transform9
+    400000: pCube18
+    400002: pCube19
+    400004: pCube20
+    400006: pCube68
+    400008: pCube69
+    400010: pCube70
+    400012: pPlane1
+    400014: pPlane2
+    400016: pPlane3
+    400018: pPlane4
+    400020: pPlane5
+    400022: pPlane6
+    400024: pPlane7
+    400026: //RootNode
+    400028: transform1
+    400030: transform10
+    400032: transform11
+    400034: transform2
+    400036: transform3
+    400038: transform4
+    400040: transform5
+    400042: transform6
+    400044: transform7
+    400046: transform8
+    400048: transform9
+    2100000: lambert5
+    2100002: lambert4
+    2300000: pCube70
+    2300002: pPlane7
+    3300000: pCube70
+    3300002: pPlane7
+    4300000: pPlane7
+    4300002: pCube70
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
