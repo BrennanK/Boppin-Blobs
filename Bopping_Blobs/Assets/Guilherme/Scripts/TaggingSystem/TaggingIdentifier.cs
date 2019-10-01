@@ -184,7 +184,9 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private IEnumerator KnockbackDelay(float _delayTime) {
-        yield return new WaitForSeconds(_delayTime);
+        yield return new WaitForSeconds(_delayTime / 2.0f);
+        m_rigidbodyReference.velocity = Vector3.zero;
+        yield return new WaitForSeconds(_delayTime / 2.0f);
         m_characterRenderer.material.color = blobOriginalColor;
         m_rigidbodyReference.isKinematic = true;
         m_boppableInterface.ReactivateController();

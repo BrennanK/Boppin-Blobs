@@ -6,7 +6,6 @@ namespace PowerUp {
         public bool activated;
         public bool canActivate;
         public float powerUpTimer;
-        // UI Element
 
         public PowerUpHolder() {
             powerUp = null;
