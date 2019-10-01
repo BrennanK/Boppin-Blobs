@@ -606,11 +606,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3614a9063a8211b4998b271fd01ade6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseReactionTime: 0.24
+  baseReactionTime: 0.15
   reactionTimeVariation: 0.05
   minStartTime: 0.15
   maxStartTime: 0.35
-  attackingDistance: 1.1
+  attackingDistance: 1.5
 --- !u!114 &792157179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -839,7 +839,7 @@ PrefabInstance:
     - target: {fileID: 2300000, guid: 4bcbd17eb6efa3b4f89ff081a0af5ecf, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 1260857ef22d89c40bbe0471455ba444, type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4bcbd17eb6efa3b4f89ff081a0af5ecf, type: 3}
 --- !u!4 &3661318015720505364 stripped
