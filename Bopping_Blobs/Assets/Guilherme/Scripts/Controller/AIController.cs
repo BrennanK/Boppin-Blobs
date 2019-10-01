@@ -61,7 +61,7 @@ public class AIController : MonoBehaviour, IBoppable {
                                .Action("Attack It", AttackNearestPlayer)
                            .End()
                            .Sequence("Run towards It")
-                               .Action("Run towards available player", RunTowardsPlayerToBeFollowed)
+                               .Action("Run towards available player", ChaseKing)
                            .End()
                        .End()
                    .End()
@@ -151,7 +151,9 @@ public class AIController : MonoBehaviour, IBoppable {
             return EReturnStatus.FAILURE;
         }
 
-        if(m_currentState == EAIStates.KING_FOLLOWING_PREFERRED_PATH || m_currentState == EAIStates.KING_FOLLOWING_PATH) {
+        if(m_currentState == EAIStates.KING_FOLLOWING_PREFERRED_PATH || 
+            m_currentState == EAIStates.KING_FOLLOWING_PATH ||
+            m_currentState == EAIStates.KING_FOLLOWING_RANDOM_PATH) {
             // Checking if we are at stopping distance
             if(m_navMeshAgent.remainingDistance < 0.5f) {
                 return EReturnStatus.FAILURE;
@@ -214,9 +216,9 @@ public class AIController : MonoBehaviour, IBoppable {
         return EReturnStatus.SUCCESS;
     }
 
-    private EReturnStatus RunTowardsPlayerToBeFollowed() {
+    private EReturnStatus ChaseKing() {
         if(m_navMeshAgent.isOnNavMesh) {
-            m_navMeshAgent.SetDestination(m_playerCurrentlyBeingFollowed.position);
+            m_navMeshAgent.SetDestination(m_playerCurrentlyBeingFollowed.position + m_playerCurrentlyBeingFollowed.forward);
             return EReturnStatus.SUCCESS;
         }
 
