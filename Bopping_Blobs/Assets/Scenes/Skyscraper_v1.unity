@@ -22995,6 +22995,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2263749498911334794, guid: d0facf9541f32bd4bac806a4b6e6afaa,
+        type: 3}
+      propertyPath: groundDamping
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0facf9541f32bd4bac806a4b6e6afaa, type: 3}
 --- !u!4 &676498716 stripped
@@ -31937,11 +31942,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63ebc7d2241e36c4889bd4b98d7798a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTagSpeed: 9
-  isNotTagSpeed: 12
+  baseSpeed: 10
+  kingSpeedMultiplier: 0.85
+  knockbackDelayTime: 0.5
   knockbackRadius: 10
   knockbackForce: 10
-  knockbackDelayTime: 0.5
+  aiPreferredSpots: []
 --- !u!1 &899643336
 GameObject:
   m_ObjectHideFlags: 0
@@ -39339,7 +39345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9235032f6cd3536449c49962effce35e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 24.605682
+      value: 24.11
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9235032f6cd3536449c49962effce35e, type: 3}
       propertyPath: m_LocalPosition.y
