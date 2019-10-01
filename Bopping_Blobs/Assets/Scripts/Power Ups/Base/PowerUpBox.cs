@@ -38,8 +38,8 @@ namespace PowerUp {
             PowerUpTracker powerUpTracker = _other.GetComponent<PowerUpTracker>();
 
             if(powerUpTracker != null) {
-                Debug.Log("Power Up Box Collected!");
-                powerUpTracker.AddPowerUp(m_powerUps[0]);
+                Debug.Log($"Power Up Box Collected!: {m_powerUps[0].GetHashCode()}");
+                powerUpTracker.AddPowerUp(m_powerUps[0].Clone());
                 DisablePowerUp();
             }
 

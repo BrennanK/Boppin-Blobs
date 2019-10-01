@@ -41,6 +41,8 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private void Start() {
+        // TODO maybe somehow have the King AI recognize other blobs as obstacles ?!
+        // BAD IDEA 1: Have a pool of navmesh obstacles, so the King AI pull then, activate then, put on all the blobs positions, calculate path, and then deactivate all obstacles.
         m_behaviorTree = new BehaviorTree.BehaviorTree(
            new BehaviorTreeBuilder()
                .Selector("AI Behavior Main Selector")

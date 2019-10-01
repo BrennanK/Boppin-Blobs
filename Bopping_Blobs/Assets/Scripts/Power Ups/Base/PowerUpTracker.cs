@@ -53,17 +53,18 @@ namespace PowerUp {
                 ActivatePowerUp2();
             }
 
-            CheckPowerUp(slot1);
-            CheckPowerUp(slot2);
+            CheckPowerUp(ref slot1);
+            CheckPowerUp(ref slot2);
         }
 
-        private void CheckPowerUp(PowerUpHolder _slot) {
+        private void CheckPowerUp(ref PowerUpHolder _slot) {
             if(_slot.activated) {
                 _slot.powerUpTimer -= Time.deltaTime;
 
                 if (_slot.powerUpTimer <= 0) {
                     _slot.activated = false;
                     _slot.powerUp.ResetEffects();
+
                     _slot.powerUp = null;
                 }
 
@@ -74,6 +75,7 @@ namespace PowerUp {
         }
 
         public void AddPowerUp(PowerUp _powerUp) {
+            Debug.Log($"Power Up Received by Power Up Tracker: {_powerUp.GetHashCode()}");
             switch(_powerUp.powerUp) {
                 case EPowerUps.SUPER_SPEED:
                     _powerUp.activatePowerUpAction += ActivateSuperSpeed;
@@ -101,14 +103,14 @@ namespace PowerUp {
         }
 
         public void ActivatePowerUp1() {
-            ActivatePowerUp(slot1);
+            ActivatePowerUp(ref slot1);
         }
 
         public void ActivatePowerUp2() {
-            ActivatePowerUp(slot2);
+            ActivatePowerUp(ref slot2);
         }
 
-        private void ActivatePowerUp(PowerUpHolder _slot) {
+        private void ActivatePowerUp(ref PowerUpHolder _slot) {
             if(_slot.canActivate) {
                 if(_slot.powerUp != null) {
 
@@ -134,10 +136,12 @@ namespace PowerUp {
         // ATTENTION!! IMPORTANT!!
         // IF SOMEONE HAVE ACTIVATE SUPER SPEED AND GET TAGGED, THEIR SPEED WILL BE SET TO THE NORMAL AFTER THAT, AND THEN THE SUPER SPEED WILL RESET, MAKING THEIR BASE SPEED LOWER THAN WHAT IT SHOULD BE!!!
         public void ActivateSuperSpeed(float _value) {
+            Debug.Log($"Activating Super Speed ({m_boppableInterface.GetSpeed()}, {m_taggingManager.baseSpeed}, {_value}) - Speed will be {m_boppableInterface.GetSpeed() + (m_taggingManager.baseSpeed * _value)}");
             m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() + (m_taggingManager.baseSpeed * _value));
         }
 
         public void ResetSuperSpeed(float _value) {
+            Debug.Log($"Resetting Super Speed ({m_boppableInterface.GetSpeed()}, {m_taggingManager.baseSpeed}, {_value}) - Speed will be {m_boppableInterface.GetSpeed() - (m_taggingManager.baseSpeed * _value)}");
             m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() - (m_taggingManager.baseSpeed * _value));
         }
         #endregion

@@ -29,5 +29,15 @@ namespace PowerUp {
         public void ResetEffects() {
             resetPowerUpAction?.Invoke(powerUpValue);
         }
+
+        /// <summary>
+        /// <para>Returns a clone of this power up</para>
+        /// </summary>
+        /// <returns>a NEW powerup with same configuration</returns>
+        /// Why is this here?
+        /// (In C#) Value types are passed by value. Objects are not passed to methods; rather, references to objects are passed
+        public PowerUp Clone() {
+            return new PowerUp(powerUpName, hasDuration, duration, powerUpValue, powerUp);
+        }
     }
 }
