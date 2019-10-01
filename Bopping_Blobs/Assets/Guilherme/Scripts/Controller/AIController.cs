@@ -1,6 +1,8 @@
 ﻿using BehaviorTree;
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class AIController : MonoBehaviour, IBoppable {
@@ -48,7 +50,8 @@ public class AIController : MonoBehaviour, IBoppable {
                        .Selector("is King Selector - Select one of these actions to use to run away")
                            // Run to random point (this can be biased or not)
                            .Condition("Check if can search for preferred path", IsKingFollowingPath)
-                           .Action("Run to farthest preferred location", RunToFarthestPreferredLocation)
+                           .Action("Run to a preferred location that is not the closest one", RunToFarthestPreferredLocation)
+                           .Action("Run to farthest preferred location, running from player", RunToFarthestFromPlayerPreferredLocation)
                            .Action("Run away from closest player", RunAwayFromClosestPlayer)
                        .End()
                    .End()
@@ -147,13 +150,12 @@ public class AIController : MonoBehaviour, IBoppable {
             return EReturnStatus.FAILURE;
         }
 
-        if(m_currentState == EAIStates.KING_SEARCHING_PATH) {
+        if(m_currentState == EAIStates.KING_SEARCHING_PATH || m_currentState == EAIStates.KING_FOLLOWING_RANDOM_PATH) {
             return EReturnStatus.FAILURE;
         }
 
         if(m_currentState == EAIStates.KING_FOLLOWING_PREFERRED_PATH || 
-            m_currentState == EAIStates.KING_FOLLOWING_PATH ||
-            m_currentState == EAIStates.KING_FOLLOWING_RANDOM_PATH) {
+            m_currentState == EAIStates.KING_FOLLOWING_PATH) {
             // Checking if we are at stopping distance
             if(m_navMeshAgent.remainingDistance < 0.5f) {
                 return EReturnStatus.FAILURE;
@@ -163,7 +165,33 @@ public class AIController : MonoBehaviour, IBoppable {
         return EReturnStatus.SUCCESS;
     }
 
+    /// <summary>
+    /// <para>Run to farthest preferred location that is not the closest one I am at right now</para>
+    /// </summary>
     private EReturnStatus RunToFarthestPreferredLocation() {
+        List<Transform> preferredLocations = m_taggingIdentifier.taggingManager.aiPreferredSpots.ToList();
+
+        if(preferredLocations.Count == 0) {
+            return EReturnStatus.FAILURE;
+        }
+
+        Transform closestLocation = preferredLocations[0];
+        for(int i = 0; i < preferredLocations.Count; i++) {
+            if(Vector3.Distance(transform.position, preferredLocations[i].position) < Vector3.Distance(transform.position, closestLocation.position)) {
+                closestLocation = preferredLocations[i];
+            }
+        }
+
+        preferredLocations.Remove(closestLocation);
+
+        m_currentState = EAIStates.KING_FOLLOWING_PREFERRED_PATH;
+        Transform chosenLocation = preferredLocations[Random.Range(0, preferredLocations.Count)];
+        Debug.Log($"AI Chosen Location: {chosenLocation.name}");
+        SetPathToAgentFromPosition(chosenLocation.position);
+        return EReturnStatus.SUCCESS;
+    }
+
+    private EReturnStatus RunToFarthestFromPlayerPreferredLocation() {
         Vector3 closestPlayerPosition = GetClosestPlayerPosition();
         Transform[] possibleSpotsToRunTo = m_taggingIdentifier.taggingManager.aiPreferredSpots;
 
@@ -171,15 +199,16 @@ public class AIController : MonoBehaviour, IBoppable {
             return EReturnStatus.FAILURE;
         }
 
-        Vector3 preferredLocation = possibleSpotsToRunTo[0].position;
+        Transform preferredLocation = possibleSpotsToRunTo[0];
         for(int i = 1; i < possibleSpotsToRunTo.Length; i++) {
-            if(Vector3.Distance(closestPlayerPosition, possibleSpotsToRunTo[i].position) > Vector3.Distance(closestPlayerPosition, preferredLocation)) {
-                preferredLocation = possibleSpotsToRunTo[i].position;
+            if(Vector3.Distance(closestPlayerPosition, possibleSpotsToRunTo[i].position) > Vector3.Distance(closestPlayerPosition, preferredLocation.position)) {
+                preferredLocation = possibleSpotsToRunTo[i];
             }
         }
 
         m_currentState = EAIStates.KING_FOLLOWING_PREFERRED_PATH;
-        SetPathToAgentFromPosition(preferredLocation);
+        Debug.Log($"AI Preferred Location: {preferredLocation.name}");
+        SetPathToAgentFromPosition(preferredLocation.position);
         return EReturnStatus.RUNNING;
     }
 
@@ -195,6 +224,7 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private void SetPathToAgentFromPosition(Vector3 _position) {
         _position = new Vector3(_position.x, transform.position.y, _position.z);
+        Vector3 positionToGo = GetRandomPositionAroundAPoint(_position);
 
         NavMeshPath path = new NavMeshPath();
         if(m_navMeshAgent.CalculatePath(_position, path)) {
@@ -272,12 +302,14 @@ public class AIController : MonoBehaviour, IBoppable {
     // TODO Get a random point given two angles (input: I want to escape considering these two angles)
     private Vector3 GetRandomPositionAroundAPoint(Vector3 _point) {
         // TODO maybe this range can be a public variable to tune the AI
-        float range = 5f;
+        float range = 10f;
         // TODO max tries can be a constant value on class
         int maxTries = 10;
 
         for(int i = 0; i < maxTries; i++) {
-            Vector3 randomPosition = _point + (Random.insideUnitSphere * range);
+            Vector3 randomPosition = _point + (Random.insideUnitSphere * (range / 2.0f));
+            randomPosition.y = transform.position.y;
+
             NavMeshHit navMeshHit;
 
             if (NavMesh.SamplePosition(randomPosition, out navMeshHit, range, NavMesh.AllAreas)) {
