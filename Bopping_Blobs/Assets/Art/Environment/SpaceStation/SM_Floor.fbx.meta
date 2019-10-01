@@ -10,7 +10,17 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: pCube6
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BaseColor1
+    second: {fileID: 2100000, guid: e82b20d6a479933498be6ece0e79c35f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BaseColor2
+    second: {fileID: 2100000, guid: a1027df5529028941ac0d6f25da2cef0, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
