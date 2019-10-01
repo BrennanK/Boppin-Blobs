@@ -82,7 +82,17 @@ ModelImporter:
     2300000: Fence:group8_Fence:group7_Fence:pCube7
     3300000: Fence:group8_Fence:group7_Fence:pCube7
     4300000: Fence:group8_Fence:group7_Fence:pCube7
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fence_lambert2
+    second: {fileID: 2100000, guid: e613dfd208b388547aaec160d13b8313, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: e613dfd208b388547aaec160d13b8313, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
