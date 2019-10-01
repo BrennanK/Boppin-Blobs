@@ -2,7 +2,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 // TODO DOTween
 
 public class UIManager : MonoBehaviour {
@@ -15,8 +15,14 @@ public class UIManager : MonoBehaviour {
     public TextMeshProUGUI timerText;
 
     [Header("Power Up UI")]
+    public Image slot1Image;
+    public Image slot2Image;
     public TextMeshProUGUI slot1Text;
     public TextMeshProUGUI slot2Text;
+    public Sprite emptyPowerUpSprite;
+    public Sprite superSlamSprite;
+    public Sprite superSpeedSprite;
+    public Sprite backoffSprite;
 
     [Header("Game Over Screen")]
     public GameObject gameOverPanel;
@@ -28,6 +34,8 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Start() {
+        slot1Text.text = "";
+        slot2Text.text = "";
         gameOverPanel.SetActive(false);
     }
 
@@ -105,11 +113,50 @@ public class UIManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// <para>Update the Power Ups information on UI</para>
+    /// <para>Update the Power Ups images on UI</para>
     /// </summary>
     /// <param name="_slot1">Power Up on Slot 1</param>
     /// <param name="_slot2">Power Up on Slot 2</param>
     public void UpdatePowerUpUI(PowerUpHolder _slot1, PowerUpHolder _slot2) {
+        if(_slot1.powerUp != null) {
+            switch(_slot1.powerUp.powerUp) {
+                case EPowerUps.SUPER_SPEED:
+                    slot1Image.sprite = superSpeedSprite;
+                    break;
+                case EPowerUps.SUPER_SLAM:
+                    slot1Image.sprite = superSlamSprite;
+                    break;
+                case EPowerUps.BACK_OFF:
+                    slot1Image.sprite = backoffSprite;
+                    break;
+            }
+        } else {
+            slot1Image.sprite = emptyPowerUpSprite;
+        }
+
+        if(_slot2.powerUp != null) {
+            switch (_slot2.powerUp.powerUp) {
+                case EPowerUps.SUPER_SPEED:
+                    slot2Image.sprite = superSpeedSprite;
+                    break;
+                case EPowerUps.SUPER_SLAM:
+                    slot2Image.sprite = superSlamSprite;
+                    break;
+                case EPowerUps.BACK_OFF:
+                    slot2Image.sprite = backoffSprite;
+                    break;
+            }            
+        } else {
+            slot2Image.sprite = emptyPowerUpSprite;
+        }
+    }
+
+    /// <summary>
+    /// <para>Update the Power Ups information on UI</para>
+    /// </summary>
+    /// <param name="_slot1">Power Up on Slot 1</param>
+    /// <param name="_slot2">Power Up on Slot 2</param>
+    public void UpdateTextPowerUpUI(PowerUpHolder _slot1, PowerUpHolder _slot2) {
         if(_slot1.powerUp != null) {
             if(_slot1.activated) {
                 slot1Text.text = $"{_slot1.powerUp.powerUpName} ({Mathf.Round(_slot1.powerUpTimer)}s)";
