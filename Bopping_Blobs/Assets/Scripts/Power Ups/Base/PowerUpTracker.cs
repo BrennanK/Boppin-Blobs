@@ -28,11 +28,13 @@ namespace PowerUp {
         public PowerUpHolder slot2 = new PowerUpHolder();
 
         private TaggingManager m_taggingManager;
+        private TaggingIdentifier m_playerTaggingIdentifier;
         private IBoppable m_boppableInterface;
         private bool m_isPlayer;
         private UIManager m_UIManager;
 
         private void Start() {
+            m_playerTaggingIdentifier = GetComponent<TaggingIdentifier>();
             m_taggingManager = FindObjectOfType<TaggingManager>();
             m_boppableInterface = GetComponent<IBoppable>();
             m_UIManager = FindObjectOfType<UIManager>();
@@ -83,11 +85,11 @@ namespace PowerUp {
                     _powerUp.activatePowerUpAction += ActivateSuperSpeed;
                     _powerUp.resetPowerUpAction += ResetSuperSpeed;
                     break;
-                case EPowerUps.SUPER_SLAM:                    
+                case EPowerUps.SUPER_SLAM:
+                    _powerUp.activatePowerUpAction += ActivateSuperSlam;
                     break;
                 case EPowerUps.BACK_OFF:
                     _powerUp.activatePowerUpAction += ActivateBackOff;
-                    _powerUp.resetPowerUpAction += ResetBackOff;
                     break;
             }
 
@@ -124,6 +126,7 @@ namespace PowerUp {
                         _slot.powerUpTimer = _slot.powerUp.duration;
                         _slot.activated = true;
                     } else {
+                        _slot.powerUp.ResetEffects();
                         _slot.powerUp = null;
                     }
 
@@ -159,8 +162,8 @@ namespace PowerUp {
             }
         }
 
-        public void ResetBackOff(float _value) {
-            // nope!
+        public void ActivateSuperSlam(float _value) {
+            m_playerTaggingIdentifier.ForceAttackWithMultiplier(_value);
         }
         #endregion
 

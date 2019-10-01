@@ -107,7 +107,6 @@ public class TaggingManager : MonoBehaviour {
     }
 
     private IEnumerator KnockbackAllPlayerRoutine() {
-        Time.timeScale = 0.25f;
 
         Transform whoIsTag = GetItTransform();
         foreach (TaggingIdentifier player in m_playersIdentifiers) {
@@ -118,7 +117,6 @@ public class TaggingManager : MonoBehaviour {
         }
 
         yield return new WaitForSecondsRealtime(knockbackDelayTime / 2.0f);
-        Time.timeScale = 1.0f;
     }
 
     /// <summary>

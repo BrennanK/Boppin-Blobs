@@ -18,9 +18,10 @@ namespace PowerUp {
         private int m_itemNumber;
 
         private void Start() {
-            m_powerUps = new PowerUp[2];
+            m_powerUps = new PowerUp[3];
             m_powerUps[0] = new PowerUp("Super Speed", true, 5f, 0.25f, EPowerUps.SUPER_SPEED);
             m_powerUps[1] = new PowerUp("Back Off", false, 0.0f, 1f, EPowerUps.BACK_OFF);
+            m_powerUps[2] = new PowerUp("Super Slam", false, 0.0f, 2f, EPowerUps.SUPER_SLAM);
 
             m_disableTimer = m_disableTimerStart;
         }

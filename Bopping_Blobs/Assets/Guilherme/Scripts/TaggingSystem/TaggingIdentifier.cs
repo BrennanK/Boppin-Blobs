@@ -125,14 +125,23 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     #region ATTACKING
-    private void TriggerAttackTransition() {
+    public bool ForceAttackWithMultiplier(float _attackSizeMultiplier) {
+        if(m_currentTaggingState != ETaggingBehavior.TaggingAtacking) {
+            TriggerAttackTransition(_attackSizeMultiplier);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void TriggerAttackTransition(float _attackSizeMultiplier = 1.0f) {
         m_boppableInterface.TriggerAttackTransition();
         ETaggingBehavior currentTaggingState = m_currentTaggingState;
         m_currentTaggingState = ETaggingBehavior.TaggingAtacking;
 
         m_characterRenderer.material.color = Color.red;
 
-        Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, attackRadius, attackLayer);
+        Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, attackRadius * _attackSizeMultiplier, attackLayer);
         if (bopCollision.Length > 0) {
             for (int i = 0; i < bopCollision.Length; i++) {
                 TaggingIdentifier playerHitted = bopCollision[i].transform.gameObject.GetComponent<TaggingIdentifier>();
