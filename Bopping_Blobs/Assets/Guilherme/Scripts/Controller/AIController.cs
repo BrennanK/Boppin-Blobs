@@ -50,8 +50,8 @@ public class AIController : MonoBehaviour, IBoppable {
                        .Selector("is King Selector - Select one of these actions to use to run away")
                            // Run to random point (this can be biased or not)
                            .Condition("Check if can search for preferred path", IsKingFollowingPath)
-                           .Action("Run to a preferred location that is not the closest one", RunToFarthestPreferredLocation)
-                           .Action("Run to farthest preferred location, running from player", RunToFarthestFromPlayerPreferredLocation)
+                           .Action("Run to a preferred location that is not the closest one", RunToPreferredLocation)
+                           .Action("Run to farthest preferred location, running from player", RunToFarthestPreferredLocation)
                            .Action("Run away from closest player", RunAwayFromClosestPlayer)
                        .End()
                    .End()
@@ -168,7 +168,7 @@ public class AIController : MonoBehaviour, IBoppable {
     /// <summary>
     /// <para>Run to farthest preferred location that is not the closest one I am at right now</para>
     /// </summary>
-    private EReturnStatus RunToFarthestPreferredLocation() {
+    private EReturnStatus RunToPreferredLocation() {
         List<Transform> preferredLocations = m_taggingIdentifier.taggingManager.aiPreferredSpots.ToList();
 
         if(preferredLocations.Count == 0) {
@@ -191,7 +191,7 @@ public class AIController : MonoBehaviour, IBoppable {
         return EReturnStatus.SUCCESS;
     }
 
-    private EReturnStatus RunToFarthestFromPlayerPreferredLocation() {
+    private EReturnStatus RunToFarthestPreferredLocation() {
         Vector3 closestPlayerPosition = GetClosestPlayerPosition();
         Transform[] possibleSpotsToRunTo = m_taggingIdentifier.taggingManager.aiPreferredSpots;
 

@@ -559,7 +559,7 @@ NavMeshAgent:
   m_AngularSpeed: 7200
   m_StoppingDistance: 0.1
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 1
   m_BaseOffset: 0.5
@@ -610,7 +610,7 @@ MonoBehaviour:
   reactionTimeVariation: 0.05
   minStartTime: 0.15
   maxStartTime: 0.35
-  attackingDistance: 1.5
+  attackingDistance: 1.75
 --- !u!114 &792157179
 MonoBehaviour:
   m_ObjectHideFlags: 0
