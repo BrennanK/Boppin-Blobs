@@ -2596,12 +2596,12 @@ PrefabInstance:
     - target: {fileID: 867957998080744934, guid: b8abfb2debed2e54ba08f31734034943,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 867957998080744934, guid: b8abfb2debed2e54ba08f31734034943,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 150
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1999106653091956567, guid: b8abfb2debed2e54ba08f31734034943,
         type: 3}
@@ -2640,7 +2640,7 @@ PrefabInstance:
         type: 3}
       propertyPath: backoffSprite
       value: 
-      objectReference: {fileID: 21300000, guid: a26298add5473804abef61aea1042352,
+      objectReference: {fileID: 21300000, guid: e5b13abdc8a19c34b947601972c4690c,
         type: 3}
     - target: {fileID: 479124012, guid: b8abfb2debed2e54ba08f31734034943, type: 3}
       propertyPath: m_textInfo.lineCount
@@ -2946,7 +2946,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: a26298add5473804abef61aea1042352,
+      objectReference: {fileID: 21300000, guid: ef98c86ea51488d47a6fd53473ca32fc,
         type: 3}
     - target: {fileID: 288025961558762819, guid: b8abfb2debed2e54ba08f31734034943,
         type: 3}
