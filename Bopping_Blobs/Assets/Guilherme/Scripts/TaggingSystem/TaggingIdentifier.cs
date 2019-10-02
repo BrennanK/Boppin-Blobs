@@ -62,6 +62,13 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
+    private int m_playersBopped;
+    public int PlayersBopped {
+        get {
+            return m_playersBopped;
+        }
+    }
+
     private float m_timeAsTag;
     public float TimeAsTag {
         get {
@@ -83,6 +90,12 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
+    public int PlayerScore {
+        get {
+            return (Mathf.RoundToInt(Mathf.Round(m_timeAsTag) + m_playersBopped) * 10);
+        }
+    }
+
     private void Awake() {
         m_boppableInterface = GetComponent<IBoppable>();
         m_rigidbodyReference = GetComponent<Rigidbody>();
@@ -90,6 +103,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
         m_rigidbodyReference.isKinematic = true;
         m_timeAsTag = 0;
+        m_playersBopped = 0;
 
         m_characterRenderer.material.color = blobOriginalColor;
         hammerBopAim.localPosition = new Vector3(0, -0.25f, attackDistance);
@@ -176,6 +190,8 @@ public class TaggingIdentifier : MonoBehaviour {
             for (int i = 0; i < bopCollision.Length; i++) {
                 TaggingIdentifier playerHitted = bopCollision[i].transform.gameObject.GetComponent<TaggingIdentifier>();
                 if (playerHitted != null && playerHitted.CanBeTagged && m_playerIdentifier != playerHitted.PlayerIdentifier) {
+                    // We hit someone, so we bopped them!
+                    m_playersBopped++;
 
                     if(taggingManager.WhoIsTag == playerHitted.PlayerIdentifier) {
                         playerHitted.SetAsNotKing();

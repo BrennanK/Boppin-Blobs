@@ -40,11 +40,10 @@ namespace PowerUp {
             PowerUpTracker powerUpTracker = _other.GetComponent<PowerUpTracker>();
 
             if(powerUpTracker != null) {
-                Debug.Log($"Power Up Box Collected!: {m_powerUps[0].GetHashCode()}");
+                // Debug.Log($"Power Up Box Collected!: {m_powerUps[0].GetHashCode()}");
                 powerUpTracker.AddPowerUp(m_powerUps[Random.Range(0, m_powerUps.Length)].Clone());
                 DisablePowerUp();
             }
-
         }
 
         private void EnablePowerUp() {

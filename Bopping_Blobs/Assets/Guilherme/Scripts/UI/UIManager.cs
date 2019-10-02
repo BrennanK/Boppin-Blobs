@@ -46,16 +46,16 @@ public class UIManager : MonoBehaviour {
     /// <param name="_time">Time (in seconds) to set</param>
     public void UpdateTimerText(float _time) {
         if (_time == 0) {
-            timerText.text = "0:00";
+            timerText.text = "0.00";
         }
 
         string time = _time.ToString();
         string[] splittedTime = time.Split('.');
 
         if(splittedTime.Length > 1) {
-            time = $"{splittedTime[0]}:{splittedTime[1].Substring(0, 2)}";
+            time = $"{splittedTime[0]}.{splittedTime[1].Substring(0, 2)}";
         } else {
-            time = $"{splittedTime[0]}:00";
+            time = $"{splittedTime[0]}.00";
         }
 
         timerText.text = time;
@@ -67,7 +67,7 @@ public class UIManager : MonoBehaviour {
     /// <param name="_players">List of players</param>
     public void UpdateScoreboard(TaggingIdentifier[] _players) {
         for(int i = 0; i < _players.Length; i++) {
-            playerScores[i].RefreshPlayerScore(i, _players[i].PlayerName, _players[i].TimeAsTag);
+            playerScores[i].RefreshPlayerScore(i, _players[i].PlayerName, _players[i].PlayerScore);
         }
     }
 
@@ -108,7 +108,7 @@ public class UIManager : MonoBehaviour {
         gameOverPanel.SetActive(true);
 
         for(int i = 0; i <_finalPlayerArray.Length; i++) {
-            finalPlayerScores[i].RefreshPlayerScore(i, _finalPlayerArray[i].PlayerName, _finalPlayerArray[i].TimeAsTag);
+            finalPlayerScores[i].RefreshPlayerScore(i, _finalPlayerArray[i].PlayerName, _finalPlayerArray[i].PlayerScore);
         }
     }
 
@@ -148,33 +148,6 @@ public class UIManager : MonoBehaviour {
             }            
         } else {
             slot2Image.sprite = emptyPowerUpSprite;
-        }
-    }
-
-    /// <summary>
-    /// <para>Update the Power Ups information on UI</para>
-    /// </summary>
-    /// <param name="_slot1">Power Up on Slot 1</param>
-    /// <param name="_slot2">Power Up on Slot 2</param>
-    public void UpdateTextPowerUpUI(PowerUpHolder _slot1, PowerUpHolder _slot2) {
-        if(_slot1.powerUp != null) {
-            if(_slot1.activated) {
-                slot1Text.text = $"{_slot1.powerUp.powerUpName} ({Mathf.Round(_slot1.powerUpTimer)}s)";
-            } else {
-                slot1Text.text = _slot1.powerUp.powerUpName;
-            }
-        } else {
-            slot1Text.text = "Empty";
-        }
-
-        if(_slot2.powerUp != null) {
-            if(_slot2.activated) {
-                slot2Text.text = $"{_slot2.powerUp.powerUpName} ({Mathf.Round(_slot2.powerUpTimer)}s)";
-            } else {
-                slot2Text.text = _slot2.powerUp.powerUpName;
-            }
-        } else {
-            slot2Text.text = "Empty";
         }
     }
 }

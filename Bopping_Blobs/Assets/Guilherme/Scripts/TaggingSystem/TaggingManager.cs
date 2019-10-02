@@ -31,8 +31,14 @@ public class TaggingManager : MonoBehaviour {
     public List<TaggingIdentifier> Players {
         get {
             m_playersIdentifiers.Sort((leftHandSide, rightHandSide) => {
+                return rightHandSide.PlayerScore.CompareTo(leftHandSide.PlayerScore);
+            });
+            /*
+             * Sorting by Time As Tag
+            m_playersIdentifiers.Sort((leftHandSide, rightHandSide) => {
                 return rightHandSide.TimeAsTag.CompareTo(leftHandSide.TimeAsTag);
             });
+            */
 
             return m_playersIdentifiers;
         }

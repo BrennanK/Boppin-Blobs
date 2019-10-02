@@ -79,7 +79,7 @@ namespace PowerUp {
         }
 
         public void AddPowerUp(PowerUp _powerUp) {
-            Debug.Log($"Power Up Received by Power Up Tracker: {_powerUp.GetHashCode()}");
+            // Debug.Log($"Power Up Received by Power Up Tracker: {_powerUp.GetHashCode()}");
             switch(_powerUp.powerUp) {
                 case EPowerUps.SUPER_SPEED:
                     _powerUp.activatePowerUpAction += ActivateSuperSpeed;
@@ -142,7 +142,7 @@ namespace PowerUp {
         // ATTENTION!! IMPORTANT!!
         // IF SOMEONE HAVE ACTIVATE SUPER SPEED AND GET TAGGED, THEIR SPEED WILL BE SET TO THE NORMAL AFTER THAT, AND THEN THE SUPER SPEED WILL RESET, MAKING THEIR BASE SPEED LOWER THAN WHAT IT SHOULD BE!!!
         public void ActivateSuperSpeed(float _value) {
-            Debug.Log($"Activating Super Speed ({m_boppableInterface.GetSpeed()}, {m_taggingManager.baseSpeed}, {_value}) - Speed will be {m_boppableInterface.GetSpeed() + (m_taggingManager.baseSpeed * _value)}");
+            // Debug.Log($"Activating Super Speed ({m_boppableInterface.GetSpeed()}, {m_taggingManager.baseSpeed}, {_value}) - Speed will be {m_boppableInterface.GetSpeed() + (m_taggingManager.baseSpeed * _value)}");
             m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() + (m_taggingManager.baseSpeed * _value));
         }
 
@@ -153,10 +153,9 @@ namespace PowerUp {
 
         public void ActivateBackOff(float _value) {
             List<TaggingIdentifier> taggingIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
-            taggingIdentifiers.Remove(this.GetComponent<TaggingIdentifier>());
 
             foreach(TaggingIdentifier player in taggingIdentifiers) {
-                if(Vector3.Distance(player.transform.position, transform.position) < m_taggingManager.knockbackRadius) {
+                if(Vector3.Distance(player.transform.position, transform.position) < m_taggingManager.knockbackRadius && player.PlayerIdentifier != m_playerTaggingIdentifier.PlayerIdentifier) {
                     player.KnockbackPlayer(Color.magenta, (player.transform.position - transform.position).normalized * m_taggingManager.knockbackForce * 2f, _value);
                 }
             }

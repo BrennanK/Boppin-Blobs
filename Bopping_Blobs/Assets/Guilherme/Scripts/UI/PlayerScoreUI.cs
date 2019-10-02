@@ -7,10 +7,11 @@ public class PlayerScoreUI : MonoBehaviour {
     public TextMeshProUGUI playerNameText;
     public TextMeshProUGUI timeAsTagText;
 
-    public void RefreshPlayerScore(int _position, string _playerName, float _timeAsTag) {
+    public void RefreshPlayerScore(int _position, string _playerName, float _playerScore) {
         positionText.text = GetStringPositionFromInt(_position);
         playerNameText.text = _playerName;
-        timeAsTagText.text = GetTimeStringFromFloat(_timeAsTag);
+        timeAsTagText.text = Mathf.Round(_playerScore).ToString();
+        // timeAsTagText.text = GetTimeStringFromFloat(_playerScore);
     }
 
     private string GetStringPositionFromInt(int _position) {
@@ -39,7 +40,7 @@ public class PlayerScoreUI : MonoBehaviour {
     private string GetTimeStringFromFloat(float _time) {
         // Special case for 0
         if (_time == 0) {
-            return "0:00";
+            return "0.00";
         }
 
         string time = _time.ToString();

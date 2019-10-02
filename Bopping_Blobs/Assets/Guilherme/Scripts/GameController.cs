@@ -33,6 +33,7 @@ public class GameController : MonoBehaviour {
     }
 
     private IEnumerator StartGameRoutine() {
+        m_UIManager.UpdateTimerText(gameTime);
         m_UIManager.ShowCenterText("Ready?");
         yield return new WaitForSecondsRealtime(gameStartDelayTime);
         m_taggingManager.EnableAllPlayers();
@@ -48,13 +49,18 @@ public class GameController : MonoBehaviour {
         m_currentGameTime -= Time.deltaTime;
 
         if(m_currentGameTime <= 0f) {
-            m_currentGameTime = 0f;
-            m_isGameRunning = false;
-            m_taggingManager.FreezeAllPlayers();
-            m_UIManager.ShowGameOverPanel(m_taggingManager.Players.ToArray());
+            EndGame();
         }
 
         m_UIManager.UpdateTimerText(m_currentGameTime);
+    }
+
+    private void EndGame() {
+        m_currentGameTime = 0f;
+        m_isGameRunning = false;
+        m_taggingManager.FreezeAllPlayers();
+        m_UIManager.ShowGameOverPanel(m_taggingManager.Players.ToArray());
+        // TODO Handle Score to Money here
     }
 
     private void UpdateScoreboard() {
