@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -9,11 +8,12 @@ public class SpawnPointManager : MonoBehaviour {
 
     private void Start() {
         m_startPoints = GameObject.FindGameObjectsWithTag("SpawnPoint").ToList();
-        m_players = GameObject.FindObjectsOfType<TaggingIdentifier>().ToList();
+        m_players = FindObjectsOfType<TaggingIdentifier>().ToList();
 
         if(m_startPoints.Count == 0) {
             Debug.LogError($"There are no Start Points in the scene.");
         }
+
         SpawnPlayers();
     }
 
@@ -26,14 +26,5 @@ public class SpawnPointManager : MonoBehaviour {
             player.gameObject.transform.position = tempStartPoints[rand].transform.position;
             tempStartPoints.RemoveAt(rand);
         }
-    }
-
-    /// <summary>
-    /// <para>Respawn all players in the scene.</para>
-    /// </summary>
-    /// <param name="_timeScaleToSet">Set timescale after respawning all players. Default to 1.0</param>
-    public void RespawnAllPlayers(float _timeScaleToSet = 1.0f) {
-        SpawnPlayers();
-        Time.timeScale = _timeScaleToSet;
     }
 }

@@ -11,7 +11,6 @@ public class PlayerScoreUI : MonoBehaviour {
         positionText.text = GetStringPositionFromInt(_position);
         playerNameText.text = _playerName;
         timeAsTagText.text = Mathf.Round(_playerScore).ToString();
-        // timeAsTagText.text = GetTimeStringFromFloat(_playerScore);
     }
 
     private string GetStringPositionFromInt(int _position) {
@@ -35,18 +34,5 @@ public class PlayerScoreUI : MonoBehaviour {
             default:
                 return "nth";
         }
-    }
-
-    private string GetTimeStringFromFloat(float _time) {
-        // Special case for 0
-        if (_time == 0) {
-            return "0.00";
-        }
-
-        string time = _time.ToString();
-        string[] splittedTime = time.Split('.');
-
-        // TODO improve this
-        return $"{splittedTime[0]}:{splittedTime[1].Substring(0, 2)}";
     }
 }

@@ -33,31 +33,16 @@ public class TaggingManager : MonoBehaviour {
             m_playersIdentifiers.Sort((leftHandSide, rightHandSide) => {
                 return rightHandSide.PlayerScore.CompareTo(leftHandSide.PlayerScore);
             });
-            /*
-             * Sorting by Time As Tag
-            m_playersIdentifiers.Sort((leftHandSide, rightHandSide) => {
-                return rightHandSide.TimeAsTag.CompareTo(leftHandSide.TimeAsTag);
-            });
-            */
 
             return m_playersIdentifiers;
         }
     }
 
-    private SpawnPointManager m_spawnPointManager;
     private UIManager m_UIManager;
-    private RandomNameGenerator m_randomNameGenerator;
 
     private void Awake() {
-        m_spawnPointManager = FindObjectOfType<SpawnPointManager>();
         m_UIManager = FindObjectOfType<UIManager>();
-
-        if(m_spawnPointManager == null) {
-            Debug.LogError($"There is no spawn point manager in the scene!");
-        }
-
-        m_randomNameGenerator = new RandomNameGenerator($"{Application.dataPath}/Resources/NameList.txt");
-
+        RandomNameGenerator randomNameGenerator = new RandomNameGenerator($"{Application.dataPath}/Resources/NameList.txt");
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
         PlayerInfoUI[] playerInfoUI = FindObjectsOfType<PlayerInfoUI>();
 
@@ -65,7 +50,7 @@ public class TaggingManager : MonoBehaviour {
         if (playerInfoUI.Length == m_playersIdentifiers.Count) {
             for (int i = 0; i < m_playersIdentifiers.Count; i++) {
                 m_playersIdentifiers[i].PlayerInfo = playerInfoUI[i];
-                m_playersIdentifiers[i].PlayerName = m_randomNameGenerator.GetRandomName();
+                m_playersIdentifiers[i].PlayerName = randomNameGenerator.GetRandomName();
             }
         } else {
             Debug.LogWarning($"There are more or less PlayerInfo scripts than Players in the scene!! You have {m_playersIdentifiers.Count} players and {playerInfoUI.Length} info scripts!");

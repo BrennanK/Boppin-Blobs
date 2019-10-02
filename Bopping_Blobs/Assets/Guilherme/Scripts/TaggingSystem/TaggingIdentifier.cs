@@ -69,10 +69,10 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
-    private float m_timeAsTag;
-    public float TimeAsTag {
+    private float m_timeAsKing;
+    public float TimeAsKing {
         get {
-            return m_timeAsTag;
+            return m_timeAsKing;
         }
     }
 
@@ -92,7 +92,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
     public int PlayerScore {
         get {
-            return (Mathf.RoundToInt(Mathf.Round(m_timeAsTag) + m_playersBopped) * 10);
+            return (Mathf.RoundToInt(Mathf.Round(m_timeAsKing) + m_playersBopped) * 10);
         }
     }
 
@@ -102,7 +102,7 @@ public class TaggingIdentifier : MonoBehaviour {
         m_characterRenderer = GetComponentInChildren<Renderer>();
 
         m_rigidbodyReference.isKinematic = true;
-        m_timeAsTag = 0;
+        m_timeAsKing = 0;
         m_playersBopped = 0;
 
         m_characterRenderer.material.color = blobOriginalColor;
@@ -116,7 +116,7 @@ public class TaggingIdentifier : MonoBehaviour {
             case ETaggingBehavior.Running:
                 break;
             case ETaggingBehavior.Tagging:
-                m_timeAsTag += Time.deltaTime;
+                m_timeAsKing += Time.deltaTime;
                 break;
         }
 
@@ -283,6 +283,7 @@ public class TaggingIdentifier : MonoBehaviour {
         m_boppableInterface.ReactivateController();
     }
     #endregion
+
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
 
