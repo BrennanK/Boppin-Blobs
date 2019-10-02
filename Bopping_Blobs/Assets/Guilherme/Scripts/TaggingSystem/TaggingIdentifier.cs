@@ -37,7 +37,11 @@ public class TaggingIdentifier : MonoBehaviour {
     private string m_playerName;
     public string PlayerName {
         get {
-            return m_playerName;
+            if(m_isUserPlayer) {
+                return m_playerName + " (you)";
+            } else {
+                return m_playerName;
+            }
         }
         set {
             m_playerName = value;
@@ -96,7 +100,18 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
+    private bool m_isUserPlayer = false;
+    public bool IsUserPlayer {
+        get {
+            return m_isUserPlayer;
+        }
+    }
+
     private void Awake() {
+        if(this.tag == "Player") {
+            m_isUserPlayer = true;
+        }
+
         m_boppableInterface = GetComponent<IBoppable>();
         m_rigidbodyReference = GetComponent<Rigidbody>();
         m_characterRenderer = GetComponentInChildren<Renderer>();
