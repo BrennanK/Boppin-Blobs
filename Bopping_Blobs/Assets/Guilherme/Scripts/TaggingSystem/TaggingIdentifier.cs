@@ -122,8 +122,8 @@ public class TaggingIdentifier : MonoBehaviour {
 
         m_isImmune = true;
         m_characterRenderer.material.color = Color.green;
-        StartCoroutine(SpeedUpRoutine(1.75f));
-        StartCoroutine(TurnOffImmunityRoutine(2.0f));
+        StartCoroutine(SpeedUpRoutine(3f));
+        StartCoroutine(TurnOffImmunityRoutine(3f));
         
         m_currentTaggingState = ETaggingBehavior.Tagging;
     }
@@ -135,13 +135,11 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private IEnumerator SpeedUpRoutine(float _timeToDecay) {
-        Debug.Log($"Current Speed: {m_boppableInterface.GetSpeed()}");
         float currentSpeed = m_boppableInterface.GetSpeed();
         float speedBoost = currentSpeed * 2.0f;
 
         for(float i = 0; i < _timeToDecay; i += Time.deltaTime) {
             float speedToSet = Mathf.Lerp(speedBoost, currentSpeed, (i / _timeToDecay));
-            Debug.Log($"Speed To Set: {speedToSet}");
             m_boppableInterface.ChangeSpeed(speedToSet);
             yield return null;
         }
