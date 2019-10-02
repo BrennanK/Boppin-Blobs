@@ -86,7 +86,7 @@ public class TaggingManager : MonoBehaviour {
         TaggingIdentifier initialTagger = GameObject.FindGameObjectWithTag("Player").GetComponent<TaggingIdentifier>();
         PlayerWasTagged(initialTagger);
         foreach (TaggingIdentifier notItPlayer in GetAllPlayersThatAreNotIt()) {
-            notItPlayer.SetAsNotTag();
+            notItPlayer.SetAsNotKing();
         }
     }
 
@@ -97,26 +97,28 @@ public class TaggingManager : MonoBehaviour {
     /// <param name="_knockbackEffect">Knockback players or not.</param>
     public void PlayerWasTagged(TaggingIdentifier _whoIsTag, bool _knockbackEffect = false) {
         m_currentPlayerTaggingID = _whoIsTag.PlayerIdentifier;
-        _whoIsTag.SetAsTagging();
+        _whoIsTag.SetAsKing();
         OnPlayerWasTagged?.Invoke(_whoIsTag);
         m_UIManager.ShowPlayerTaggedText(_whoIsTag.PlayerName, knockbackDelayTime);
 
         if (_knockbackEffect) {
-            StartCoroutine(KnockbackAllPlayerRoutine());
+            // TODO not have / 4.0f on the knockbackDelayTime
+            StartCoroutine(KnockbackAllPlayerRoutine(knockbackDelayTime / 4.0f));
         }
     }
 
-    private IEnumerator KnockbackAllPlayerRoutine() {
-
+    private IEnumerator KnockbackAllPlayerRoutine(float _delayTime) {
         Transform whoIsTag = GetItTransform();
         foreach (TaggingIdentifier player in m_playersIdentifiers) {
             if (player.PlayerIdentifier != m_currentPlayerTaggingID && Vector3.Distance(player.transform.position, whoIsTag.position) < knockbackRadius) {
                 Vector3 knockbackDirection = (player.transform.position - GetItTransform().position);
-                player.KnockbackPlayer(Color.magenta, knockbackDirection.normalized * knockbackForce, knockbackDelayTime);
+
+                // TODO fix knockbackforce magic number
+                player.KnockbackPlayer(Color.magenta, knockbackDirection.normalized * knockbackForce * 3f, _delayTime);
             }
         }
 
-        yield return new WaitForSecondsRealtime(knockbackDelayTime / 2.0f);
+        yield return new WaitForSecondsRealtime(_delayTime / 2.0f);
     }
 
     /// <summary>
@@ -154,7 +156,7 @@ public class TaggingManager : MonoBehaviour {
     /// </summary>
     public void FreezeAllPlayers() {
         foreach(TaggingIdentifier player in m_playersIdentifiers) {
-            player.SetAsNotTag();
+            player.SetAsNotKing();
             player.DeactivatePlayer();
         }
     }

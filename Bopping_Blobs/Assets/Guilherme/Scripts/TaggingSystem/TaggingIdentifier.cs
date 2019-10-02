@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TaggingIdentifier : MonoBehaviour {
@@ -70,6 +69,13 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
+    private bool m_isImmune;
+    public bool CanBeTagged {
+        get {
+            return !m_isImmune;
+        }
+    }
+
     private ETaggingBehavior m_currentTaggingState;
     public ETaggingBehavior TaggingState {
         get {
@@ -111,15 +117,40 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <summary>
     /// <para>Set this player as TAG</para>
     /// </summary>
-    public void SetAsTagging() {
+    public void SetAsKing() {
         m_boppableInterface.ChangeSpeed(taggingManager.baseSpeed * taggingManager.kingSpeedMultiplier);
+
+        m_isImmune = true;
+        m_characterRenderer.material.color = Color.green;
+        StartCoroutine(SpeedUpRoutine(1.75f));
+        StartCoroutine(TurnOffImmunityRoutine(2.0f));
+        
         m_currentTaggingState = ETaggingBehavior.Tagging;
+    }
+
+    private IEnumerator TurnOffImmunityRoutine(float _delay) {
+        yield return new WaitForSecondsRealtime(_delay);
+        m_characterRenderer.material.color = blobOriginalColor;
+        m_isImmune = false;
+    }
+
+    private IEnumerator SpeedUpRoutine(float _timeToDecay) {
+        Debug.Log($"Current Speed: {m_boppableInterface.GetSpeed()}");
+        float currentSpeed = m_boppableInterface.GetSpeed();
+        float speedBoost = currentSpeed * 2.0f;
+
+        for(float i = 0; i < _timeToDecay; i += Time.deltaTime) {
+            float speedToSet = Mathf.Lerp(speedBoost, currentSpeed, (i / _timeToDecay));
+            Debug.Log($"Speed To Set: {speedToSet}");
+            m_boppableInterface.ChangeSpeed(speedToSet);
+            yield return null;
+        }
     }
 
     /// <summary>
     /// <para>Set this player as NOT TAG</para>
     /// </summary>
-    public void SetAsNotTag() {
+    public void SetAsNotKing() {
         m_boppableInterface.ChangeSpeed(taggingManager.baseSpeed);
         m_currentTaggingState = ETaggingBehavior.Running;
     }
@@ -138,6 +169,7 @@ public class TaggingIdentifier : MonoBehaviour {
         m_boppableInterface.TriggerAttackTransition();
         ETaggingBehavior currentTaggingState = m_currentTaggingState;
         m_currentTaggingState = ETaggingBehavior.TaggingAtacking;
+        bool returnToOriginalColor = true;
 
         m_characterRenderer.material.color = Color.red;
 
@@ -145,14 +177,20 @@ public class TaggingIdentifier : MonoBehaviour {
         if (bopCollision.Length > 0) {
             for (int i = 0; i < bopCollision.Length; i++) {
                 TaggingIdentifier playerHitted = bopCollision[i].transform.gameObject.GetComponent<TaggingIdentifier>();
-                if (playerHitted != null && m_playerIdentifier != playerHitted.PlayerIdentifier) {
+                if (playerHitted != null && playerHitted.CanBeTagged && m_playerIdentifier != playerHitted.PlayerIdentifier) {
 
                     if(taggingManager.WhoIsTag == playerHitted.PlayerIdentifier) {
-                        playerHitted.SetAsNotTag();
+                        playerHitted.SetAsNotKing();
                         taggingManager.PlayerWasTagged(this, true);
 
                         // Updating tagging state because we are tag now.
                         currentTaggingState = m_currentTaggingState;
+                        returnToOriginalColor = false;
+                    } else {
+                        // Just Knockback the Player
+                        // TODO Delay here is a magic number
+                        // TODO knockback force is also a magic number
+                        playerHitted.KnockbackPlayer(Color.magenta, (playerHitted.transform.position - transform.position).normalized * taggingManager.knockbackForce * 3f, 0.5f);
                     }
 
                     break;
@@ -160,16 +198,19 @@ public class TaggingIdentifier : MonoBehaviour {
             }
         }
 
-        StartCoroutine(AttackAnimationRoutine(currentTaggingState));
+        StartCoroutine(AttackAnimationRoutine(currentTaggingState, returnToOriginalColor));
     }
 
-    private IEnumerator AttackAnimationRoutine(ETaggingBehavior _nextTaggingState) {
+    private IEnumerator AttackAnimationRoutine(ETaggingBehavior _nextTaggingState, bool _returnToOriginalColor = true) {
         hammerTransform.localPosition = new Vector3(hammerBopAim.localPosition.x, hammerBopAim.localPosition.y + 0.25f, hammerBopAim.localPosition.z - 1f);
         hammerTransform.localEulerAngles = new Vector3(90, 0, 0);
 
         yield return new WaitForSecondsRealtime(attackTime);
 
-        m_characterRenderer.material.color = blobOriginalColor;
+        if(_returnToOriginalColor) {
+            m_characterRenderer.material.color = blobOriginalColor;
+        }
+
         hammerTransform.localPosition = m_originalHammerLocalPosition;
         hammerTransform.localEulerAngles = m_originalHammerLocalEulerAngles;
         m_boppableInterface.TriggerEndAttackTransition();
