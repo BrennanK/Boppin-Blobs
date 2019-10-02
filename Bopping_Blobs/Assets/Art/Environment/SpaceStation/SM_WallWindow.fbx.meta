@@ -7,6 +7,8 @@ ModelImporter:
     400000: //RootNode
     2100000: lambert1
     2100002: lambert2
+    2100004: BaseColor1
+    2100006: BaseColor2
     2300000: //RootNode
     3300000: //RootNode
     4300000: polySurface1
@@ -14,8 +16,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: BaseColor1
+    second: {fileID: 2100000, guid: 4ed52708c50069e409f6a432cd49192f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BaseColor2
+    second: {fileID: 2100000, guid: ad03923aa5babaf4e9f6a8a3e90f26a7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: lambert1
-    second: {fileID: 2100000, guid: e82b20d6a479933498be6ece0e79c35f, type: 2}
+    second: {fileID: 2100000, guid: e3e902cd2d0f26e4c8ab431902b1f062, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
