@@ -23,6 +23,10 @@ public class TaggingIdentifier : MonoBehaviour {
     public Transform hammerBopAim;
     public Color blobOriginalColor;
 
+    [Header("Player Sounds")]
+    public AudioClip[] blobAttackSounds;
+    public AudioClip[] blobHitSounds;
+
     [HideInInspector]
     public TaggingManager taggingManager;
 
@@ -197,6 +201,8 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private void TriggerAttackTransition(float _attackSizeMultiplier = 1.0f) {
+        PausedMenuManager._instance?.PlaySFX(blobAttackSounds[Random.Range(0, blobAttackSounds.Length)]);
+
         m_boppableInterface.TriggerAttackTransition();
         ETaggingBehavior currentTaggingState = m_currentTaggingState;
         m_currentTaggingState = ETaggingBehavior.TaggingAtacking;
@@ -210,6 +216,7 @@ public class TaggingIdentifier : MonoBehaviour {
                 TaggingIdentifier playerHitted = bopCollision[i].transform.gameObject.GetComponent<TaggingIdentifier>();
                 if (playerHitted != null && playerHitted.CanBeTagged && m_playerIdentifier != playerHitted.PlayerIdentifier) {
                     // We hit someone, so we bopped them!
+                    PausedMenuManager._instance?.PlaySFX(playerHitted.blobHitSounds[Random.Range(0, playerHitted.blobHitSounds.Length)]);
                     m_playersBopped++;
 
                     if(taggingManager.WhoIsTag == playerHitted.PlayerIdentifier) {

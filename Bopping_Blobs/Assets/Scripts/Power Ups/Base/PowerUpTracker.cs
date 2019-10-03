@@ -24,6 +24,11 @@ namespace PowerUp {
     }
 
     public class PowerUpTracker : MonoBehaviour {
+        public AudioClip[] powerUpCollectedSounds;
+        public AudioClip[] superSpeedSounds;
+        public AudioClip[] backOffSounds;
+        public AudioClip[] superSlamSounds;
+
         public PowerUpHolder slot1 = new PowerUpHolder();
         public PowerUpHolder slot2 = new PowerUpHolder();
 
@@ -49,12 +54,14 @@ namespace PowerUp {
         }
 
         private void Update() {
-            if(Input.GetKeyDown(KeyCode.Q)) {
-                ActivatePowerUp1();
-            }
+            if(m_isPlayer) {
+                if(Input.GetKeyDown(KeyCode.Q)) {
+                    ActivatePowerUp1();
+                }
 
-            if(Input.GetKeyDown(KeyCode.E)) {
-                ActivatePowerUp2();
+                if(Input.GetKeyDown(KeyCode.E)) {
+                    ActivatePowerUp2();
+                }
             }
 
             CheckPowerUp(ref slot1);
@@ -79,6 +86,7 @@ namespace PowerUp {
         }
 
         public void AddPowerUp(PowerUp _powerUp) {
+            PausedMenuManager._instance?.PlaySFX(powerUpCollectedSounds[Random.Range(0, powerUpCollectedSounds.Length)]);
             // Debug.Log($"Power Up Received by Power Up Tracker: {_powerUp.GetHashCode()}");
             switch(_powerUp.powerUp) {
                 case EPowerUps.SUPER_SPEED:
@@ -119,6 +127,25 @@ namespace PowerUp {
         private void ActivatePowerUp(ref PowerUpHolder _slot) {
             if(_slot.canActivate) {
                 if(_slot.powerUp != null) {
+
+                    switch(_slot.powerUp.powerUp) {
+                        case EPowerUps.SUPER_SPEED:
+                            if(superSpeedSounds.Length > 0) {
+                                PausedMenuManager._instance?.PlaySFX(superSpeedSounds[Random.Range(0, superSpeedSounds.Length)]);
+                            }
+                            break;
+                        case EPowerUps.BACK_OFF:
+                            if(backOffSounds.Length > 0) {
+                                PausedMenuManager._instance?.PlaySFX(backOffSounds[Random.Range(0, backOffSounds.Length)]);
+                            }
+                            break;
+                        case EPowerUps.SUPER_SLAM:
+                            if(superSlamSounds.Length > 0) {
+                                PausedMenuManager._instance?.PlaySFX(superSlamSounds[Random.Range(0, superSlamSounds.Length)]);
+                            }
+                            break;
+                    }
+
                     _slot.canActivate = false;
                     _slot.powerUp.ActivatePowerUp();
 

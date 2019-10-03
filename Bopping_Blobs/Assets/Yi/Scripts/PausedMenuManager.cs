@@ -28,7 +28,8 @@ public class PausedMenuManager : MonoBehaviour
 
 	[Header("BGM List")]
 	[SerializeField] AudioClip MainMenu;
-	[SerializeField] AudioClip Level1;
+	[SerializeField] AudioClip GardenLevel;
+    [SerializeField] AudioClip[] LevelsMusic;
 
 	[Header("SFX List")]
 	[SerializeField] AudioClip[] SFXGroup;
@@ -37,6 +38,7 @@ public class PausedMenuManager : MonoBehaviour
 	private bool CanNotOpen = false;
 	// Check if is open
 	private bool IsOpen = false;
+
 	// Singleton
 	public static PausedMenuManager _instance;
 
@@ -114,6 +116,7 @@ public class PausedMenuManager : MonoBehaviour
         StartCoroutine(CallCreditsMenu(0.2f));
     }
 	#endregion
+
 	#region Load Scene Event & Audio Controller
 
 	public void SetMusic()
@@ -151,16 +154,23 @@ public class PausedMenuManager : MonoBehaviour
                 ReturnToMainMenuButton.SetActive(false);
                 CreditsButton.SetActive(true);
 				break;
+            /*
             case "Garden_v2":
                 BGMPlayer.Stop();
-                BGMPlayer.clip = Level1;
+                BGMPlayer.clip = GardenLevel;
                 BGMPlayer.Play();
                 OptionButton.SetActive(true);
                 ReturnToMainMenuButton.SetActive(true);
                 CreditsButton.SetActive(false);
                 break;
+            */
             default:
-				Debug.Log("No BGM Played!");
+                BGMPlayer.Stop();
+                BGMPlayer.clip = LevelsMusic[Random.Range(0, LevelsMusic.Length)];
+                BGMPlayer.Play();
+                OptionButton.SetActive(true);
+                ReturnToMainMenuButton.SetActive(true);
+                CreditsButton.SetActive(false);
 				break;
 		}
 	}
@@ -174,6 +184,14 @@ public class PausedMenuManager : MonoBehaviour
 		SFXPlayer.Stop();
 		SFXPlayer.PlayOneShot(SFXGroup[clipnumber]);
 	}
+
+    /// <summary>
+    /// Play a Sound Effect from a Sound Clip
+    /// </summary>
+    /// <param name="_clip">Clip to be played</param>
+    public void PlaySFX(AudioClip _clip) {
+        SFXPlayer.PlayOneShot(_clip);
+    }
 
 	#endregion
 }

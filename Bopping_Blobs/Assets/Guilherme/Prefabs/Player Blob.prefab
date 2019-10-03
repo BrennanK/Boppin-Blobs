@@ -309,6 +309,10 @@ MonoBehaviour:
   hammerTransform: {fileID: 2263749497900523398}
   hammerBopAim: {fileID: 2263749497187115727}
   blobOriginalColor: {r: 0.5035531, g: 0.38416696, b: 0.8396226, a: 1}
+  blobAttackSounds:
+  - {fileID: 8300000, guid: 4c7a9bea8115465458e2c2fb87a75cd1, type: 3}
+  blobHitSounds:
+  - {fileID: 8300000, guid: 08bf863fbf78ecd4a806114ece6282f2, type: 3}
   taggingManager: {fileID: 0}
 --- !u!114 &123534463
 MonoBehaviour:
@@ -322,6 +326,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec4d7fd55017ba458c86217fe26ac34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerUpCollectedSounds:
+  - {fileID: 8300000, guid: 8265571389f6a2c47bca3fe906fca366, type: 3}
+  - {fileID: 8300000, guid: 69a58fe80603f414a9df3cf33cb40b11, type: 3}
+  superSpeedSounds:
+  - {fileID: 8300000, guid: 9a71b2abd315f3e4d856cf11b7103ae9, type: 3}
+  - {fileID: 8300000, guid: 1aaacd4057c60d84c989f2256f4247f5, type: 3}
+  - {fileID: 8300000, guid: 7d85f2c33b8b5e24cb2dd589b50490e6, type: 3}
+  - {fileID: 8300000, guid: 88e9f035664be384b89ea92209de8f54, type: 3}
+  backOffSounds:
+  - {fileID: 8300000, guid: 4b15cef064106d74694dbefa3c87904f, type: 3}
+  superSlamSounds:
+  - {fileID: 8300000, guid: 9aec0c0c0408a6e48b8f675ce42581f4, type: 3}
 --- !u!1 &2263749499221799621
 GameObject:
   m_ObjectHideFlags: 0
