@@ -33,7 +33,7 @@ public class TagManagerInspector : Editor {
             GUILayout.Label(identifier.gameObject.name, GUILayout.Width(200));
             GUILayout.Label(identifier.PlayerIdentifier.ToString(), GUILayout.Width(75));
             GUILayout.Label(isIt.ToString(), GUILayout.Width(50));
-            GUILayout.Label(identifier.TimeAsKing.ToString(), GUILayout.Width(75));
+            GUILayout.Label(identifier.AmountOfTimeAsKing.ToString(), GUILayout.Width(75));
             GUILayout.EndHorizontal();
         }
 
