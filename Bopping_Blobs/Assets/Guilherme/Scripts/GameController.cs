@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour {
         InvokeRepeating("UpdateScoreboard", 0f, .25f);
         m_taggingManager.FreezeAllPlayers();
         StartCoroutine(StartGameRoutine());
+        // Time.timeScale = 0.5f;
     }
 
     private IEnumerator StartGameRoutine() {
