@@ -301,8 +301,11 @@ MonoBehaviour:
   blobOriginalColor: {r: 0.38020647, g: 0.9056604, b: 0.86695313, a: 1}
   blobAttackSounds:
   - {fileID: 8300000, guid: 4c7a9bea8115465458e2c2fb87a75cd1, type: 3}
+  - {fileID: 8300000, guid: 975245109f852764e9fd63120ae71123, type: 3}
+  - {fileID: 8300000, guid: 4b15cef064106d74694dbefa3c87904f, type: 3}
   blobHitSounds:
   - {fileID: 8300000, guid: 08bf863fbf78ecd4a806114ece6282f2, type: 3}
+  - {fileID: 8300000, guid: a506290608afc6140a350373c2656bad, type: 3}
   taggingManager: {fileID: 0}
 --- !u!114 &6157029889411830316
 MonoBehaviour:
@@ -319,6 +322,9 @@ MonoBehaviour:
   powerUpCollectedSounds:
   - {fileID: 8300000, guid: 69a58fe80603f414a9df3cf33cb40b11, type: 3}
   - {fileID: 8300000, guid: 8265571389f6a2c47bca3fe906fca366, type: 3}
+  superSpeedSounds: []
+  backOffSounds: []
+  superSlamSounds: []
 --- !u!1 &6082885376101268286
 GameObject:
   m_ObjectHideFlags: 0
