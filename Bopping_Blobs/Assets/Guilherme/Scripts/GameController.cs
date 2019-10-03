@@ -59,6 +59,8 @@ public class GameController : MonoBehaviour {
         m_taggingManager.FreezeAllPlayers();
         m_UIManager.ShowGameOverPanel(m_taggingManager.Players.ToArray());
         // TODO Handle Score to Money here
+
+
     }
 
     private void UpdateScoreboard() {

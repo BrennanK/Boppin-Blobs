@@ -18,6 +18,7 @@ public class TaggingIdentifier : MonoBehaviour {
     private Vector3 m_originalHammerLocalEulerAngles;
 
     [Header("Necessary Dependencies")]
+    public GameObject kingCrown;
     public Transform hammerTransform;
     public Transform hammerBopAim;
     public Color blobOriginalColor;
@@ -115,6 +116,7 @@ public class TaggingIdentifier : MonoBehaviour {
         m_boppableInterface = GetComponent<IBoppable>();
         m_rigidbodyReference = GetComponent<Rigidbody>();
         m_characterRenderer = GetComponentInChildren<Renderer>();
+        kingCrown.SetActive(false);
 
         m_rigidbodyReference.isKinematic = true;
         m_timeAsKing = 0;
@@ -144,10 +146,11 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     /// <summary>
-    /// <para>Set this player as TAG</para>
+    /// <para>Set this player as KING</para>
     /// </summary>
     public void SetAsKing() {
         m_boppableInterface.ChangeSpeed(taggingManager.baseSpeed * taggingManager.kingSpeedMultiplier);
+        kingCrown.SetActive(true);
 
         m_isImmune = true;
         m_characterRenderer.material.color = Color.green;
@@ -178,6 +181,7 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <para>Set this player as NOT TAG</para>
     /// </summary>
     public void SetAsNotKing() {
+        kingCrown.SetActive(false);
         m_boppableInterface.ChangeSpeed(taggingManager.baseSpeed);
         m_currentTaggingState = ETaggingBehavior.Running;
     }
@@ -276,7 +280,6 @@ public class TaggingIdentifier : MonoBehaviour {
     /// </summary>
     /// <param name="_identifier">Player who is currently tag</param>
     public void UpdateWhoIsTag(TaggingIdentifier _identifier) {
-        m_playerInfo.UpdateInfo(transform.position, AmITag());
         m_boppableInterface.UpdateWhoIsTag(_identifier.transform);
     }
 

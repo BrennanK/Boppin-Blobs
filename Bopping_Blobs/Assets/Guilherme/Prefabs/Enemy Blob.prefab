@@ -295,6 +295,7 @@ MonoBehaviour:
   attackDistance: 1
   attackTime: 0.5
   attackRadius: 1
+  kingCrown: {fileID: 8180473334691902651}
   hammerTransform: {fileID: 6082885376101268287}
   hammerBopAim: {fileID: 6082885374619583996}
   blobOriginalColor: {r: 0.38020647, g: 0.9056604, b: 0.86695313, a: 1}
@@ -529,7 +530,7 @@ PrefabInstance:
     - target: {fileID: 2979261189834459661, guid: 2d23c6460854a74498de0ceb44a14367,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8648621900525589487, guid: 2d23c6460854a74498de0ceb44a14367,
         type: 3}
@@ -588,6 +589,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d23c6460854a74498de0ceb44a14367, type: 3}
+--- !u!1 &8180473334691902651 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2979261189834459661, guid: 2d23c6460854a74498de0ceb44a14367,
+    type: 3}
+  m_PrefabInstance: {fileID: 6403722174207458998}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2366787462490008921 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8648621900525589487, guid: 2d23c6460854a74498de0ceb44a14367,
