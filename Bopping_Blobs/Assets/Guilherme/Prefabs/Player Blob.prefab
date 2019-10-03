@@ -311,8 +311,11 @@ MonoBehaviour:
   blobOriginalColor: {r: 0.5035531, g: 0.38416696, b: 0.8396226, a: 1}
   blobAttackSounds:
   - {fileID: 8300000, guid: 4c7a9bea8115465458e2c2fb87a75cd1, type: 3}
+  - {fileID: 8300000, guid: 975245109f852764e9fd63120ae71123, type: 3}
+  - {fileID: 8300000, guid: 5a3e5405790ed714ab4fbee082f5179f, type: 3}
   blobHitSounds:
   - {fileID: 8300000, guid: 08bf863fbf78ecd4a806114ece6282f2, type: 3}
+  - {fileID: 8300000, guid: a506290608afc6140a350373c2656bad, type: 3}
   taggingManager: {fileID: 0}
 --- !u!114 &123534463
 MonoBehaviour:

@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour {
         InvokeRepeating("UpdateScoreboard", 0f, .25f);
         m_taggingManager.FreezeAllPlayers();
         StartCoroutine(StartGameRoutine());
+        // Time.timeScale = 0.5f;
     }
 
     private IEnumerator StartGameRoutine() {
@@ -54,13 +55,54 @@ public class GameController : MonoBehaviour {
     }
 
     private void EndGame() {
+        TaggingIdentifier[] finalPlayersArray = m_taggingManager.Players.ToArray();
         m_currentGameTime = 0f;
         m_isGameRunning = false;
         m_taggingManager.FreezeAllPlayers();
-        m_UIManager.ShowGameOverPanel(m_taggingManager.Players.ToArray());
-        // TODO Handle Score to Money here
+        m_UIManager.ShowGameOverPanel(finalPlayersArray);
+
+        int finalPlayerPosition = 7;
+        TaggingIdentifier playerIdentifier;
+        for(int i = 0; i < finalPlayersArray.Length; i++) {
+            if(finalPlayersArray[i].IsUserPlayer) {
+                playerIdentifier = finalPlayersArray[i];
+                finalPlayerPosition = i + 1;
+            }
+        }
+
+        int amountOfMoneyPlayerEarned = GetMoneyFromPosition(finalPlayerPosition);
+
+        /*
+         * TODO
+         * Save Data Stuff
+         * Games Played => +1
+         * Times In Each Position => add finalPlayerPosition
+         * Time Played += gameTime
+         * Times King in Round => playerIdentifier.TimesAsKing;
+         * Times King => Add playerIdentifier.TimeAsKing
+         * TimesAttacked => playerIdentifier.PlayersBopped;
+         * Money Earned => amountOfMoneyPlayerEarned
+         */
+    }
 
 
+    /// <summary>
+    /// Return the amount of money player earned for ending on that position
+    /// </summary>
+    /// <param name="_finalPosition">A Position between 1 and 7 (inclusive)</param>
+    /// <returns>Amount of money that position was rewarded</returns>
+    private int GetMoneyFromPosition(int _finalPosition) {
+        switch(_finalPosition) {
+            case 1:
+                return 500;
+            case 2:
+                return 250;
+            case 3:
+                return 100;
+            default:
+                // Thanks for trying
+                return 50;
+        }
     }
 
     private void UpdateScoreboard() {

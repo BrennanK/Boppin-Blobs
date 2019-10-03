@@ -127,7 +127,6 @@ namespace PowerUp {
         private void ActivatePowerUp(ref PowerUpHolder _slot) {
             if(_slot.canActivate) {
                 if(_slot.powerUp != null) {
-
                     switch(_slot.powerUp.powerUp) {
                         case EPowerUps.SUPER_SPEED:
                             if(superSpeedSounds.Length > 0) {

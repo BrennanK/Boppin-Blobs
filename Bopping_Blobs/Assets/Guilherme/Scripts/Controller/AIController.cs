@@ -1,4 +1,5 @@
 ﻿using BehaviorTree;
+using PowerUp;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,7 @@ public class AIController : MonoBehaviour, IBoppable {
     // Variables for Tagging AI
     private TaggingIdentifier m_taggingIdentifier;
     private Transform m_playerCurrentlyBeingFollowed;
+    private PowerUpTracker m_powerUpTracker;
     private bool m_isBeingKnockedBack = false;
     private bool m_canAttack = false;
 
@@ -37,6 +39,7 @@ public class AIController : MonoBehaviour, IBoppable {
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         m_rigibody = GetComponent<Rigidbody>();
         m_taggingIdentifier = GetComponent<TaggingIdentifier>();
+        m_powerUpTracker = GetComponent<PowerUpTracker>();
         m_rigibody.isKinematic = true;
     }
 
@@ -50,11 +53,23 @@ public class AIController : MonoBehaviour, IBoppable {
                    .Sequence("Is IT Sequence")
                        .Condition("Check if is IT", IsIt)
                        .Selector("is King Selector - Select one of these actions to use to run away")
-                           // Run to random point (this can be biased or not)
-                           .Condition("Check if can search for preferred path", IsKingFollowingPath)
-                           .Action("Run to a preferred location that is not the closest one", RunToPreferredLocation)
-                           .Action("Run to farthest preferred location, running from player", RunToFarthestPreferredLocation)
-                           .Action("Run away from closest player", RunAwayFromClosestPlayer)
+                            // Short Term Reactions
+                            // Get away from closest player
+                            // use power up to run
+                           .Sequence("Is On Iminent Danger Sequence")
+                               .Condition("Check if is on iminent danger", IsOnIminentDanger)
+                               .Selector("Try to Use a Power Up To Run")
+                                   .Action("Try to use Back Off", UseBackOffPowerUp)
+                                   .Action("Try to use Super Speed", UseSuperSpeedPowerUp)
+                                   .Condition("Tried all power ups?", TriedAllPowerUps)
+                               .End()
+                               .Action("Run Away from Closest Player", RunAwayFromClosestPlayer)
+                           .End()
+                           .Selector("If not on iminent danger, choose of these")
+                               .Condition("Check if can search for preferred path", IsKingFollowingPath)
+                               .Action("Run to a preferred location that is not the closest one", RunToPreferredLocation)
+                               .Action("Run to farthest preferred location, running from player", RunToFarthestPreferredLocation)
+                           .End()
                        .End()
                    .End()
                    .Sequence("Is not IT sequence")
@@ -146,6 +161,55 @@ public class AIController : MonoBehaviour, IBoppable {
         }
     }
 
+    private EReturnStatus IsOnIminentDanger() {
+        Debug.Log("Searching for iminent danger =)");
+        Vector3 closestPlayer = GetClosestPlayerPosition();
+        if(Vector3.Distance(transform.position, closestPlayer) < 15f) {
+            return EReturnStatus.SUCCESS;
+        }
+
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus UseBackOffPowerUp() {
+        Debug.Log($"AI Trying to use Back of Power Up");
+        if(m_powerUpTracker.slot1.powerUp != null) {
+            if(m_powerUpTracker.slot1.powerUp.powerUp == EPowerUps.BACK_OFF) {
+                m_powerUpTracker.ActivatePowerUp1();
+                return EReturnStatus.SUCCESS;
+            }
+        } else if(m_powerUpTracker.slot2.powerUp != null) {
+            if(m_powerUpTracker.slot2.powerUp.powerUp == EPowerUps.BACK_OFF) {
+                m_powerUpTracker.ActivatePowerUp2();
+                return EReturnStatus.SUCCESS;
+            }
+        }
+
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus UseSuperSpeedPowerUp() {
+        Debug.Log($"AI Trying to use Speed Up Power Up");
+
+        if (m_powerUpTracker.slot1.powerUp != null) {
+            if(m_powerUpTracker.slot1.powerUp.powerUp == EPowerUps.SUPER_SPEED && m_powerUpTracker.slot1.canActivate) {
+                m_powerUpTracker.ActivatePowerUp1();
+                return EReturnStatus.SUCCESS;
+            }
+        } else if(m_powerUpTracker.slot2.powerUp != null) {
+            if(m_powerUpTracker.slot2.powerUp.powerUp == EPowerUps.SUPER_SPEED && m_powerUpTracker.slot2.canActivate) {
+                m_powerUpTracker.ActivatePowerUp2();
+                return EReturnStatus.SUCCESS;
+            }
+        }
+
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus TriedAllPowerUps() {
+        return EReturnStatus.SUCCESS;
+    }
+
     private EReturnStatus IsKingFollowingPath() {
         if(m_currentState == EAIStates.CHASING_KING) {
             // AI is King but is Chasing King? AI just got King!
@@ -159,7 +223,7 @@ public class AIController : MonoBehaviour, IBoppable {
         if(m_currentState == EAIStates.KING_FOLLOWING_PREFERRED_PATH || 
             m_currentState == EAIStates.KING_FOLLOWING_PATH) {
             // Checking if we are at stopping distance
-            if(m_navMeshAgent.remainingDistance < 0.5f) {
+            if(m_navMeshAgent.remainingDistance < 2.0f) {
                 return EReturnStatus.FAILURE;
             }
         }
@@ -216,9 +280,11 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private EReturnStatus RunAwayFromClosestPlayer() {
         Vector3 closestPlayerPosition = GetClosestPlayerPosition();
+        Vector3 directionToMove = transform.position - closestPlayerPosition;
+        directionToMove.Scale(new Vector3(3, 3, 3));
 
-        Vector3 positionToMove = transform.position - (closestPlayerPosition - transform.position);
-        SetPathToAgentFromPosition(positionToMove);
+        Debug.DrawRay(transform.position, directionToMove, Color.red, 0.125f);
+        SetPathToAgentFromPosition(directionToMove);
         m_currentState = EAIStates.KING_FOLLOWING_PATH;
 
         return EReturnStatus.RUNNING;
@@ -229,9 +295,11 @@ public class AIController : MonoBehaviour, IBoppable {
         Vector3 positionToGo = GetRandomPositionAroundAPoint(_position);
 
         NavMeshPath path = new NavMeshPath();
-        if(m_navMeshAgent.CalculatePath(_position, path)) {
-            m_navMeshAgent.SetPath(path);
+        if(m_navMeshAgent.CalculatePath(positionToGo, path)) {
+            m_navMeshAgent.SetDestination(positionToGo);
+            // m_navMeshAgent.SetPath(path);
         } else {
+            Debug.LogWarning($"AI going to a Random Point on Nav Mesh!!");
             m_currentState = EAIStates.KING_FOLLOWING_RANDOM_PATH;
             SetARandomPointOnMavMesh();
         }
@@ -304,17 +372,15 @@ public class AIController : MonoBehaviour, IBoppable {
     // TODO Get a random point given two angles (input: I want to escape considering these two angles)
     private Vector3 GetRandomPositionAroundAPoint(Vector3 _point) {
         // TODO maybe this range can be a public variable to tune the AI
-        float range = 10f;
+        float range = 1f;
         // TODO max tries can be a constant value on class
-        int maxTries = 10;
+        int maxTries = 20;
 
         for(int i = 0; i < maxTries; i++) {
-            Vector3 randomPosition = _point + (Random.insideUnitSphere * (range / 2.0f));
-            randomPosition.y = transform.position.y;
 
             NavMeshHit navMeshHit;
 
-            if (NavMesh.SamplePosition(randomPosition, out navMeshHit, range, NavMesh.AllAreas)) {
+            if (NavMesh.SamplePosition(_point, out navMeshHit, range, NavMesh.AllAreas)) {
                 return navMeshHit.position;
             }
         }

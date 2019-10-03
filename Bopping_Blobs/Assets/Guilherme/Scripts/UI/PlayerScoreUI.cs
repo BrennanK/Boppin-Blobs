@@ -3,36 +3,11 @@ using UnityEngine;
 
 public class PlayerScoreUI : MonoBehaviour {
     [Header("Text Components")]
-    public TextMeshProUGUI positionText;
     public TextMeshProUGUI playerNameText;
     public TextMeshProUGUI timeAsTagText;
 
-    public void RefreshPlayerScore(int _position, string _playerName, float _playerScore) {
-        positionText.text = GetStringPositionFromInt(_position);
+    public void RefreshPlayerScore( string _playerName, float _playerScore) {
         playerNameText.text = _playerName;
         timeAsTagText.text = Mathf.Round(_playerScore).ToString();
-    }
-
-    private string GetStringPositionFromInt(int _position) {
-        switch(_position) {
-            case 0:
-                return "1st";
-            case 1:
-                return "2nd";
-            case 2:
-                return "3rd";
-            case 3:
-                return "4th";
-            case 4:
-                return "5th";
-            case 5:
-                return "6th";
-            case 6:
-                return "7th";
-            case 7:
-                return "8th";
-            default:
-                return "nth";
-        }
     }
 }

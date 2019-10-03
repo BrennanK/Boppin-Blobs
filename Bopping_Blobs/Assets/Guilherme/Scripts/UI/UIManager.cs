@@ -67,7 +67,7 @@ public class UIManager : MonoBehaviour {
     /// <param name="_players">List of players</param>
     public void UpdateScoreboard(TaggingIdentifier[] _players) {
         for(int i = 0; i < _players.Length; i++) {
-            playerScores[i].RefreshPlayerScore(i, _players[i].PlayerName, _players[i].PlayerScore);
+            playerScores[i].RefreshPlayerScore(_players[i].PlayerName, _players[i].PlayerScore);
         }
     }
 
@@ -108,7 +108,7 @@ public class UIManager : MonoBehaviour {
         gameOverPanel.SetActive(true);
 
         for(int i = 0; i <_finalPlayerArray.Length; i++) {
-            finalPlayerScores[i].RefreshPlayerScore(i, _finalPlayerArray[i].PlayerName, _finalPlayerArray[i].PlayerScore);
+            finalPlayerScores[i].RefreshPlayerScore(_finalPlayerArray[i].PlayerName, _finalPlayerArray[i].PlayerScore);
         }
     }
 

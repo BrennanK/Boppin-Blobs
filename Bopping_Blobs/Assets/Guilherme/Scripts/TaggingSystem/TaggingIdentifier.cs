@@ -78,10 +78,17 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
-    private float m_timeAsKing;
-    public float TimeAsKing {
+    private int m_timesAsKing;
+    public float TimesAsKing {
         get {
-            return m_timeAsKing;
+            return m_timesAsKing;
+        }
+    }
+
+    private float m_amountOfTimeAsKing;
+    public float AmountOfTimeAsKing {
+        get {
+            return m_amountOfTimeAsKing;
         }
     }
 
@@ -101,7 +108,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
     public int PlayerScore {
         get {
-            return (Mathf.RoundToInt(Mathf.Round(m_timeAsKing) + m_playersBopped) * 10);
+            return (Mathf.RoundToInt(Mathf.Round(m_amountOfTimeAsKing) + m_playersBopped) * 10);
         }
     }
 
@@ -123,8 +130,9 @@ public class TaggingIdentifier : MonoBehaviour {
         kingCrown.SetActive(false);
 
         m_rigidbodyReference.isKinematic = true;
-        m_timeAsKing = 0;
+        m_amountOfTimeAsKing = 0;
         m_playersBopped = 0;
+        m_timesAsKing = 0;
 
         m_characterRenderer.material.color = blobOriginalColor;
         hammerBopAim.localPosition = new Vector3(0, -0.25f, attackDistance);
@@ -137,7 +145,7 @@ public class TaggingIdentifier : MonoBehaviour {
             case ETaggingBehavior.Running:
                 break;
             case ETaggingBehavior.Tagging:
-                m_timeAsKing += Time.deltaTime;
+                m_amountOfTimeAsKing += Time.deltaTime;
                 break;
         }
 
@@ -155,6 +163,7 @@ public class TaggingIdentifier : MonoBehaviour {
     public void SetAsKing() {
         m_boppableInterface.ChangeSpeed(taggingManager.baseSpeed * taggingManager.kingSpeedMultiplier);
         kingCrown.SetActive(true);
+        m_timesAsKing++;
 
         m_isImmune = true;
         m_characterRenderer.material.color = Color.green;
