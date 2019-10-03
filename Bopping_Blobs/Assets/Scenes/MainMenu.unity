@@ -663,7 +663,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 1581282.8}
+  m_AnchoredPosition: {x: 0, y: 1583286.2}
   m_SizeDelta: {x: 0, y: 455}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &103206379
@@ -2328,7 +2328,8 @@ MonoBehaviour:
   ReturnToMainMenuButton: {fileID: 995564543}
   CreditsButton: {fileID: 1705029829}
   MainMenu: {fileID: 8300000, guid: 8fd9d6c7bdfc846ba92fd48b612266de, type: 3}
-  Level1: {fileID: 8300000, guid: e91685d2d91e645cdb95356dde148a69, type: 3}
+  GardenLevel: {fileID: 0}
+  LevelsMusic: []
   SFXGroup:
   - {fileID: 8300000, guid: ee4c4d445c815497b90649903a9bcff5, type: 3}
 --- !u!1 &489418695
@@ -7029,7 +7030,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -106813.125, y: 1133521.5}
+  m_AnchoredPosition: {x: -109101.984, y: 1135128.5}
   m_SizeDelta: {x: -2.0999756, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1427465233

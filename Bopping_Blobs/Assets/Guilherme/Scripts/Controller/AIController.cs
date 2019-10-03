@@ -11,8 +11,7 @@ public class AIController : MonoBehaviour, IBoppable {
         CHASING_KING,
         KING_SEARCHING_PATH,
         KING_FOLLOWING_PATH,
-        KING_FOLLOWING_RANDOM_PATH,
-        KING_FOLLOWING_PREFERRED_PATH,
+        KING_FOLLOWING_RANDOM_PATH
     }
 
     private EAIStates m_currentState = EAIStates.CHASING_KING;
