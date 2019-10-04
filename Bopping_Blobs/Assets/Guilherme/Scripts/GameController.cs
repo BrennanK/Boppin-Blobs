@@ -21,14 +21,12 @@ public class GameController : MonoBehaviour {
     private void Awake() {
         m_UIManager = FindObjectOfType<UIManager>();
         m_taggingManager = FindObjectOfType<TaggingManager>();
+        m_currentGameTime = gameTime;
+        m_taggingManager.FreezeAllPlayers();
     }
 
     private void Start() {
-        m_currentGameTime = gameTime;
-        InvokeRepeating("UpdateScoreboard", 0f, .25f);
-        m_taggingManager.FreezeAllPlayers();
         StartCoroutine(StartGameRoutine());
-        // Time.timeScale = 0.5f;
     }
 
     private IEnumerator StartGameRoutine() {
@@ -38,6 +36,7 @@ public class GameController : MonoBehaviour {
         m_taggingManager.EnableAllPlayers();
         m_taggingManager.StartTagging();
         m_isGameRunning = true;
+        InvokeRepeating("UpdateScoreboard", 0f, .25f);
     }
 
     private void Update() {
