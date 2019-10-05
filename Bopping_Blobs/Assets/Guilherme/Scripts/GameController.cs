@@ -10,12 +10,21 @@ public class GameController : MonoBehaviour {
     public float gameTime = 60f;
 
     [Header("Game Sound Effects")]
+    public AudioClip[] blobGotKingSounds;
     public AudioClip[] blobAttackSounds;
     public AudioClip[] blobHitSounds;
     public AudioClip[] powerUpCollectedSound;
     public AudioClip[] superSpeedSounds;
     public AudioClip[] backOffSounds;
     public AudioClip[] superSlamSounds;
+
+    [Header("Particle Effects")]
+    public ParticleSystem blobGotKingParticle;
+    public ParticleSystem blobAttackParticle;
+    public ParticleSystem blobGotPowerUpParticle;
+    public ParticleSystem superSpeedParticle;
+    public ParticleSystem superSlamParticle;
+    public ParticleSystem backOffParticle;
 
     private bool m_isGameRunning = false;
     public bool IsGameRunning {

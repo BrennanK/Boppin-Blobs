@@ -157,6 +157,8 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <para>Set this player as KING</para>
     /// </summary>
     public void SetAsKing() {
+        Instantiate(GameController.instance.blobGotKingParticle, transform.position, Quaternion.identity).Play();
+        PausedMenuManager._instance.PlaySFX(GameController.instance.blobGotKingSounds[Random.Range(0, GameController.instance.blobGotKingSounds.Length)]);
         m_boppableInterface.ChangeSpeed(taggingManager.baseSpeed * taggingManager.kingSpeedMultiplier);
         kingCrown.SetActive(true);
         m_timesAsKing++;
@@ -207,6 +209,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
     private void TriggerAttackTransition(float _attackSizeMultiplier = 1.0f) {
         PausedMenuManager._instance?.PlaySFX(GameController.instance.blobAttackSounds[Random.Range(0, GameController.instance.blobAttackSounds.Length)]);
+        Instantiate(GameController.instance.blobAttackParticle, hammerBopAim.transform.position, Quaternion.identity).Play();
 
         m_boppableInterface.TriggerAttackTransition();
         ETaggingBehavior currentTaggingState = m_currentTaggingState;

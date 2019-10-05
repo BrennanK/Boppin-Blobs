@@ -1900,6 +1900,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameStartDelayTime: 2
   gameTime: 90
+  blobGotKingSounds:
+  - {fileID: 8300000, guid: c71d0b7493a671642b4565b8bcbee1f6, type: 3}
+  - {fileID: 8300000, guid: 0f4e1d5000281cb408f8fe4cb4570f06, type: 3}
   blobAttackSounds:
   - {fileID: 8300000, guid: 4c7a9bea8115465458e2c2fb87a75cd1, type: 3}
   - {fileID: 8300000, guid: 975245109f852764e9fd63120ae71123, type: 3}
@@ -1920,6 +1923,18 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4b15cef064106d74694dbefa3c87904f, type: 3}
   superSlamSounds:
   - {fileID: 8300000, guid: 9aec0c0c0408a6e48b8f675ce42581f4, type: 3}
+  blobGotKingParticle: {fileID: 7553543429392399824, guid: 92f92405dd3c97b438275f1d097d8f2d,
+    type: 3}
+  blobAttackParticle: {fileID: 7553543429392399824, guid: 92f92405dd3c97b438275f1d097d8f2d,
+    type: 3}
+  blobGotPowerUpParticle: {fileID: 7553543429392399824, guid: 92f92405dd3c97b438275f1d097d8f2d,
+    type: 3}
+  superSpeedParticle: {fileID: 7553543429392399824, guid: 92f92405dd3c97b438275f1d097d8f2d,
+    type: 3}
+  superSlamParticle: {fileID: 7553543429392399824, guid: 92f92405dd3c97b438275f1d097d8f2d,
+    type: 3}
+  backOffParticle: {fileID: 7553543429392399824, guid: 92f92405dd3c97b438275f1d097d8f2d,
+    type: 3}
 --- !u!1 &6837564551525940776
 GameObject:
   m_ObjectHideFlags: 0
