@@ -166,17 +166,12 @@ namespace PowerUp {
         }
 
         #region Power Up Functions
-        // TODO
-        // ATTENTION!! IMPORTANT!!
-        // IF SOMEONE HAVE ACTIVATE SUPER SPEED AND GET TAGGED, THEIR SPEED WILL BE SET TO THE NORMAL AFTER THAT, AND THEN THE SUPER SPEED WILL RESET, MAKING THEIR BASE SPEED LOWER THAN WHAT IT SHOULD BE!!!
         public void ActivateSuperSpeed(float _value) {
-            // Debug.Log($"Activating Super Speed ({m_boppableInterface.GetSpeed()}, {m_taggingManager.baseSpeed}, {_value}) - Speed will be {m_boppableInterface.GetSpeed() + (m_taggingManager.baseSpeed * _value)}");
-            m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() + (m_taggingManager.baseSpeed * _value));
+            m_playerTaggingIdentifier.ExternalSpeedBoost = m_playerTaggingIdentifier.ExternalSpeedBoost + m_taggingManager.baseSpeed * _value;
         }
 
         public void ResetSuperSpeed(float _value) {
-            Debug.Log($"Resetting Super Speed ({m_boppableInterface.GetSpeed()}, {m_taggingManager.baseSpeed}, {_value}) - Speed will be {m_boppableInterface.GetSpeed() - (m_taggingManager.baseSpeed * _value)}");
-            m_boppableInterface.ChangeSpeed(m_boppableInterface.GetSpeed() - (m_taggingManager.baseSpeed * _value));
+            m_playerTaggingIdentifier.ExternalSpeedBoost = m_playerTaggingIdentifier.ExternalSpeedBoost - m_taggingManager.baseSpeed * _value;
         }
 
         public void ActivateBackOff(float _value) {

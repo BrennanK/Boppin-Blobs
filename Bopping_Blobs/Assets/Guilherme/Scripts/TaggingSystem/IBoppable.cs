@@ -6,7 +6,7 @@ public interface IBoppable {
     void TriggerAttackTransition();
     void TriggerEndAttackTransition();
     void UpdateWhoIsTag(Transform _whoIsTag);
-    void ChangeSpeed(float _newSpeed);
+    void ChangeSpeed(float _baseSpeed, float _tempSpeedBost, float _externalSpeedBoost);
     float GetSpeed();
 
     // Knockback

@@ -115,6 +115,29 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
+    public float BaseSpeed {
+        get {
+            if(AmITag()) {
+                return taggingManager.baseSpeed * taggingManager.kingSpeedMultiplier;
+            } else {
+                return taggingManager.baseSpeed;
+            }
+        }
+    }
+
+    private float m_externalSpeedBoost = 0;
+    public float ExternalSpeedBoost {
+        get {
+            return m_externalSpeedBoost;
+        }
+        set {
+            m_externalSpeedBoost = value;
+            m_boppableInterface.ChangeSpeed(BaseSpeed, m_tempSpeedBoost, m_externalSpeedBoost);
+        }
+    }
+
+    private float m_tempSpeedBoost;
+
     private void Awake() {
         if(this.tag == "Player") {
             m_isUserPlayer = true;
@@ -134,6 +157,7 @@ public class TaggingIdentifier : MonoBehaviour {
         hammerBopAim.localPosition = new Vector3(0, -0.25f, attackDistance);
         m_originalHammerLocalPosition = hammerTransform.localPosition;
         m_originalHammerLocalEulerAngles = hammerTransform.localEulerAngles;
+        m_tempSpeedBoost = 0f;
     }
 
     private void Update() {
@@ -159,7 +183,7 @@ public class TaggingIdentifier : MonoBehaviour {
     public void SetAsKing() {
         Instantiate(GameController.instance.blobGotKingParticle, transform.position, Quaternion.identity).Play();
         PausedMenuManager._instance.PlaySFX(GameController.instance.blobGotKingSounds[Random.Range(0, GameController.instance.blobGotKingSounds.Length)]);
-        m_boppableInterface.ChangeSpeed(taggingManager.baseSpeed * taggingManager.kingSpeedMultiplier);
+        m_boppableInterface.ChangeSpeed(BaseSpeed, 0f, m_externalSpeedBoost);
         kingCrown.SetActive(true);
         m_timesAsKing++;
 
@@ -178,14 +202,16 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private IEnumerator SpeedUpRoutine(float _timeToDecay) {
-        float currentSpeed = m_boppableInterface.GetSpeed();
-        float speedBoost = currentSpeed * 2.0f;
+        float startingBoostSpeed = BaseSpeed;
 
         for(float i = 0; i < _timeToDecay; i += Time.deltaTime) {
-            float speedToSet = Mathf.Lerp(speedBoost, currentSpeed, (i / _timeToDecay));
-            m_boppableInterface.ChangeSpeed(speedToSet);
+            m_tempSpeedBoost = Mathf.Lerp(startingBoostSpeed, 0, (i / _timeToDecay));
+            m_boppableInterface.ChangeSpeed(BaseSpeed, m_tempSpeedBoost, m_externalSpeedBoost);
             yield return null;
         }
+
+        m_tempSpeedBoost = 0f;
+        m_boppableInterface.ChangeSpeed(BaseSpeed, m_tempSpeedBoost, m_externalSpeedBoost);
     }
 
     /// <summary>
@@ -193,7 +219,7 @@ public class TaggingIdentifier : MonoBehaviour {
     /// </summary>
     public void SetAsNotKing() {
         kingCrown.SetActive(false);
-        m_boppableInterface.ChangeSpeed(taggingManager.baseSpeed);
+        m_boppableInterface.ChangeSpeed(BaseSpeed, 0f, m_externalSpeedBoost);
         m_currentTaggingState = ETaggingBehavior.Running;
     }
 

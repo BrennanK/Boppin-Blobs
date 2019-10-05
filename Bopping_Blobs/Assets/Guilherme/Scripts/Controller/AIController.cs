@@ -107,9 +107,9 @@ public class AIController : MonoBehaviour, IBoppable {
         m_playerCurrentlyBeingFollowed = _whoIsTag;
     }
 
-    public void ChangeSpeed(float _newSpeed) {
-        m_navMeshAgent.speed = _newSpeed;
-        m_navMeshAgent.acceleration = _newSpeed * 2f;
+    public void ChangeSpeed(float _baseSpeed, float _tempSpeedBost, float _externalSpeedBoost) {
+        m_navMeshAgent.speed = _baseSpeed + _tempSpeedBost + _externalSpeedBoost;
+        m_navMeshAgent.acceleration = m_navMeshAgent.speed * 2f;
     }
 
     public float GetSpeed() {
