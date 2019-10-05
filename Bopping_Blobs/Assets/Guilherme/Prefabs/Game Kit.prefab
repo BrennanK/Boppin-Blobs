@@ -1901,8 +1901,12 @@ MonoBehaviour:
   gameStartDelayTime: 2
   gameTime: 90
   blobGotKingSounds:
-  - {fileID: 8300000, guid: c71d0b7493a671642b4565b8bcbee1f6, type: 3}
-  - {fileID: 8300000, guid: 0f4e1d5000281cb408f8fe4cb4570f06, type: 3}
+  - {fileID: 8300000, guid: 8850456977e614b4d8b19206a51a3d9f, type: 3}
+  - {fileID: 8300000, guid: a1fa3997c102f2448a07823aa3291d93, type: 3}
+  - {fileID: 8300000, guid: 15934076293ce8e43b4ab645635bcd07, type: 3}
+  - {fileID: 8300000, guid: 2764b844c484fc248b7678dc65bd6b55, type: 3}
+  - {fileID: 8300000, guid: 3742d59d1beeffb4ea905721fb6e1cfd, type: 3}
+  - {fileID: 8300000, guid: fdbf9d4e517049140bbd2c8b41a2ce07, type: 3}
   blobAttackSounds:
   - {fileID: 8300000, guid: 4c7a9bea8115465458e2c2fb87a75cd1, type: 3}
   - {fileID: 8300000, guid: 975245109f852764e9fd63120ae71123, type: 3}
