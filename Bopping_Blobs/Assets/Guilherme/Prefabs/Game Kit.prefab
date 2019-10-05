@@ -1935,6 +1935,9 @@ MonoBehaviour:
     type: 3}
   backOffParticle: {fileID: 7553543429392399824, guid: 92f92405dd3c97b438275f1d097d8f2d,
     type: 3}
+  backOffDecal: {fileID: 3012218563902541191, guid: a0e9468eff8c3f24c848c3f5d7aede7c,
+    type: 3}
+  superSlamDecal: {fileID: 432694399, guid: 55fee14bd96b44c4e83506144c77caba, type: 3}
 --- !u!1 &6837564551525940776
 GameObject:
   m_ObjectHideFlags: 0

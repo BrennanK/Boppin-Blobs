@@ -26,6 +26,10 @@ public class GameController : MonoBehaviour {
     public ParticleSystem superSlamParticle;
     public ParticleSystem backOffParticle;
 
+    [Header("Decals")]
+    public GameObject backOffDecal;
+    public GameObject superSlamDecal;
+
     private bool m_isGameRunning = false;
     public bool IsGameRunning {
         get {

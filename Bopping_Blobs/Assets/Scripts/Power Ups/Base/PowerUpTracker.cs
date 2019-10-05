@@ -135,12 +135,14 @@ namespace PowerUp {
                             if(GameController.instance.backOffSounds.Length > 0) {
                                 PausedMenuManager._instance?.PlaySFX(GameController.instance.backOffSounds[Random.Range(0, GameController.instance.backOffSounds.Length)]);
                                 Instantiate(GameController.instance.backOffParticle, transform.position, Quaternion.identity);
+                                Instantiate(GameController.instance.backOffDecal, m_playerTaggingIdentifier.hammerBopAim.transform.position, GameController.instance.backOffDecal.transform.rotation);
                             }
                             break;
                         case EPowerUps.SUPER_SLAM:
                             if(GameController.instance.superSlamSounds.Length > 0) {
                                 PausedMenuManager._instance?.PlaySFX(GameController.instance.superSlamSounds[Random.Range(0, GameController.instance.superSlamSounds.Length)]);
                                 Instantiate(GameController.instance.superSlamParticle, transform.position, Quaternion.identity);
+                                Instantiate(GameController.instance.superSlamDecal, m_playerTaggingIdentifier.hammerBopAim.transform.position, GameController.instance.superSlamDecal.transform.rotation);
                             }
                             break;
                     }
