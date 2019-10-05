@@ -143,6 +143,7 @@ public class AchievementManager : MonoBehaviour
     // Enable the UI
     public void OpenAchievement()
     {
+        PausedMenuManager._instance.PlaySFX(0);
         AchievementUI.GetComponent<Animator>().SetBool("Open", true);
         achievementActivated = true;
         //NotCompletedContent.GetComponent<RectTransform>().offsetMax = Vector2.zero;
@@ -152,6 +153,7 @@ public class AchievementManager : MonoBehaviour
     // Close the UI
     public void CloseAchievement()
     {
+        PausedMenuManager._instance.PlaySFX(0);
         AchievementUI.GetComponent<Animator>().SetBool("Open", false);
         achievementActivated = false;
     }

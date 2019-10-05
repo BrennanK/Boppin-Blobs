@@ -34,8 +34,6 @@ public class UIManager : MonoBehaviour {
     }
 
     private void Start() {
-        slot1Text.text = "";
-        slot2Text.text = "";
         gameOverPanel.SetActive(false);
     }
 
