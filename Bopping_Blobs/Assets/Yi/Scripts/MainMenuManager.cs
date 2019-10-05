@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [SerializeField] private string FirstSceneName;
+
+    [SerializeField] private string[] PossibleLevels;
 
     private AchievementManager achievementManager;
 
@@ -45,7 +46,7 @@ public class MainMenuManager : MonoBehaviour
                 {
                     case "Play":
                         Debug.Log("Play the game!");
-                        SceneManager.LoadSceneAsync(FirstSceneName);
+                        SceneManager.LoadSceneAsync(PossibleLevels[Random.Range(0, PossibleLevels.Length)]);
                         break;
                     case "Customization":
                         Debug.Log("Open customization menu.");

@@ -11,4 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Garden_v2.unity
     guid: ea5707c429f3a4e489a2721bf3a19646
+  - enabled: 1
+    path: Assets/Scenes/Garden_v3.unity
+    guid: 110c47a05be10184a887b48fda11ba75
+  - enabled: 1
+    path: Assets/Scenes/Skyscraper_v1.unity
+    guid: 004d97a4ee013384ab014144cc6a13e4
+  - enabled: 1
+    path: Assets/Scenes/SpaceStation.unity
+    guid: ce0299c3632a5f848804979dcc08f590
   m_configObjects: {}
