@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour {
     private void Awake() {
         m_UIManager = FindObjectOfType<UIManager>();
         m_taggingManager = FindObjectOfType<TaggingManager>();
+        m_taggingManager.InitializeTaggingManager();
         m_currentGameTime = gameTime;
         m_taggingManager.FreezeAllPlayers();
     }

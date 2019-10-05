@@ -40,9 +40,11 @@ public class TaggingManager : MonoBehaviour {
 
     private UIManager m_UIManager;
 
-    private void Awake() {
+    public void InitializeTaggingManager() {
         m_UIManager = FindObjectOfType<UIManager>();
-        RandomNameGenerator randomNameGenerator = new RandomNameGenerator($"{Application.dataPath}/Resources/NameList.txt");
+
+        RandomNameGenerator randomNameGenerator = new RandomNameGenerator();
+
         m_playersIdentifiers = FindObjectsOfType<TaggingIdentifier>().ToList();
         PlayerInfoUI[] playerInfoUI = FindObjectsOfType<PlayerInfoUI>();
 
