@@ -24,10 +24,6 @@ namespace PowerUp {
     }
 
     public class PowerUpTracker : MonoBehaviour {
-        public AudioClip[] powerUpCollectedSounds;
-        public AudioClip[] superSpeedSounds;
-        public AudioClip[] backOffSounds;
-        public AudioClip[] superSlamSounds;
 
         public PowerUpHolder slot1 = new PowerUpHolder();
         public PowerUpHolder slot2 = new PowerUpHolder();
@@ -86,7 +82,7 @@ namespace PowerUp {
         }
 
         public void AddPowerUp(PowerUp _powerUp) {
-            PausedMenuManager._instance?.PlaySFX(powerUpCollectedSounds[Random.Range(0, powerUpCollectedSounds.Length)]);
+            PausedMenuManager._instance?.PlaySFX(GameController.instance.powerUpCollectedSound[Random.Range(0, GameController.instance.powerUpCollectedSound.Length)]);
             // Debug.Log($"Power Up Received by Power Up Tracker: {_powerUp.GetHashCode()}");
             switch(_powerUp.powerUp) {
                 case EPowerUps.SUPER_SPEED:
@@ -129,18 +125,18 @@ namespace PowerUp {
                 if(_slot.powerUp != null) {
                     switch(_slot.powerUp.powerUp) {
                         case EPowerUps.SUPER_SPEED:
-                            if(superSpeedSounds.Length > 0) {
-                                PausedMenuManager._instance?.PlaySFX(superSpeedSounds[Random.Range(0, superSpeedSounds.Length)]);
+                            if(GameController.instance.superSpeedSounds.Length > 0) {
+                                PausedMenuManager._instance?.PlaySFX(GameController.instance.superSpeedSounds[Random.Range(0, GameController.instance.superSpeedSounds.Length)]);
                             }
                             break;
                         case EPowerUps.BACK_OFF:
-                            if(backOffSounds.Length > 0) {
-                                PausedMenuManager._instance?.PlaySFX(backOffSounds[Random.Range(0, backOffSounds.Length)]);
+                            if(GameController.instance.backOffSounds.Length > 0) {
+                                PausedMenuManager._instance?.PlaySFX(GameController.instance.backOffSounds[Random.Range(0, GameController.instance.backOffSounds.Length)]);
                             }
                             break;
                         case EPowerUps.SUPER_SLAM:
-                            if(superSlamSounds.Length > 0) {
-                                PausedMenuManager._instance?.PlaySFX(superSlamSounds[Random.Range(0, superSlamSounds.Length)]);
+                            if(GameController.instance.superSlamSounds.Length > 0) {
+                                PausedMenuManager._instance?.PlaySFX(GameController.instance.superSlamSounds[Random.Range(0, GameController.instance.superSlamSounds.Length)]);
                             }
                             break;
                     }

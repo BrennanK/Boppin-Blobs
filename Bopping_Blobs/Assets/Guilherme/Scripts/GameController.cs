@@ -3,9 +3,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
+    public static GameController instance;
+
     [Header("General Game Configurations")]
     public float gameStartDelayTime = 3f;
     public float gameTime = 60f;
+
+    [Header("Game Sound Effects")]
+    public AudioClip[] blobAttackSounds;
+    public AudioClip[] blobHitSounds;
+    public AudioClip[] powerUpCollectedSound;
+    public AudioClip[] superSpeedSounds;
+    public AudioClip[] backOffSounds;
+    public AudioClip[] superSlamSounds;
 
     private bool m_isGameRunning = false;
     public bool IsGameRunning {
@@ -19,6 +29,8 @@ public class GameController : MonoBehaviour {
     private TaggingManager m_taggingManager;
 
     private void Awake() {
+        instance = this;
+
         m_UIManager = FindObjectOfType<UIManager>();
         m_taggingManager = FindObjectOfType<TaggingManager>();
         m_taggingManager.InitializeTaggingManager();
