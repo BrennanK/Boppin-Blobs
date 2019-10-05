@@ -67,8 +67,6 @@ public class AIController : MonoBehaviour, IBoppable {
                            .End()
                            .Selector("If not on iminent danger, choose of these")
                                .Condition("Check if can search for preferred path", IsKingFollowingPath)
-                               .Action("Run to a preferred location that is not the closest one", RunToPreferredLocation)
-                               .Action("Run to farthest preferred location, running from player", RunToFarthestPreferredLocation)
                            .End()
                        .End()
                    .End()
@@ -229,53 +227,6 @@ public class AIController : MonoBehaviour, IBoppable {
         }
 
         return EReturnStatus.SUCCESS;
-    }
-
-    /// <summary>
-    /// <para>Run to farthest preferred location that is not the closest one I am at right now</para>
-    /// </summary>
-    private EReturnStatus RunToPreferredLocation() {
-        List<Transform> preferredLocations = m_taggingIdentifier.taggingManager.aiPreferredSpots.ToList();
-
-        if(preferredLocations.Count == 0) {
-            return EReturnStatus.FAILURE;
-        }
-
-        Transform closestLocation = preferredLocations[0];
-        for(int i = 0; i < preferredLocations.Count; i++) {
-            if(Vector3.Distance(transform.position, preferredLocations[i].position) < Vector3.Distance(transform.position, closestLocation.position)) {
-                closestLocation = preferredLocations[i];
-            }
-        }
-
-        preferredLocations.Remove(closestLocation);
-
-        m_currentState = EAIStates.KING_FOLLOWING_PREFERRED_PATH;
-        Transform chosenLocation = preferredLocations[Random.Range(0, preferredLocations.Count)];
-        Debug.Log($"AI Chosen Location: {chosenLocation.name}");
-        SetPathToAgentFromPosition(chosenLocation.position);
-        return EReturnStatus.SUCCESS;
-    }
-
-    private EReturnStatus RunToFarthestPreferredLocation() {
-        Vector3 closestPlayerPosition = GetClosestPlayerPosition();
-        Transform[] possibleSpotsToRunTo = m_taggingIdentifier.taggingManager.aiPreferredSpots;
-
-        if(possibleSpotsToRunTo.Length == 0) {
-            return EReturnStatus.FAILURE;
-        }
-
-        Transform preferredLocation = possibleSpotsToRunTo[0];
-        for(int i = 1; i < possibleSpotsToRunTo.Length; i++) {
-            if(Vector3.Distance(closestPlayerPosition, possibleSpotsToRunTo[i].position) > Vector3.Distance(closestPlayerPosition, preferredLocation.position)) {
-                preferredLocation = possibleSpotsToRunTo[i];
-            }
-        }
-
-        m_currentState = EAIStates.KING_FOLLOWING_PREFERRED_PATH;
-        Debug.Log($"AI Preferred Location: {preferredLocation.name}");
-        SetPathToAgentFromPosition(preferredLocation.position);
-        return EReturnStatus.RUNNING;
     }
 
     private EReturnStatus RunAwayFromClosestPlayer() {

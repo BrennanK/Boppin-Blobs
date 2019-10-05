@@ -14,9 +14,6 @@ public class TaggingManager : MonoBehaviour {
     public float knockbackRadius = 10f;
     public float knockbackForce = 5f;
 
-    [Header("AI Preferred Spots")]
-    public Transform[] aiPreferredSpots;
-
     private int m_currentPlayerTaggingID;
     public int WhoIsTag {
         get {
