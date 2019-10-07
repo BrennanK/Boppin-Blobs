@@ -142,12 +142,15 @@ public class GameController : MonoBehaviour {
     }
 
     private void OnApplicationFocus(bool _focusStatus) {
-        Debug.Log($"OnApplicationFocus({_focusStatus})");
-        PausedMenuManager._instance?.EnablePausedMenu(!false);
+        // we just want to pause in case we lose focus, we don't want to unpause
+        if(!_focusStatus) {
+            PausedMenuManager._instance?.EnablePausedMenu(true);
+        }
     }
 
     private void OnApplicationPause(bool _pauseStatus) {
-        Debug.Log($"OnApplicationPause{_pauseStatus}");
-        PausedMenuManager._instance?.EnablePausedMenu(_pauseStatus);
+        if(_pauseStatus) {
+            PausedMenuManager._instance?.EnablePausedMenu(true);
+        }
     }
 }
