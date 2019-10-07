@@ -40,9 +40,16 @@ public class GameController : MonoBehaviour {
     private float m_currentGameTime;
     private UIManager m_UIManager;
     private TaggingManager m_taggingManager;
+    private PowerUp.PowerUpBox[] m_allPowerBoxes;
+    public PowerUp.PowerUpBox[] PowerupBoxes {
+        get {
+            return m_allPowerBoxes;
+        }
+    }
 
     private void Awake() {
         instance = this;
+        m_allPowerBoxes = FindObjectsOfType<PowerUp.PowerUpBox>();
         m_UIManager = FindObjectOfType<UIManager>();
         m_taggingManager = FindObjectOfType<TaggingManager>();
         m_taggingManager.InitializeTaggingManager();

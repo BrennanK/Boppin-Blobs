@@ -253,7 +253,7 @@ public class TaggingIdentifier : MonoBehaviour {
                     PausedMenuManager._instance?.PlaySFX(GameController.instance.blobHitSounds[Random.Range(0, GameController.instance.blobHitSounds.Length)]);
                     m_playersBopped++;
 
-                    if(taggingManager.WhoIsTag == playerHitted.PlayerIdentifier) {
+                    if(taggingManager.WhoIsKing == playerHitted.PlayerIdentifier) {
                         playerHitted.SetAsNotKing();
                         taggingManager.PlayerWasTagged(this, true);
 
@@ -329,7 +329,7 @@ public class TaggingIdentifier : MonoBehaviour {
     /// </summary>
     /// <returns>true if player is TAG, false otherwise</returns>
     public bool AmITag() {
-        return (PlayerIdentifier == taggingManager.WhoIsTag);
+        return (PlayerIdentifier == taggingManager.WhoIsKing);
     }
     #endregion
 

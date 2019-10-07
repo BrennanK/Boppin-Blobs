@@ -7,12 +7,13 @@ namespace PowerUp {
     public class PowerUpBox : MonoBehaviour {
         private PowerUp[] m_powerUps;
 
-        /*
-        [SerializeField]
-        private PowerUpEditor powerUpValues;
-        */
-
         private bool m_isDisabled;
+        public bool IsActive {
+            get {
+                return !m_isDisabled;
+            }
+        }
+
         private float m_disableTimerStart = 5f;
         private float m_disableTimer;
         private int m_itemNumber;
