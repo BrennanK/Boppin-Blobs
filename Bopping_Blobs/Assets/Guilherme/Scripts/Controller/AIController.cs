@@ -11,12 +11,12 @@ public class AIController : MonoBehaviour, IBoppable {
         NOT_KING_RECALCULATING_PATH,
         NOT_KING_CHASING_KING,
         NOT_KING_CHASING_POWERUP,
-        NOT_KING_FOLLOWING_PLAYER,
         NOT_KING_WANDERING,
+
         KING_SEARCHING_PATH,
         KING_FOLLOWING_PATH,
-        KING_FOLLOWING_RANDOM_PATH,
-        KING_FOLLOWING_PREFERRED_PATH,
+        KING_CHASING_POWERUP,
+        KING_WANDERING,
     }
 
     private EAIStates m_currentState = EAIStates.NOT_KING_WANDERING;
@@ -35,11 +35,6 @@ public class AIController : MonoBehaviour, IBoppable {
 
     // Not King Configuration
     public float m_distanceToFollowKing = 15f;
-    public float DistanceToFollowKing {
-        set {
-            m_distanceToFollowKing = value;
-        }
-    }
     public const float km_distanceToPowerUp = 10f;
     public const float km_closestPlayerDistanceToFollow = 15f;
 
@@ -83,30 +78,38 @@ public class AIController : MonoBehaviour, IBoppable {
 
                    // Is King
                    .Sequence("Is KING Sequence")
-                       .Condition("Check if is IT", IsIt)
-
-                       .Selector("is King Selector - Select one of these actions to use to run away")
-                           .Sequence("Is On Iminent Danger Sequence")
-                               .Condition("Check if is on iminent danger", IsOnIminentDanger)
-
-                               .Selector("Try to Use a Power Up To Run")
-                                   .Action("Try to use Back Off", UseBackOffPowerUp)
-                                   .Action("Try to use Super Speed", UseSuperSpeedPowerUp)
-                                   .Condition("Tried all power ups?", TriedAllPowerUps)
-                               .End()
-
-                               .Action("Run Away from Closest Player", RunAwayFromClosestPlayer)
-                           .End()
-
-                           .Selector("If not on iminent danger, choose of these")
-                               .Sequence("Collect Power Up")
-                                   .Condition("Can get power ups", CanGetPowerUp)
-                                   .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
-                                   .Action("Collect a Power Up", CollectPowerUp)
-                               .End()
+                       .Condition("Check if is King", IsKing)
+                       .Selector("KING Selector")
+                           // Sequence => Iminent Danger
+                           // Sequence => Get Power Up
+                           .Sequence("King Wander Around")
+                               .Action("King Wander!", KingWander)
                            .End()
                        .End()
 
+                   /*
+                   .Selector("is King Selector - Select one of these actions to use to run away")
+                       .Sequence("Is On Iminent Danger Sequence")
+                           .Condition("Check if is on iminent danger", IsOnIminentDanger)
+
+                           .Selector("Try to Use a Power Up To Run")
+                               .Action("Try to use Back Off", UseBackOffPowerUp)
+                               .Action("Try to use Super Speed", UseSuperSpeedPowerUp)
+                               .Condition("Tried all power ups?", TriedAllPowerUps)
+                           .End()
+
+                           .Action("Run Away from Closest Player", RunAwayFromClosestPlayer)
+                       .End()
+
+                       .Selector("If not on iminent danger, choose of these")
+                           .Sequence("Collect Power Up")
+                               .Condition("Can get power ups", CanGetPowerUp)
+                               .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
+                               .Action("Collect a Power Up", CollectPowerUp)
+                           .End()
+                       .End()
+                   .End()
+                   */
                    .End()
 
                    // IS NOT KING
@@ -120,6 +123,12 @@ public class AIController : MonoBehaviour, IBoppable {
                                    .Condition("Check if AI can attack", CanAttack)
                                    .Action("Attack King", Attack)
                                .End()
+
+                               .Sequence("Attack with Super Slam if possible")
+                                   .Condition("Is Within Super Slam Distance?", IsWithinSuperSlamDistance)
+                                   .Condition("SUPER SLAM", UseSuperSlamPowerUp)
+                               .End()
+
                                .Sequence("Chase King")
                                    .Action("Chase King", ChaseKing)
                                .End()
@@ -139,8 +148,8 @@ public class AIController : MonoBehaviour, IBoppable {
                        .End()
 
                        .Sequence("Walk Randomly")
-                           .Condition("Can we wander?", CanPlayerWander)
-                           .Action("Wander...", WanderRandomly)
+                           .Condition("Can we wander?", CanNotKingWander)
+                           .Action("Wander...", NotKingWanderRandomly)
                        .End()
                    .End()
 
@@ -212,16 +221,35 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     #region King Functions
-    private EReturnStatus IsIt() {
-        if(m_taggingIdentifier.AmITag()) {
+    private EReturnStatus IsKing() {
+        if(m_taggingIdentifier.AmIKing()) {
             return EReturnStatus.SUCCESS;
         } else {
             return EReturnStatus.FAILURE;
         }
     }
 
+    private EReturnStatus KingWander() {
+        bool recalculateWandering = true;
+
+        if(m_currentState == EAIStates.KING_WANDERING) {
+            if(m_navMeshAgent.remainingDistance > km_distanceToStopWandering) {
+                recalculateWandering = false;
+            }
+        }
+
+        if(recalculateWandering) {
+            if(SetARandomPointOnMavMesh(km_wanderRange)) {
+                m_currentState = EAIStates.KING_WANDERING;
+            } else {
+                m_currentState = EAIStates.KING_SEARCHING_PATH;
+            }
+        }
+
+        return EReturnStatus.SUCCESS;
+    }
+
     private EReturnStatus IsOnIminentDanger() {
-        Debug.Log("Searching for iminent danger =)");
         Vector3 closestPlayer = GetClosestPlayerTransform().position;
         if(Vector3.Distance(transform.position, closestPlayer) < km_iminentDangerDistance) {
             return EReturnStatus.SUCCESS;
@@ -231,7 +259,6 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus UseBackOffPowerUp() {
-        Debug.Log($"AI Trying to use Back of Power Up");
         if(m_powerUpTracker.slot1.powerUp != null) {
             if(m_powerUpTracker.slot1.powerUp.powerUp == EPowerUps.BACK_OFF) {
                 m_powerUpTracker.ActivatePowerUp1();
@@ -248,8 +275,6 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus UseSuperSpeedPowerUp() {
-        Debug.Log($"AI Trying to use Speed Up Power Up");
-
         if (m_powerUpTracker.slot1.powerUp != null) {
             if(m_powerUpTracker.slot1.powerUp.powerUp == EPowerUps.SUPER_SPEED && m_powerUpTracker.slot1.canActivate) {
                 m_powerUpTracker.ActivatePowerUp1();
@@ -265,29 +290,23 @@ public class AIController : MonoBehaviour, IBoppable {
         return EReturnStatus.FAILURE;
     }
 
-    private EReturnStatus TriedAllPowerUps() {
-        return EReturnStatus.SUCCESS;
-    }
-
-    private EReturnStatus IsKingFollowingPath() {
-        if(m_currentState == EAIStates.NOT_KING_CHASING_KING) {
-            // AI is King but is Chasing King? AI just got King!
-            m_currentState = EAIStates.KING_SEARCHING_PATH;
-            return EReturnStatus.FAILURE;
-        }
-
-        if(m_currentState == EAIStates.KING_SEARCHING_PATH || m_currentState == EAIStates.KING_FOLLOWING_RANDOM_PATH) {
-            return EReturnStatus.FAILURE;
-        }
-
-        if(m_currentState == EAIStates.KING_FOLLOWING_PREFERRED_PATH || 
-            m_currentState == EAIStates.KING_FOLLOWING_PATH) {
-            // Checking if we are at stopping distance
-            if(m_navMeshAgent.remainingDistance < 2.0f) {
-                return EReturnStatus.FAILURE;
+    private EReturnStatus UseSuperSlamPowerUp() {
+        if(m_powerUpTracker.slot1.powerUp != null) {
+            if(m_powerUpTracker.slot1.powerUp.powerUp == EPowerUps.SUPER_SLAM) {
+                m_powerUpTracker.ActivatePowerUp1();
+                return EReturnStatus.SUCCESS;
+            }
+        } else if(m_powerUpTracker.slot2.powerUp != null) {
+            if(m_powerUpTracker.slot2.powerUp.powerUp == EPowerUps.SUPER_SLAM) {
+                m_powerUpTracker.ActivatePowerUp2();
+                return EReturnStatus.SUCCESS;
             }
         }
 
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus TriedAllPowerUps() {
         return EReturnStatus.SUCCESS;
     }
 
@@ -300,7 +319,7 @@ public class AIController : MonoBehaviour, IBoppable {
         SetPathToAgentFromPosition(directionToMove);
         m_currentState = EAIStates.KING_FOLLOWING_PATH;
 
-        return EReturnStatus.RUNNING;
+        return EReturnStatus.SUCCESS;
     }
     #endregion
 
@@ -325,7 +344,7 @@ public class AIController : MonoBehaviour, IBoppable {
         return EReturnStatus.FAILURE;
     }
 
-    private EReturnStatus CanPlayerWander() {
+    private EReturnStatus CanNotKingWander() {
         if(m_currentState == EAIStates.NOT_KING_WANDERING) {
             // we are wandering already, so we check if we are close to the point we were previosuly wandering too...
             if(m_navMeshAgent.remainingDistance < km_distanceToStopWandering) {
@@ -341,13 +360,14 @@ public class AIController : MonoBehaviour, IBoppable {
         return EReturnStatus.SUCCESS;
     }
 
-    private EReturnStatus WanderRandomly() {
+    private EReturnStatus NotKingWanderRandomly() {
         if(SetARandomPointOnMavMesh(km_wanderRange)) {
             m_currentState = EAIStates.NOT_KING_WANDERING;
             return EReturnStatus.SUCCESS;
         }
 
         m_currentState = EAIStates.NOT_KING_RECALCULATING_PATH;
+
         return EReturnStatus.SUCCESS;
     }
     #endregion
@@ -382,8 +402,10 @@ public class AIController : MonoBehaviour, IBoppable {
         if(m_navMeshAgent.isOnNavMesh) {
             m_navMeshAgent.SetDestination(m_powerUpBoxesInDistance[Random.Range(0, m_powerUpBoxesInDistance.Count)].gameObject.transform.position);
 
-            if (!m_taggingIdentifier.AmITag()) {
+            if (!m_taggingIdentifier.AmIKing()) {
                 m_currentState = EAIStates.NOT_KING_CHASING_POWERUP;
+            } else {
+                m_currentState = EAIStates.KING_CHASING_POWERUP;
             }
 
             return EReturnStatus.SUCCESS;
@@ -397,6 +419,14 @@ public class AIController : MonoBehaviour, IBoppable {
     private EReturnStatus CheckIfClosestPlayerIsWithinAttackingDistance() {
         Transform closestPlayer = GetClosestPlayerTransform();
         if(Vector3.Distance(transform.position, closestPlayer.position) < attackingDistance) {
+            return EReturnStatus.SUCCESS;
+        }
+
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus IsWithinSuperSlamDistance() {
+        if(Vector3.Distance(transform.position, m_playerCurrentlyBeingFollowed.position) < (attackingDistance * 2f)) {
             return EReturnStatus.SUCCESS;
         }
 

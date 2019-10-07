@@ -1,9 +1,7 @@
 ﻿namespace BehaviorTree {
     public enum EReturnStatus {
         SUCCESS,
-        FAILURE,
-        RUNNING,
-        SUSPENDED
+        FAILURE
     }
 
     /// <summary>

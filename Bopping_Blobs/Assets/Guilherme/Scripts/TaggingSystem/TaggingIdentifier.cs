@@ -117,7 +117,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
     public float BaseSpeed {
         get {
-            if(AmITag()) {
+            if(AmIKing()) {
                 return taggingManager.baseSpeed * taggingManager.kingSpeedMultiplier;
             } else {
                 return taggingManager.baseSpeed;
@@ -328,7 +328,7 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <para>Returns whether or not this player is TAG</para>
     /// </summary>
     /// <returns>true if player is TAG, false otherwise</returns>
-    public bool AmITag() {
+    public bool AmIKing() {
         return (PlayerIdentifier == taggingManager.WhoIsKing);
     }
     #endregion
