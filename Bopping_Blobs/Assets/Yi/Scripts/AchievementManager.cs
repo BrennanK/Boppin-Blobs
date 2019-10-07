@@ -11,14 +11,16 @@ using TMPro;
 public class AchievementManager : MonoBehaviour
 {
     #region Variables
-    // Serial#, Name, Completed, Needed, Reward, Status
-    public List<string[]> Achievements = new List<string[]> {
-        new string[]{"1", "Win a game", "0", "1", "100", "0"},
-        new string[]{"2", "Lose a game", "0", "1", "100", "0"},
-        new string[]{"3", "Place 7th in a game", "0", "1", "100", "0"},
-        new string[]{"4", "Tag (3) people in one game", "0", "1", "100", "0"},
-        new string[]{"5", "Use (3) powerups in one game", "0", "1", "100", "0"},
-        new string[]{"6", "Play a game without being tagged", "0", "1", "100", "0"},
+    // Serial#, Name, Completed, Needed, Reward, Status, Achievement Type
+    public List<string[]> Achievements = new List<string[]>
+    {
+        new string[]{"1", "Win a game", "0", "1", "100", "0", ""},
+        new string[]{"2", "Lose a game", "0", "1", "100", "0", ""},
+        new string[]{"3", "Place 7th in a game", "0", "1", "100", "0", ""},
+        new string[]{"4", "Tag (3) people in one game", "0", "1", "100", "0", ""},
+        new string[]{"5", "Use (3) powerups in one game", "0", "1", "100", "0", ""},
+        new string[]{"6", "Play a game without being tagged", "0", "1", "100", "0", ""},
+        new string[]{"7", "Play 10 games", "0", "1", "100", "0", "Time Investment"},
     };
     // Enable or Not
     public bool achievementActivated = false;
@@ -79,6 +81,15 @@ public class AchievementManager : MonoBehaviour
                     break;
                 case "2":
                     achievementprefab.transform.SetParent(CompletedContent);
+                    break;
+            }
+
+            switch (Achievements[i][6])
+            {
+                case "Time Investment":
+                    achievementprefab.AddComponent<TimeInvestment>();
+                    break;
+                default:
                     break;
             }
         }
