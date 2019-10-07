@@ -34,9 +34,17 @@ public class AIController : MonoBehaviour, IBoppable {
     private const float km_distanceToStopWandering = 0.5f;
 
     // Not King Configuration
-    public float km_distanceToFollowKing = 15f;
-    public float km_distanceToPowerUp = 10f;
-    public float km_closestPlayerDistanceToFollow = 15f;
+    public float m_distanceToFollowKing = 15f;
+    public float DistanceToFollowKing {
+        set {
+            m_distanceToFollowKing = value;
+        }
+    }
+    public const float km_distanceToPowerUp = 10f;
+    public const float km_closestPlayerDistanceToFollow = 15f;
+
+    // King AI Configuration
+    private const float km_iminentDangerDistance = 5f;
 
 
     private NavMeshAgent m_navMeshAgent;
@@ -52,7 +60,7 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, km_distanceToFollowKing);
+        Gizmos.DrawWireSphere(transform.position, m_distanceToFollowKing);
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, km_distanceToPowerUp);
@@ -80,15 +88,22 @@ public class AIController : MonoBehaviour, IBoppable {
                        .Selector("is King Selector - Select one of these actions to use to run away")
                            .Sequence("Is On Iminent Danger Sequence")
                                .Condition("Check if is on iminent danger", IsOnIminentDanger)
+
                                .Selector("Try to Use a Power Up To Run")
                                    .Action("Try to use Back Off", UseBackOffPowerUp)
                                    .Action("Try to use Super Speed", UseSuperSpeedPowerUp)
                                    .Condition("Tried all power ups?", TriedAllPowerUps)
                                .End()
+
                                .Action("Run Away from Closest Player", RunAwayFromClosestPlayer)
                            .End()
+
                            .Selector("If not on iminent danger, choose of these")
-                               .Condition("Check if can search for preferred path", IsKingFollowingPath)
+                               .Sequence("Collect Power Up")
+                                   .Condition("Can get power ups", CanGetPowerUp)
+                                   .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
+                                   .Action("Collect a Power Up", CollectPowerUp)
+                               .End()
                            .End()
                        .End()
 
@@ -208,7 +223,7 @@ public class AIController : MonoBehaviour, IBoppable {
     private EReturnStatus IsOnIminentDanger() {
         Debug.Log("Searching for iminent danger =)");
         Vector3 closestPlayer = GetClosestPlayerTransform().position;
-        if(Vector3.Distance(transform.position, closestPlayer) < 15f) {
+        if(Vector3.Distance(transform.position, closestPlayer) < km_iminentDangerDistance) {
             return EReturnStatus.SUCCESS;
         }
 
@@ -292,7 +307,7 @@ public class AIController : MonoBehaviour, IBoppable {
     #region Is Not King Functions
     private EReturnStatus IsKingWithinFollowDistance() {
         Transform kingTransform = m_taggingIdentifier.taggingManager.KingTransform;
-        if(Vector3.Distance(transform.position, kingTransform.position) < km_distanceToFollowKing) {
+        if(Vector3.Distance(transform.position, kingTransform.position) < m_distanceToFollowKing) {
             m_playerCurrentlyBeingFollowed = kingTransform;
             return EReturnStatus.SUCCESS;
         }
