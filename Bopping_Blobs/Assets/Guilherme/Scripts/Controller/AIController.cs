@@ -81,7 +81,13 @@ public class AIController : MonoBehaviour, IBoppable {
                        .Condition("Check if is King", IsKing)
                        .Selector("KING Selector")
                            // Sequence => Iminent Danger
-                           // Sequence => Get Power Up
+
+                           .Sequence("Collect Power Up")
+                               .Condition("Can get power ups (power up tracker is not full", CanGetPowerUp)
+                               .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
+                               .Action("Collect a Power Up", CollectPowerUp)
+                           .End()
+
                            .Sequence("King Wander Around")
                                .Action("King Wander!", KingWander)
                            .End()
