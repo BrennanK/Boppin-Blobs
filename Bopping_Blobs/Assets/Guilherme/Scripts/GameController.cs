@@ -43,15 +43,14 @@ public class GameController : MonoBehaviour {
 
     private void Awake() {
         instance = this;
-
         m_UIManager = FindObjectOfType<UIManager>();
         m_taggingManager = FindObjectOfType<TaggingManager>();
         m_taggingManager.InitializeTaggingManager();
-        m_currentGameTime = gameTime;
-        m_taggingManager.FreezeAllPlayers();
     }
 
     private void Start() {
+        m_currentGameTime = gameTime;
+        m_taggingManager.FreezeAllPlayers();
         StartCoroutine(StartGameRoutine());
     }
 
@@ -140,5 +139,19 @@ public class GameController : MonoBehaviour {
 
     public void GoToMainMenu() {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private void OnApplicationFocus(bool _focusStatus) {
+        Debug.Log($"OnApplicationFocus({_focusStatus})");
+        if(_focusStatus) {
+            PausedMenuManager._instance.EnablePausedMenu(false);
+        }
+    }
+
+    private void OnApplicationPause(bool _pauseStatus) {
+        Debug.Log($"OnApplicationPause({_pauseStatus})");
+        if(_pauseStatus) {
+            PausedMenuManager._instance.EnablePausedMenu(true);
+        }
     }
 }

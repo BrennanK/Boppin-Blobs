@@ -80,11 +80,13 @@ public class PausedMenuManager : MonoBehaviour
 	// Enable Paused Menu UI with a delay
 	private IEnumerator CallPauseMenu(float waitTime)
 	{
-		IsOpen1 = !IsOpen1;
-		if (IsOpen1)
+        IsOpen1 = !IsOpen1;
+
+        if (IsOpen1)
 			Time.timeScale = 0;
 		else
 			Time.timeScale = 1;
+
 		Paused.SetTrigger("TriggerPauseMenu");
 		PlaySFX(0);
 		yield return new WaitForSeconds(waitTime);
@@ -100,8 +102,16 @@ public class PausedMenuManager : MonoBehaviour
     // Enable Paused Menu By Button
     public void EnablePausedMenu()
 	{
-		StartCoroutine(CallPauseMenu(0.2f));
+        StartCoroutine(CallPauseMenu(0.2f));
 	}
+
+    public void EnablePausedMenu(bool _pauseStatusToSet) {
+        if(IsOpen == _pauseStatusToSet) {
+            return;
+        }
+
+        StartCoroutine(CallPauseMenu(0.2f));
+    }
 
 	// Return to Main Menu By Button
 	public void ReturnToMainMenu()
