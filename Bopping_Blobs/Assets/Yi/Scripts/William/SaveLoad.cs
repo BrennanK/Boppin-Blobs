@@ -13,7 +13,7 @@ public class SaveLoad : MonoBehaviour
 
     public static SaveLoad instance;
 
-    private void Awake()
+    private void Start()  //awake
     {
         if (instance != null)
         {
@@ -23,6 +23,15 @@ public class SaveLoad : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(this);
+        }
+
+        TimeInvestment[] temp = GameObject.FindObjectsOfType<TimeInvestment>();
+
+        timeInvestments = new TimeInvestment[temp.Length];
+
+        for (int i = 0; i < temp.Length; i++)
+        {
+            timeInvestments[i] = temp[temp.Length - i - 1];
         }
 
         // putting every achievement into a dictionary 
@@ -50,11 +59,6 @@ public class SaveLoad : MonoBehaviour
                 }
             }
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame

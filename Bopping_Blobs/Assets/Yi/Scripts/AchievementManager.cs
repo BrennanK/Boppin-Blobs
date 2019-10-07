@@ -20,7 +20,11 @@ public class AchievementManager : MonoBehaviour
         new string[]{"4", "Tag (3) people in one game", "0", "1", "100", "0", ""},
         new string[]{"5", "Use (3) powerups in one game", "0", "1", "100", "0", ""},
         new string[]{"6", "Play a game without being tagged", "0", "1", "100", "0", ""},
-        new string[]{"7", "Play 10 games", "0", "1", "100", "0", "Time Investment"},
+        new string[]{"7", "Play a game", "0", "1", "100", "0", "Time Investment"},
+        new string[]{"8", "Play 10 games", "0", "1", "100", "0", "Time Investment"},
+        new string[]{"9", "Play 50 games", "0", "1", "100", "0", "Time Investment"},
+        new string[]{"10", "Play 100 games", "0", "1", "100", "0", "Time Investment"},
+        new string[]{"11", "Play 500 games", "0", "1", "100", "0", "Time Investment"},
     };
     // Enable or Not
     public bool achievementActivated = false;
@@ -48,14 +52,17 @@ public class AchievementManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+
+        // Heads Up: these two originally belongs to Start()
+        sampleInventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<SampleInventory>();
+        CreateAchievementPrefabs();
     }
     
     #region Generate Achievements
     // Start is called before the first frame update
     void Start()
     {
-        sampleInventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<SampleInventory>();
-        CreateAchievementPrefabs();
+        
     }
 
     // Generate Achievements in the Canvas
@@ -87,11 +94,32 @@ public class AchievementManager : MonoBehaviour
             switch (Achievements[i][6])
             {
                 case "Time Investment":
-                    achievementprefab.AddComponent<TimeInvestment>();
+                    TimeInvestment TI = achievementprefab.AddComponent<TimeInvestment>();
+
+                    switch (Achievements[i][0])
+                    {
+                        case "7":
+                            TI.requiredPlayCount = 1;
+                            break;
+                        case "8":
+                            TI.requiredPlayCount = 10;
+                            break;
+                        case "9":
+                            TI.requiredPlayCount = 50;
+                            break;
+                        case "10":
+                            TI.requiredPlayCount = 100;
+                            break;
+                        case "11":
+                            TI.requiredPlayCount = 500;
+                            break;
+                    }
                     break;
                 default:
                     break;
             }
+
+           
         }
 
     }

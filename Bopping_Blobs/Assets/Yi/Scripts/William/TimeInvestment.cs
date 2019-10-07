@@ -34,6 +34,8 @@ public class TimeInvestment : Ach
             default:
                 break;
         }
+
+
     }
 
     // Update is called once per frame
