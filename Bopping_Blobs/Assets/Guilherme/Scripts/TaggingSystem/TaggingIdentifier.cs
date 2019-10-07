@@ -254,8 +254,8 @@ public class TaggingIdentifier : MonoBehaviour {
                     m_playersBopped++;
 
                     if(taggingManager.WhoIsKing == playerHitted.PlayerIdentifier) {
-                        playerHitted.SetAsNotKing();
                         taggingManager.PlayerWasTagged(this, true);
+                        playerHitted.SetAsNotKing();
 
                         // Updating tagging state because we are tag now.
                         currentTaggingState = m_currentTaggingState;

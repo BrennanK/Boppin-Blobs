@@ -29,14 +29,14 @@ public class AIController : MonoBehaviour, IBoppable {
     public float attackingDistance = 1.5f;
     private BehaviorTree.BehaviorTree m_behaviorTree;
 
-    [Header("General AI Configuration")]
+    // General AI Configuration
     private const float km_wanderRange = 25f;
-    public float distanceToStopWandering = 0.5f;
+    private const float km_distanceToStopWandering = 0.5f;
 
-    [Header("Not King Configuration")]
-    public float distanceToFollowKing = 15f;
-    public float distanceToPowerUp = 10f;
-    public float closestPlayerDistanceToFollow = 15f;
+    // Not King Configuration
+    public float km_distanceToFollowKing = 15f;
+    public float km_distanceToPowerUp = 10f;
+    public float km_closestPlayerDistanceToFollow = 15f;
 
 
     private NavMeshAgent m_navMeshAgent;
@@ -52,10 +52,10 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, distanceToFollowKing);
+        Gizmos.DrawWireSphere(transform.position, km_distanceToFollowKing);
 
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, distanceToPowerUp);
+        Gizmos.DrawWireSphere(transform.position, km_distanceToPowerUp);
     }
 
     private void Awake() {
@@ -113,33 +113,17 @@ public class AIController : MonoBehaviour, IBoppable {
                            .Action("Collect a Power Up", CollectPowerUp)
                        .End()
 
-                       /*
-                       .Sequence("Follow another Player")
+                       .Sequence("I dunno man, I like my own space")
+                           .Condition("Check if someone is REALLY close", CheckIfClosestPlayerIsWithinAttackingDistance)
+                           .Condition("Checking if I can attack", CanAttack)
+                           .Action("Attack!!", Attack)
                        .End()
-                       */
 
                        .Sequence("Walk Randomly")
                            .Condition("Can we wander?", CanPlayerWander)
                            .Action("Wander...", WanderRandomly)
                        .End()
                    .End()
-
-               // Is not King
-               /*
-               .Sequence("Is NOT KING sequence")
-                   .Condition("Has Player Available", HasPlayerToFollow)
-                   .Selector("Attack or Follow")
-                       .Sequence("Attack if possible")
-                           .Condition("Check if within attacking distance", IsWithinAttackingDistance)
-                           .Condition("Check if Player can attack", CanAttack)
-                           .Action("Attack It", AttackNearestPlayer)
-                       .End()
-                       .Sequence("Run towards It")
-                           .Action("Run towards available player", ChaseKing)
-                       .End()
-                   .End()
-               .End()
-               */
 
                .End()
                .Build()
@@ -219,7 +203,7 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private EReturnStatus IsOnIminentDanger() {
         Debug.Log("Searching for iminent danger =)");
-        Vector3 closestPlayer = GetClosestPlayerPosition();
+        Vector3 closestPlayer = GetClosestPlayerTransform().position;
         if(Vector3.Distance(transform.position, closestPlayer) < 15f) {
             return EReturnStatus.SUCCESS;
         }
@@ -288,7 +272,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus RunAwayFromClosestPlayer() {
-        Vector3 closestPlayerPosition = GetClosestPlayerPosition();
+        Vector3 closestPlayerPosition = GetClosestPlayerTransform().position;
         Vector3 directionToMove = transform.position - closestPlayerPosition;
         directionToMove.Scale(new Vector3(3, 3, 3));
 
@@ -298,27 +282,12 @@ public class AIController : MonoBehaviour, IBoppable {
 
         return EReturnStatus.RUNNING;
     }
-
-    private void SetPathToAgentFromPosition(Vector3 _position) {
-        _position = new Vector3(_position.x, transform.position.y, _position.z);
-        Vector3 positionToGo = GetRandomPositionAroundAPoint(_position);
-
-        NavMeshPath path = new NavMeshPath();
-        if(m_navMeshAgent.CalculatePath(positionToGo, path)) {
-            m_navMeshAgent.SetDestination(positionToGo);
-            // m_navMeshAgent.SetPath(path);
-        } else {
-            Debug.LogWarning($"AI going to a Random Point on Nav Mesh!!");
-            m_currentState = EAIStates.KING_FOLLOWING_RANDOM_PATH;
-            SetARandomPointOnMavMesh(5f);
-        }
-    }
     #endregion
 
     #region Is Not King Functions
     private EReturnStatus IsKingWithinFollowDistance() {
         Transform kingTransform = m_taggingIdentifier.taggingManager.KingTransform;
-        if(Vector3.Distance(transform.position, kingTransform.position) < distanceToFollowKing) {
+        if(Vector3.Distance(transform.position, kingTransform.position) < km_distanceToFollowKing) {
             m_playerCurrentlyBeingFollowed = kingTransform;
             return EReturnStatus.SUCCESS;
         }
@@ -337,10 +306,9 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus CanPlayerWander() {
-        Debug.Log($"Checking if I can wander: {m_navMeshAgent.remainingDistance}");
         if(m_currentState == EAIStates.NOT_KING_WANDERING) {
             // we are wandering already, so we check if we are close to the point we were previosuly wandering too...
-            if(m_navMeshAgent.remainingDistance < distanceToStopWandering) {
+            if(m_navMeshAgent.remainingDistance < km_distanceToStopWandering) {
                 // we are very close, so we can wander again!
                 return EReturnStatus.SUCCESS;
             } else {
@@ -378,7 +346,7 @@ public class AIController : MonoBehaviour, IBoppable {
         m_powerUpBoxesInDistance.Clear();
 
         foreach(PowerUpBox box in allPowerupBoxes) {
-            if(Vector3.Distance(transform.position, box.gameObject.transform.position) < distanceToPowerUp && box.IsActive) {
+            if(Vector3.Distance(transform.position, box.gameObject.transform.position) < km_distanceToPowerUp && box.IsActive) {
                 m_powerUpBoxesInDistance.Add(box);
             }
         }
@@ -406,6 +374,15 @@ public class AIController : MonoBehaviour, IBoppable {
     #endregion
 
     #region Attacking Related (can be used on is it or is not it)
+    private EReturnStatus CheckIfClosestPlayerIsWithinAttackingDistance() {
+        Transform closestPlayer = GetClosestPlayerTransform();
+        if(Vector3.Distance(transform.position, closestPlayer.position) < attackingDistance) {
+            return EReturnStatus.SUCCESS;
+        }
+
+        return EReturnStatus.FAILURE;
+    }
+
     private EReturnStatus IsWithinAttackingDistance() {
         if (Vector3.Distance(transform.position, m_playerCurrentlyBeingFollowed.position) < attackingDistance) {
             return EReturnStatus.SUCCESS;
@@ -435,17 +412,24 @@ public class AIController : MonoBehaviour, IBoppable {
     #endregion
 
     #region Helper Functions
-    private Vector3 GetClosestPlayerPosition() {
-        TaggingIdentifier[] notKingPlayers = m_taggingIdentifier.taggingManager.GetAllPlayersThatAreNotIt();
+    private Transform GetClosestPlayerTransform() {
+        List<TaggingIdentifier> notKingPlayers = m_taggingIdentifier.taggingManager.GetAllPlayersThatAreNotIt().ToList();
+        notKingPlayers.Remove(m_taggingIdentifier);
 
         Transform closestPlayer = notKingPlayers[0].transform;
-        for (int i = 1; i < notKingPlayers.Length; i++) {
+        for (int i = 1; i < notKingPlayers.Count; i++) {
             if (Vector3.Distance(transform.position, notKingPlayers[i].transform.position) < Vector3.Distance(transform.position, closestPlayer.position)) {
                 closestPlayer = notKingPlayers[i].transform;
             }
         }
 
-        return closestPlayer.position;
+        return closestPlayer;
+    }
+
+    private void SetPathToAgentFromPosition(Vector3 _position) {
+        _position = new Vector3(_position.x, transform.position.y, _position.z);
+        Vector3 positionToGo = GetRandomPositionAroundAPoint(_position);
+        m_navMeshAgent.SetDestination(positionToGo);
     }
 
     // TODO Get a random point given two angles (input: I want to escape considering these two angles)
