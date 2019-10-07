@@ -72,9 +72,11 @@ public class AIController : MonoBehaviour, IBoppable {
            new BehaviorTreeBuilder()
                .Selector("AI Behavior Main Selector")
                    .Condition("Is Being Knocked Back", IsBeingKnockedBack)
+
                    // Is King
                    .Sequence("Is KING Sequence")
                        .Condition("Check if is IT", IsIt)
+
                        .Selector("is King Selector - Select one of these actions to use to run away")
                            .Sequence("Is On Iminent Danger Sequence")
                                .Condition("Check if is on iminent danger", IsOnIminentDanger)
@@ -89,8 +91,10 @@ public class AIController : MonoBehaviour, IBoppable {
                                .Condition("Check if can search for preferred path", IsKingFollowingPath)
                            .End()
                        .End()
+
                    .End()
 
+                   // IS NOT KING
                    .Selector("Is NOT King Selector")
 
                        .Sequence("Chase King")
@@ -253,6 +257,7 @@ public class AIController : MonoBehaviour, IBoppable {
     private EReturnStatus IsKingFollowingPath() {
         if(m_currentState == EAIStates.NOT_KING_CHASING_KING) {
             // AI is King but is Chasing King? AI just got King!
+            m_currentState = EAIStates.KING_SEARCHING_PATH;
             return EReturnStatus.FAILURE;
         }
 
