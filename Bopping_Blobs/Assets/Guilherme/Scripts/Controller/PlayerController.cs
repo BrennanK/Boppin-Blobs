@@ -85,7 +85,6 @@ public class PlayerController : MonoBehaviour, IBoppable {
     }
 
     public void ChangeSpeed(float _baseSpeed, float _tempSpeedBost, float _externalSpeedBoost) {
-        Debug.Log($"Player Changing Speed to ({_baseSpeed},{_tempSpeedBost},{_externalSpeedBoost})");
         m_characterSpeed = _baseSpeed + _tempSpeedBost + _externalSpeedBoost;
     }
 

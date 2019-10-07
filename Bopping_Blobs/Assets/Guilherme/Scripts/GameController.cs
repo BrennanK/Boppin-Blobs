@@ -40,9 +40,16 @@ public class GameController : MonoBehaviour {
     private float m_currentGameTime;
     private UIManager m_UIManager;
     private TaggingManager m_taggingManager;
+    private PowerUp.PowerUpBox[] m_allPowerBoxes;
+    public PowerUp.PowerUpBox[] PowerupBoxes {
+        get {
+            return m_allPowerBoxes;
+        }
+    }
 
     private void Awake() {
         instance = this;
+        m_allPowerBoxes = FindObjectsOfType<PowerUp.PowerUpBox>();
         m_UIManager = FindObjectOfType<UIManager>();
         m_taggingManager = FindObjectOfType<TaggingManager>();
         m_taggingManager.InitializeTaggingManager();
@@ -142,12 +149,15 @@ public class GameController : MonoBehaviour {
     }
 
     private void OnApplicationFocus(bool _focusStatus) {
-        Debug.Log($"OnApplicationFocus({_focusStatus})");
-        PausedMenuManager._instance?.EnablePausedMenu(!false);
+        // we just want to pause in case we lose focus, we don't want to unpause
+        if(!_focusStatus) {
+            PausedMenuManager._instance?.EnablePausedMenu(true);
+        }
     }
 
     private void OnApplicationPause(bool _pauseStatus) {
-        Debug.Log($"OnApplicationPause{_pauseStatus}");
-        PausedMenuManager._instance?.EnablePausedMenu(_pauseStatus);
+        if(_pauseStatus) {
+            PausedMenuManager._instance?.EnablePausedMenu(true);
+        }
     }
 }

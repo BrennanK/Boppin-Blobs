@@ -15,9 +15,21 @@ public class TaggingManager : MonoBehaviour {
     public float knockbackForce = 5f;
 
     private int m_currentPlayerTaggingID;
-    public int WhoIsTag {
+    public int WhoIsKing {
         get {
             return m_currentPlayerTaggingID;
+        }
+    }
+
+    public Transform KingTransform {
+        get {
+            foreach (TaggingIdentifier identifier in m_playersIdentifiers) {
+                if (identifier.PlayerIdentifier == m_currentPlayerTaggingID) {
+                    return identifier.transform;
+                }
+            }
+
+            return null;
         }
     }
 
@@ -98,10 +110,10 @@ public class TaggingManager : MonoBehaviour {
     }
 
     private IEnumerator KnockbackAllPlayerRoutine(float _delayTime) {
-        Transform whoIsTag = GetItTransform();
+        Transform whoIsTag = KingTransform;
         foreach (TaggingIdentifier player in m_playersIdentifiers) {
             if (player.PlayerIdentifier != m_currentPlayerTaggingID && Vector3.Distance(player.transform.position, whoIsTag.position) < knockbackRadius) {
-                Vector3 knockbackDirection = (player.transform.position - GetItTransform().position);
+                Vector3 knockbackDirection = (player.transform.position - KingTransform.position);
 
                 // TODO fix knockbackforce magic number
                 player.KnockbackPlayer(Color.magenta, knockbackDirection.normalized * knockbackForce * 3f, _delayTime);
@@ -109,20 +121,6 @@ public class TaggingManager : MonoBehaviour {
         }
 
         yield return new WaitForSecondsRealtime(_delayTime / 2.0f);
-    }
-
-    /// <summary>
-    /// <para>Get the transform for the player that is currently TAG.</para>
-    /// </summary>
-    /// <returns>TAG player transform.</returns>
-    public Transform GetItTransform() {
-        foreach(TaggingIdentifier identifier in m_playersIdentifiers) {
-            if(identifier.PlayerIdentifier == m_currentPlayerTaggingID) {
-                return identifier.transform;
-            }
-        }
-
-        return null;
     }
 
     /// <summary>

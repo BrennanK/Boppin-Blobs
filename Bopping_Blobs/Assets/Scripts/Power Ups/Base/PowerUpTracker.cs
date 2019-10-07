@@ -28,6 +28,12 @@ namespace PowerUp {
         public PowerUpHolder slot1 = new PowerUpHolder();
         public PowerUpHolder slot2 = new PowerUpHolder();
 
+        public bool AreSlotsFull {
+            get {
+                return (slot1 != null && slot2 != null);
+            }
+        }
+
         private TaggingManager m_taggingManager;
         private TaggingIdentifier m_playerTaggingIdentifier;
         private IBoppable m_boppableInterface;

@@ -8,22 +8,36 @@ using UnityEngine.AI;
 
 public class AIController : MonoBehaviour, IBoppable {
     enum EAIStates {
-        CHASING_KING,
+        NOT_KING_RECALCULATING_PATH,
+        NOT_KING_CHASING_KING,
+        NOT_KING_CHASING_POWERUP,
+        NOT_KING_FOLLOWING_PLAYER,
+        NOT_KING_WANDERING,
         KING_SEARCHING_PATH,
         KING_FOLLOWING_PATH,
         KING_FOLLOWING_RANDOM_PATH,
         KING_FOLLOWING_PREFERRED_PATH,
     }
 
-    private EAIStates m_currentState = EAIStates.CHASING_KING;
+    private EAIStates m_currentState = EAIStates.NOT_KING_WANDERING;
 
-    [Header("AI Configuration")]
+    [Header("Behavior Tree Configuration")]
     public float baseReactionTime = 0.35f;
     public float reactionTimeVariation = 0.05f;
     public float minStartTime = 0.15f;
     public float maxStartTime = 0.35f;
-    public float attackingDistance = 0.5f;
+    public float attackingDistance = 1.5f;
     private BehaviorTree.BehaviorTree m_behaviorTree;
+
+    [Header("General AI Configuration")]
+    private const float km_wanderRange = 25f;
+    public float distanceToStopWandering = 0.5f;
+
+    [Header("Not King Configuration")]
+    public float distanceToFollowKing = 15f;
+    public float distanceToPowerUp = 10f;
+    public float closestPlayerDistanceToFollow = 15f;
+
 
     private NavMeshAgent m_navMeshAgent;
     private Rigidbody m_rigibody;
@@ -34,8 +48,18 @@ public class AIController : MonoBehaviour, IBoppable {
     private PowerUpTracker m_powerUpTracker;
     private bool m_isBeingKnockedBack = false;
     private bool m_canAttack = false;
+    private List<PowerUpBox> m_powerUpBoxesInDistance;
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, distanceToFollowKing);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, distanceToPowerUp);
+    }
 
     private void Awake() {
+        m_powerUpBoxesInDistance = new List<PowerUpBox>();
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         m_rigibody = GetComponent<Rigidbody>();
         m_taggingIdentifier = GetComponent<TaggingIdentifier>();
@@ -44,18 +68,14 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private void Start() {
-        // TODO maybe somehow have the King AI recognize other blobs as obstacles ?!
-        // BAD IDEA 1: Have a pool of navmesh obstacles, so the King AI pull then, activate then, put on all the blobs positions, calculate path, and then deactivate all obstacles.
         m_behaviorTree = new BehaviorTree.BehaviorTree(
            new BehaviorTreeBuilder()
                .Selector("AI Behavior Main Selector")
                    .Condition("Is Being Knocked Back", IsBeingKnockedBack)
-                   .Sequence("Is IT Sequence")
+                   // Is King
+                   .Sequence("Is KING Sequence")
                        .Condition("Check if is IT", IsIt)
                        .Selector("is King Selector - Select one of these actions to use to run away")
-                            // Short Term Reactions
-                            // Get away from closest player
-                            // use power up to run
                            .Sequence("Is On Iminent Danger Sequence")
                                .Condition("Check if is on iminent danger", IsOnIminentDanger)
                                .Selector("Try to Use a Power Up To Run")
@@ -70,19 +90,57 @@ public class AIController : MonoBehaviour, IBoppable {
                            .End()
                        .End()
                    .End()
-                   .Sequence("Is not IT sequence")
-                       .Condition("Has Player Available", HasPlayerToFollow)
-                       .Selector("Attack or Follow")
-                           .Sequence("Attack if possible")
-                               .Condition("Check if within attacking distance", IsWithinAttackingDistance)
-                               .Condition("Check if Player can attack", CanAttack)
-                               .Action("Attack It", AttackNearestPlayer)
-                           .End()
-                           .Sequence("Run towards It")
-                               .Action("Run towards available player", ChaseKing)
+
+                   .Selector("Is NOT King Selector")
+
+                       .Sequence("Chase King")
+                           .Condition("Is King Withing Follow Distance", IsKingWithinFollowDistance)
+                           .Selector("AI Attack or Follow")
+                               .Sequence("Attack if possible")
+                                   .Condition("Check if is within Attacking Distance", IsWithinAttackingDistance)
+                                   .Condition("Check if AI can attack", CanAttack)
+                                   .Action("Attack King", Attack)
+                               .End()
+                               .Sequence("Chase King")
+                                   .Action("Chase King", ChaseKing)
+                               .End()
                            .End()
                        .End()
+
+                       .Sequence("Collect Power Up")
+                           .Condition("Can get power ups (power up tracker is not full", CanGetPowerUp)
+                           .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
+                           .Action("Collect a Power Up", CollectPowerUp)
+                       .End()
+
+                       /*
+                       .Sequence("Follow another Player")
+                       .End()
+                       */
+
+                       .Sequence("Walk Randomly")
+                           .Condition("Can we wander?", CanPlayerWander)
+                           .Action("Wander...", WanderRandomly)
+                       .End()
                    .End()
+
+               // Is not King
+               /*
+               .Sequence("Is NOT KING sequence")
+                   .Condition("Has Player Available", HasPlayerToFollow)
+                   .Selector("Attack or Follow")
+                       .Sequence("Attack if possible")
+                           .Condition("Check if within attacking distance", IsWithinAttackingDistance)
+                           .Condition("Check if Player can attack", CanAttack)
+                           .Action("Attack It", AttackNearestPlayer)
+                       .End()
+                       .Sequence("Run towards It")
+                           .Action("Run towards available player", ChaseKing)
+                       .End()
+                   .End()
+               .End()
+               */
+
                .End()
                .Build()
            );
@@ -209,7 +267,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus IsKingFollowingPath() {
-        if(m_currentState == EAIStates.CHASING_KING) {
+        if(m_currentState == EAIStates.NOT_KING_CHASING_KING) {
             // AI is King but is Chasing King? AI just got King!
             return EReturnStatus.FAILURE;
         }
@@ -252,24 +310,94 @@ public class AIController : MonoBehaviour, IBoppable {
         } else {
             Debug.LogWarning($"AI going to a Random Point on Nav Mesh!!");
             m_currentState = EAIStates.KING_FOLLOWING_RANDOM_PATH;
-            SetARandomPointOnMavMesh();
+            SetARandomPointOnMavMesh(5f);
         }
     }
     #endregion
 
     #region Is Not King Functions
-    private EReturnStatus HasPlayerToFollow() {
-        if (m_playerCurrentlyBeingFollowed == null) {
-            m_playerCurrentlyBeingFollowed = m_taggingIdentifier.taggingManager.GetItTransform();
+    private EReturnStatus IsKingWithinFollowDistance() {
+        Transform kingTransform = m_taggingIdentifier.taggingManager.KingTransform;
+        if(Vector3.Distance(transform.position, kingTransform.position) < distanceToFollowKing) {
+            m_playerCurrentlyBeingFollowed = kingTransform;
+            return EReturnStatus.SUCCESS;
+        }
+
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus ChaseKing() {
+        if(m_navMeshAgent.isOnNavMesh) {
+            m_navMeshAgent.SetDestination(m_playerCurrentlyBeingFollowed.position + m_playerCurrentlyBeingFollowed.forward);
+            m_currentState = EAIStates.NOT_KING_CHASING_KING;
+            return EReturnStatus.SUCCESS;
+        }
+
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus CanPlayerWander() {
+        Debug.Log($"Checking if I can wander: {m_navMeshAgent.remainingDistance}");
+        if(m_currentState == EAIStates.NOT_KING_WANDERING) {
+            // we are wandering already, so we check if we are close to the point we were previosuly wandering too...
+            if(m_navMeshAgent.remainingDistance < distanceToStopWandering) {
+                // we are very close, so we can wander again!
+                return EReturnStatus.SUCCESS;
+            } else {
+                // just keep wandering...
+                return EReturnStatus.FAILURE;
+            }
+        }
+
+        // if we are not wandering and we got here it is because king or power ups is not close :( so we can wander!
+        return EReturnStatus.SUCCESS;
+    }
+
+    private EReturnStatus WanderRandomly() {
+        if(SetARandomPointOnMavMesh(km_wanderRange)) {
+            m_currentState = EAIStates.NOT_KING_WANDERING;
+            return EReturnStatus.SUCCESS;
+        }
+
+        m_currentState = EAIStates.NOT_KING_RECALCULATING_PATH;
+        return EReturnStatus.SUCCESS;
+    }
+    #endregion
+
+    #region Power Up Related Functions
+    private EReturnStatus CanGetPowerUp() {
+        if(m_powerUpTracker.AreSlotsFull) {
             return EReturnStatus.FAILURE;
         }
 
         return EReturnStatus.SUCCESS;
     }
 
-    private EReturnStatus ChaseKing() {
+    private EReturnStatus IsThereAPowerUpWithinDistance() {
+        PowerUpBox[] allPowerupBoxes = GameController.instance.PowerupBoxes;
+        m_powerUpBoxesInDistance.Clear();
+
+        foreach(PowerUpBox box in allPowerupBoxes) {
+            if(Vector3.Distance(transform.position, box.gameObject.transform.position) < distanceToPowerUp && box.IsActive) {
+                m_powerUpBoxesInDistance.Add(box);
+            }
+        }
+
+        if(m_powerUpBoxesInDistance.Count > 0) {
+            return EReturnStatus.SUCCESS;
+        } else {
+            return EReturnStatus.FAILURE;
+        }
+    }
+
+    private EReturnStatus CollectPowerUp() {
         if(m_navMeshAgent.isOnNavMesh) {
-            m_navMeshAgent.SetDestination(m_playerCurrentlyBeingFollowed.position + m_playerCurrentlyBeingFollowed.forward);
+            m_navMeshAgent.SetDestination(m_powerUpBoxesInDistance[Random.Range(0, m_powerUpBoxesInDistance.Count)].gameObject.transform.position);
+
+            if (!m_taggingIdentifier.AmITag()) {
+                m_currentState = EAIStates.NOT_KING_CHASING_POWERUP;
+            }
+
             return EReturnStatus.SUCCESS;
         }
 
@@ -294,7 +422,7 @@ public class AIController : MonoBehaviour, IBoppable {
         return EReturnStatus.SUCCESS;
     }
 
-    private EReturnStatus AttackNearestPlayer() {
+    private EReturnStatus Attack() {
         if (!m_canAttack) {
             m_canAttack = true;
             return EReturnStatus.SUCCESS;
@@ -339,17 +467,19 @@ public class AIController : MonoBehaviour, IBoppable {
         return Vector3.zero;
     }
 
-    private void SetARandomPointOnMavMesh() {
-        float range = 5f;
+    private bool SetARandomPointOnMavMesh(float _range) {
         for(int i = 0; i < 10; i++) {
-            Vector3 randomPoint = transform.position + Random.insideUnitSphere * range;
+            Vector3 randomPoint = transform.position + (Random.insideUnitSphere * _range);
+            randomPoint.y = 0;
             NavMeshHit hit;
 
             if(NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)) {
                 m_navMeshAgent.SetDestination(hit.position);
-                return;
+                return true;
             }
         }
+
+        return false;
     }
     #endregion
 }

@@ -21,7 +21,7 @@ public class TagManagerInspector : Editor {
         GUILayout.EndHorizontal();
 
         foreach (TaggingIdentifier identifier in identifiers) {
-            bool isIt = identifier.PlayerIdentifier == taggingManager.WhoIsTag;
+            bool isIt = identifier.PlayerIdentifier == taggingManager.WhoIsKing;
 
             if(isIt) {
                 gStyle.normal.background = MakeTex(200, 50, Color.red);
