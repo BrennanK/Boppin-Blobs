@@ -12,7 +12,7 @@ public class SampleInventory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CoinText.text = "$" + CurrentCoins1.ToString();
+        UpdateCoins();
     }
 
     // Add money or Lose money
@@ -23,6 +23,10 @@ public class SampleInventory : MonoBehaviour
     public void ModifiyCoins(int money)
     {
         CurrentCoins1 += money;
+        UpdateCoins();
+    }
+
+    public void UpdateCoins() {
         CoinText.text = "$" + CurrentCoins1.ToString();
     }
 }

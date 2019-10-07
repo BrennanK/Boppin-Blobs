@@ -95,7 +95,11 @@ public class GameController : MonoBehaviour {
             }
         }
 
+        // TEMP TODO the saved_amount_of_coins string should be on save load manager
+        Debug.Log($"Saving Money...");
         int amountOfMoneyPlayerEarned = GetMoneyFromPosition(finalPlayerPosition);
+        int currentAmountOfMoneyPlayerHas = PlayerPrefs.GetInt("SAVED_AMOUNT_OF_COINS");
+        PlayerPrefs.SetInt("SAVED_AMOUNT_OF_COINS", currentAmountOfMoneyPlayerHas + amountOfMoneyPlayerEarned);
 
         /*
          * TODO

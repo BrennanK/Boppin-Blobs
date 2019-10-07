@@ -19,6 +19,8 @@ public class SaveLoadManager : MonoBehaviour
     {
         achievementManager = AchievementManager._instance;
         sampleInventory = GameObject.FindGameObjectWithTag("Inventory").GetComponent<SampleInventory>();
+        LoadGameFunction();
+        sampleInventory.UpdateCoins();
     }
 
     // Create a new save data class
@@ -57,6 +59,11 @@ public class SaveLoadManager : MonoBehaviour
 
     public void LoadGameFunction()
     {
+        if (sampleInventory) {
+            // TODO TEMP Setting Current Coins to whatever is saved on player prefs; the string where it is saved should be a variable
+            sampleInventory.CurrentCoins1 = PlayerPrefs.GetInt("SAVED_AMOUNT_OF_COINS");
+        }
+
         if (File.Exists(Application.persistentDataPath + "/SaveData.AWSL"))
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -77,7 +84,7 @@ public class SaveLoadManager : MonoBehaviour
 
             if (sampleInventory)
             {
-                sampleInventory.CurrentCoins1 = saveData.MoneyInfo;
+                // sampleInventory.CurrentCoins1 = saveData.MoneyInfo;
             }
             else
                 Debug.LogWarning("Can not find inventory manager!");
