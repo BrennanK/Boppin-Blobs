@@ -143,15 +143,11 @@ public class GameController : MonoBehaviour {
 
     private void OnApplicationFocus(bool _focusStatus) {
         Debug.Log($"OnApplicationFocus({_focusStatus})");
-        if(_focusStatus) {
-            PausedMenuManager._instance.EnablePausedMenu(false);
-        }
+        PausedMenuManager._instance?.EnablePausedMenu(!false);
     }
 
     private void OnApplicationPause(bool _pauseStatus) {
-        Debug.Log($"OnApplicationPause({_pauseStatus})");
-        if(_pauseStatus) {
-            PausedMenuManager._instance.EnablePausedMenu(true);
-        }
+        Debug.Log($"OnApplicationPause{_pauseStatus}");
+        PausedMenuManager._instance?.EnablePausedMenu(_pauseStatus);
     }
 }

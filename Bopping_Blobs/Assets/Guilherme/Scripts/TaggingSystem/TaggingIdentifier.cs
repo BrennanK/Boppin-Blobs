@@ -182,7 +182,7 @@ public class TaggingIdentifier : MonoBehaviour {
     /// </summary>
     public void SetAsKing() {
         Instantiate(GameController.instance.blobGotKingParticle, transform.position, Quaternion.identity).Play();
-        PausedMenuManager._instance.PlaySFX(GameController.instance.blobGotKingSounds[Random.Range(0, GameController.instance.blobGotKingSounds.Length)]);
+        PausedMenuManager._instance?.PlaySFX(GameController.instance.blobGotKingSounds[Random.Range(0, GameController.instance.blobGotKingSounds.Length)]);
         m_boppableInterface.ChangeSpeed(BaseSpeed, 0f, m_externalSpeedBoost);
         kingCrown.SetActive(true);
         m_timesAsKing++;
