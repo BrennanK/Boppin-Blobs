@@ -52,6 +52,7 @@ public class AIController : MonoBehaviour, IBoppable {
     private bool m_isBeingKnockedBack = false;
     private bool m_canAttack = false;
     private List<PowerUpBox> m_powerUpBoxesInDistance;
+    private Animator m_animator;
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
@@ -62,6 +63,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private void Awake() {
+        m_animator = GetComponentInChildren<Animator>();
         m_powerUpBoxesInDistance = new List<PowerUpBox>();
         m_navMeshAgent = GetComponent<NavMeshAgent>();
         m_rigibody = GetComponent<Rigidbody>();
@@ -155,6 +157,11 @@ public class AIController : MonoBehaviour, IBoppable {
         StartCoroutine(UpdateTreeRoutine(Random.Range(minStartTime, maxStartTime)));
     }
 
+    private void Update() {
+        m_animator.SetFloat("MoveSpeed", m_navMeshAgent.velocity.normalized.magnitude);
+        transform.localEulerAngles = new Vector3(0f, transform.localEulerAngles.y, 0f);
+    }
+
     #region IBoppable Functions
     public bool HasAttacked() {
         return m_canAttack;
@@ -182,6 +189,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     public void DeactivateController() {
+        m_animator.SetBool("Hit", true);
         m_isBeingKnockedBack = true;
         m_navMeshAgent.enabled = false;
 
@@ -191,6 +199,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     public void ReactivateController() {
+        m_animator.SetBool("Hit", false);
         m_isBeingKnockedBack = false;
         m_navMeshAgent.enabled = true;
     }
