@@ -3,6 +3,7 @@
 // Purpose: Functions for main menu
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FancyScrollView.CustomizationMenu;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class MainMenuManager : MonoBehaviour
     private AchievementManager achievementManager;
 
     private PausedMenuManager PausedMenu;
+
+    //**********
+    private CustomizationManager customizationManager;
+    //**********
 
     private bool enableMouseDetection = true;
 
@@ -54,6 +59,7 @@ public class MainMenuManager : MonoBehaviour
                         SceneManager.LoadSceneAsync(PossibleLevels[Random.Range(0, PossibleLevels.Length)]);
                         break;
                     case "Customization":
+                        achievementManager.OpenCustomization();
                         Debug.Log("Open customization menu.");
                         break;
                     case "Achievements":

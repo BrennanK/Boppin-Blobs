@@ -27,5 +27,6 @@ namespace FancyScrollView.CustomizationMenu
         {
             selectedItemInfo.text = $"Selected item info: index {index}";
         }
+
     }
 }

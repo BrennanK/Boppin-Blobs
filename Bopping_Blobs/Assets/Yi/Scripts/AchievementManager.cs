@@ -32,6 +32,9 @@ public class AchievementManager : MonoBehaviour
     // References
     public GameObject AchievementPrefab;
     public GameObject AchievementUI;
+    //*********Customization new stuff**************
+    public GameObject customizeUI;
+    //*********Customization new stuff**************
     public Transform NotCompletedContent;
     public Transform CompletedContent;
     public Sprite CompletedImage;
@@ -198,5 +201,22 @@ public class AchievementManager : MonoBehaviour
         AchievementUI.GetComponent<Animator>().SetBool("Open", false);
         achievementActivated = false;
     }
+
+    //*********Customization new stuff**************
+    public void OpenCustomization()
+    {
+        PausedMenuManager._instance.PlaySFX(0);
+        customizeUI.GetComponent<Animator>().SetBool("Open", true);
+        achievementActivated = true;
+    }
+
+    public void CloseCustomization()
+    {
+        PausedMenuManager._instance.PlaySFX(0);
+        customizeUI.GetComponent<Animator>().SetBool("Open", false);
+        achievementActivated = false;
+    }
+    //*********Customization new stuff**************
+
     #endregion
 }

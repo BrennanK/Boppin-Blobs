@@ -13,7 +13,7 @@ public class TimeInvestment : Ach
     // Start is called before the first frame update
     void Start()
     {
-        state = SaveLoad.instance.data[gameObject.name].state;
+        //state = SaveLoad.instance.data[gameObject.name].state;
 
         switch (state) // state will be decide from saveload and pass it to here
         {
