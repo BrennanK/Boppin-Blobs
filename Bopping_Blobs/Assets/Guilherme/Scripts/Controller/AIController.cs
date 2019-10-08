@@ -26,7 +26,7 @@ public class AIController : MonoBehaviour, IBoppable {
     public float reactionTimeVariation = 0.05f;
     public float minStartTime = 0.15f;
     public float maxStartTime = 0.35f;
-    public float attackingDistance = 1.5f;
+    private const float km_attackingDistance = 2.0f;
     private BehaviorTree.BehaviorTree m_behaviorTree;
 
     // General AI Configuration
@@ -35,11 +35,11 @@ public class AIController : MonoBehaviour, IBoppable {
 
     // Not King Configuration
     public float m_distanceToFollowKing = 15f;
-    public const float km_distanceToPowerUp = 10f;
+    public const float km_distanceToPowerUp = 15f;
     public const float km_closestPlayerDistanceToFollow = 15f;
 
     // King AI Configuration
-    private const float km_iminentDangerDistance = 5f;
+    private const float km_iminentDangerDistance = 10f;
 
 
     private NavMeshAgent m_navMeshAgent;
@@ -56,10 +56,10 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, m_distanceToFollowKing);
+        // Gizmos.DrawWireSphere(transform.position, m_distanceToFollowKing);
 
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, km_distanceToPowerUp);
+        // Gizmos.DrawWireSphere(transform.position, km_distanceToPowerUp);
     }
 
     private void Awake() {
@@ -85,14 +85,11 @@ public class AIController : MonoBehaviour, IBoppable {
 
                            .Sequence("Is on Iminent Danger")
                                .Condition("Check if is on iminent danger", IsOnIminentDanger)
-
-                               .Selector("Try to Use Power Up to Run")
-                                   .Action("Try to use Back off", UseBackOffPowerUp)
-                                   .Action("Try to use Super Speed", UseSuperSlamPowerUp)
-                                   .Condition("Tried all power ups?", TriedAllPowerUps)
-                               .End()
-
-                               // THIS has to be improved
+                                .Selector("Try to Use Power Up to Run")
+                                    .Action("Try to use Back off", UseBackOffPowerUp)
+                                    .Action("Try to use Super Speed", UseSuperSlamPowerUp)
+                                    .Condition("Tried all power ups?", TriedAllPowerUps)
+                                .End()
                                .Action("Run away from closest Player", RunAwayFromClosestPlayer)
                            .End()
 
@@ -315,15 +312,53 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus RunAwayFromClosestPlayer() {
-        Vector3 closestPlayerPosition = GetClosestPlayerTransform().position;
-        Vector3 directionToMove = transform.position - closestPlayerPosition;
-        directionToMove.Scale(new Vector3(3, 3, 3));
+        if(m_currentState == EAIStates.KING_FOLLOWING_PATH) {
+            if(m_navMeshAgent.remainingDistance > km_distanceToStopWandering * 2f) {
+                return EReturnStatus.SUCCESS;
+            } else {
+                m_currentState = EAIStates.KING_SEARCHING_PATH;
+            }
+        }
 
-        Debug.DrawRay(transform.position, directionToMove, Color.red, 0.125f);
-        SetPathToAgentFromPosition(directionToMove);
-        m_currentState = EAIStates.KING_FOLLOWING_PATH;
+        bool someoneInFrontOfMe = Physics.Raycast(transform.position, transform.forward, km_iminentDangerDistance, m_taggingIdentifier.attackLayer);
+        bool someoneBehindMe = Physics.Raycast(transform.position, -transform.forward, km_iminentDangerDistance, m_taggingIdentifier.attackLayer);
+        bool someoneToMyRight = Physics.Raycast(transform.position, transform.right, km_iminentDangerDistance, m_taggingIdentifier.attackLayer);
+        bool someoneToMyLeft = Physics.Raycast(transform.position, -transform.right, km_iminentDangerDistance, m_taggingIdentifier.attackLayer);
 
-        return EReturnStatus.SUCCESS;
+        List<Vector3> possibleDirections = new List<Vector3> {
+            transform.forward,
+            -transform.forward,
+            transform.right,
+            -transform.right
+        };
+
+        if(someoneInFrontOfMe) {
+            possibleDirections.Remove(transform.forward);
+        }
+
+        if(someoneBehindMe) {
+            possibleDirections.Remove(-transform.forward);
+        }
+
+        if(someoneToMyRight) {
+            possibleDirections.Remove(transform.right);
+        }
+
+        if(someoneToMyLeft) {
+            possibleDirections.Remove(-transform.right);
+        }
+
+        if(possibleDirections.Count > 0) {
+            RunToThisDirection(possibleDirections[Random.Range(0, possibleDirections.Count)]);
+            m_currentState = EAIStates.KING_FOLLOWING_PATH;
+            return EReturnStatus.SUCCESS;
+        }
+
+        return EReturnStatus.FAILURE;
+    }
+
+    private void RunToThisDirection(Vector3 _direction) {
+        SetARandomPointOnThatDirection(_direction);
     }
     #endregion
 
@@ -422,7 +457,7 @@ public class AIController : MonoBehaviour, IBoppable {
     #region Attacking Related (can be used on is it or is not it)
     private EReturnStatus CheckIfClosestPlayerIsWithinAttackingDistance() {
         Transform closestPlayer = GetClosestPlayerTransform();
-        if(Vector3.Distance(transform.position, closestPlayer.position) < attackingDistance) {
+        if(Vector3.Distance(transform.position, closestPlayer.position) < km_attackingDistance) {
             return EReturnStatus.SUCCESS;
         }
 
@@ -430,7 +465,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus IsWithinSuperSlamDistance() {
-        if(Vector3.Distance(transform.position, m_playerCurrentlyBeingFollowed.position) < (attackingDistance * 2f)) {
+        if(Vector3.Distance(transform.position, m_playerCurrentlyBeingFollowed.position) < (km_attackingDistance * 2f)) {
             return EReturnStatus.SUCCESS;
         }
 
@@ -438,7 +473,7 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private EReturnStatus IsWithinAttackingDistance() {
-        if (Vector3.Distance(transform.position, m_playerCurrentlyBeingFollowed.position) < attackingDistance) {
+        if (Vector3.Distance(transform.position, m_playerCurrentlyBeingFollowed.position) < km_attackingDistance) {
             return EReturnStatus.SUCCESS;
         }
 
@@ -455,6 +490,7 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private EReturnStatus Attack() {
         if (!m_canAttack) {
+            transform.LookAt(m_playerCurrentlyBeingFollowed);
             m_canAttack = true;
             return EReturnStatus.SUCCESS;
         }
@@ -480,29 +516,22 @@ public class AIController : MonoBehaviour, IBoppable {
         return closestPlayer;
     }
 
-    private void SetPathToAgentFromPosition(Vector3 _position) {
-        _position = new Vector3(_position.x, transform.position.y, _position.z);
-        Vector3 positionToGo = GetRandomPositionAroundAPoint(_position);
-        m_navMeshAgent.SetDestination(positionToGo);
-    }
+    private bool SetARandomPointOnThatDirection(Vector3 _direction) {
+        for(int i = 0; i < 5; i++) {
+            Vector3 randomPoint = transform.position + (_direction * km_wanderRange);
+            NavMeshHit hit;
 
-    // TODO Get a random point given two angles (input: I want to escape considering these two angles)
-    private Vector3 GetRandomPositionAroundAPoint(Vector3 _point) {
-        // TODO maybe this range can be a public variable to tune the AI
-        float range = 1f;
-        // TODO max tries can be a constant value on class
-        int maxTries = 20;
-
-        for(int i = 0; i < maxTries; i++) {
-
-            NavMeshHit navMeshHit;
-
-            if (NavMesh.SamplePosition(_point, out navMeshHit, range, NavMesh.AllAreas)) {
-                return navMeshHit.position;
+            if(NavMesh.SamplePosition(randomPoint, out hit, 5.0f, NavMesh.AllAreas)) {
+                NavMeshPath path = new NavMeshPath();
+                if(NavMesh.CalculatePath(transform.position, hit.position, NavMesh.AllAreas, path)) {
+                    Debug.DrawLine(transform.position, hit.position, Color.red, 1f);
+                    m_navMeshAgent.SetPath(path);
+                    return true;
+                }
             }
         }
 
-        return Vector3.zero;
+        return false;
     }
 
     private bool SetARandomPointOnMavMesh(float _range) {
@@ -511,13 +540,18 @@ public class AIController : MonoBehaviour, IBoppable {
             randomPoint.y = 0;
             NavMeshHit hit;
 
-            if(NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)) {
-                m_navMeshAgent.SetDestination(hit.position);
-                return true;
+            if(NavMesh.SamplePosition(randomPoint, out hit, 2.5f, NavMesh.AllAreas)) {
+                NavMeshPath path = new NavMeshPath();
+                if(NavMesh.CalculatePath(transform.position, hit.position, NavMesh.AllAreas, path)) {
+                    Debug.DrawLine(transform.position, hit.position, Color.green, 1f);
+                    m_navMeshAgent.SetPath(path);
+                    return true;
+                }
             }
         }
 
         return false;
     }
+
     #endregion
 }
