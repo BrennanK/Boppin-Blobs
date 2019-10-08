@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 227b4320266526e4a99738fef86885fa
+guid: 427ced48e24545841bb84407da46332f
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -14,7 +14,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Dillon
-    second: {fileID: 2100000, guid: 599bc3a8d54279844b55b856a18ccff4, type: 2}
+    second: {fileID: 2100000, guid: be352f4d1c080b14381afaaad53c3682, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
