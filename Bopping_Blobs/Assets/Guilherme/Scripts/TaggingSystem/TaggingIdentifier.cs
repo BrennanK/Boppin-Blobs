@@ -280,7 +280,10 @@ public class TaggingIdentifier : MonoBehaviour {
                         playerHitted.KnockbackPlayer(Color.magenta, (playerHitted.transform.position - transform.position).normalized * taggingManager.knockbackForce * 3f, 0.5f);
                     }
 
-                    break;
+                    // We break from the loop if we are not using super slam
+                    if(_attackSizeMultiplier == 1.0f) {
+                        break;
+                    }
                 }
             }
         }

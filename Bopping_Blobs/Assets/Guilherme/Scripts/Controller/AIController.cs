@@ -80,7 +80,19 @@ public class AIController : MonoBehaviour, IBoppable {
                    .Sequence("Is KING Sequence")
                        .Condition("Check if is King", IsKing)
                        .Selector("KING Selector")
-                           // Sequence => Iminent Danger
+
+                           .Sequence("Is on Iminent Danger")
+                               .Condition("Check if is on iminent danger", IsOnIminentDanger)
+
+                               .Selector("Try to Use Power Up to Run")
+                                   .Action("Try to use Back off", UseBackOffPowerUp)
+                                   .Action("Try to use Super Speed", UseSuperSlamPowerUp)
+                                   .Condition("Tried all power ups?", TriedAllPowerUps)
+                               .End()
+
+                               // THIS has to be improved
+                               .Action("Run away from closest Player", RunAwayFromClosestPlayer)
+                           .End()
 
                            .Sequence("Collect Power Up")
                                .Condition("Can get power ups (power up tracker is not full", CanGetPowerUp)
@@ -93,21 +105,6 @@ public class AIController : MonoBehaviour, IBoppable {
                            .End()
                        .End()
 
-                   /*
-                   .Selector("is King Selector - Select one of these actions to use to run away")
-                       .Sequence("Is On Iminent Danger Sequence")
-                           .Condition("Check if is on iminent danger", IsOnIminentDanger)
-
-                           .Selector("Try to Use a Power Up To Run")
-                               .Action("Try to use Back Off", UseBackOffPowerUp)
-                               .Action("Try to use Super Speed", UseSuperSpeedPowerUp)
-                               .Condition("Tried all power ups?", TriedAllPowerUps)
-                           .End()
-
-                           .Action("Run Away from Closest Player", RunAwayFromClosestPlayer)
-                       .End()
-                   .End()
-                   */
                    .End()
 
                    // IS NOT KING
