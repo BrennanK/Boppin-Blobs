@@ -85,7 +85,9 @@ public class TaggingManager : MonoBehaviour {
     /// </summary>
     public void StartTagging() {
         // TODO Select a Random one to start as tag
-        TaggingIdentifier initialTagger = GameObject.FindGameObjectWithTag("Player").GetComponent<TaggingIdentifier>();
+        TaggingIdentifier initialTagger = m_playersIdentifiers[Random.Range(0, m_playersIdentifiers.Count)];
+        // TaggingIdentifier initialTagger = GameObject.FindGameObjectWithTag("Player").GetComponent<TaggingIdentifier>();
+
         PlayerWasTagged(initialTagger);
         foreach (TaggingIdentifier notItPlayer in GetAllPlayersThatAreNotIt()) {
             notItPlayer.SetAsNotKing();
