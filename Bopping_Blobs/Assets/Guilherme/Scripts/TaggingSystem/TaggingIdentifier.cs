@@ -182,8 +182,11 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <para>Set this player as KING</para>
     /// </summary>
     public void SetAsKing() {
-        Instantiate(GameController.instance.blobGotKingParticle, transform.position, Quaternion.identity).Play();
-        PausedMenuManager._instance?.PlaySFX(GameController.instance.blobGotKingSounds[Random.Range(0, GameController.instance.blobGotKingSounds.Length)]);
+        if(GameController.instance) {
+            Instantiate(GameController.instance.blobGotKingParticle, transform.position, Quaternion.identity).Play();
+            PausedMenuManager._instance?.PlaySFX(GameController.instance.blobGotKingSounds[Random.Range(0, GameController.instance.blobGotKingSounds.Length)]);
+        }
+
         m_boppableInterface.ChangeSpeed(BaseSpeed, 0f, m_externalSpeedBoost);
         kingCrown.SetActive(true);
         m_timesAsKing++;
@@ -235,8 +238,13 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private void TriggerAttackTransition(float _attackSizeMultiplier = 1.0f) {
-        PausedMenuManager._instance?.PlaySFX(GameController.instance.blobAttackSounds[Random.Range(0, GameController.instance.blobAttackSounds.Length)]);
-        Instantiate(GameController.instance.blobAttackParticle, hammerBopAim.transform.position, Quaternion.identity).Play();
+        if(GameController.instance) {
+            PausedMenuManager._instance?.PlaySFX(GameController.instance.blobAttackSounds[Random.Range(0, GameController.instance.blobAttackSounds.Length)]);
+        }
+
+        if(GameController.instance) {
+            Instantiate(GameController.instance.blobAttackParticle, hammerBopAim.transform.position, Quaternion.identity).Play();
+        }
 
         m_boppableInterface.TriggerAttackTransition();
         ETaggingBehavior currentTaggingState = m_currentTaggingState;
@@ -251,7 +259,11 @@ public class TaggingIdentifier : MonoBehaviour {
                 TaggingIdentifier playerHitted = bopCollision[i].transform.gameObject.GetComponent<TaggingIdentifier>();
                 if (playerHitted != null && playerHitted.CanBeTagged && m_playerIdentifier != playerHitted.PlayerIdentifier) {
                     // We hit someone, so we bopped them!
-                    PausedMenuManager._instance?.PlaySFX(GameController.instance.blobHitSounds[Random.Range(0, GameController.instance.blobHitSounds.Length)]);
+
+                    if (GameController.instance) {
+                        PausedMenuManager._instance?.PlaySFX(GameController.instance.blobHitSounds[Random.Range(0, GameController.instance.blobHitSounds.Length)]);
+                    }
+
                     m_playersBopped++;
 
                     if(taggingManager.WhoIsKing == playerHitted.PlayerIdentifier) {

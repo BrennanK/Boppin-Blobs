@@ -103,7 +103,10 @@ public class TaggingManager : MonoBehaviour {
         m_currentPlayerTaggingID = _whoIsTag.PlayerIdentifier;
         _whoIsTag.SetAsKing();
         OnPlayerWasTagged?.Invoke(_whoIsTag);
-        m_UIManager.ShowPlayerTaggedText(_whoIsTag.PlayerName, knockbackDelayTime);
+
+        if(m_UIManager) {
+            m_UIManager.ShowPlayerTaggedText(_whoIsTag.PlayerName, knockbackDelayTime);
+        }
 
         if (_knockbackEffect) {
             // TODO not have / 4.0f on the knockbackDelayTime

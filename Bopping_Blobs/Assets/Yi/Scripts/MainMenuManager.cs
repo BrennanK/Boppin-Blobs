@@ -20,6 +20,11 @@ public class MainMenuManager : MonoBehaviour
     {
         achievementManager = AchievementManager._instance;
         PausedMenu = PausedMenuManager._instance;
+
+        TaggingManager taggingManagerOnMainMenu = FindObjectOfType<TaggingManager>();
+        if(taggingManagerOnMainMenu) {
+            taggingManagerOnMainMenu.InitializeTaggingManager();
+        }
     }
 
     // Update is called once per frame
