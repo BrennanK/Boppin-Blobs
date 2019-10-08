@@ -106,14 +106,6 @@ public class AIController : MonoBehaviour, IBoppable {
 
                            .Action("Run Away from Closest Player", RunAwayFromClosestPlayer)
                        .End()
-
-                       .Selector("If not on iminent danger, choose of these")
-                           .Sequence("Collect Power Up")
-                               .Condition("Can get power ups", CanGetPowerUp)
-                               .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
-                               .Action("Collect a Power Up", CollectPowerUp)
-                           .End()
-                       .End()
                    .End()
                    */
                    .End()

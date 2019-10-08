@@ -11,9 +11,10 @@ public class TaggingIdentifier : MonoBehaviour {
     // TODO Maybe all these could be a ScriptableObject
     [Header("Hammer Bop")]
     public LayerMask attackLayer;
-    public float attackDistance = 1f;
-    public float attackTime = 1f;
-    public float attackRadius = 1f;
+
+    private const float km_attackDistance = 1.5f;
+    private const float km_attackTime = .1f;
+    private const float km_attackRadius = 1f;
     private Vector3 m_originalHammerLocalPosition;
     private Vector3 m_originalHammerLocalEulerAngles;
 
@@ -154,7 +155,7 @@ public class TaggingIdentifier : MonoBehaviour {
         m_timesAsKing = 0;
 
         m_characterRenderer.material.color = blobOriginalColor;
-        hammerBopAim.localPosition = new Vector3(0, -0.25f, attackDistance);
+        hammerBopAim.localPosition = new Vector3(0, -0.25f, km_attackDistance);
         m_originalHammerLocalPosition = hammerTransform.localPosition;
         m_originalHammerLocalEulerAngles = hammerTransform.localEulerAngles;
         m_tempSpeedBoost = 0f;
@@ -244,7 +245,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
         m_characterRenderer.material.color = Color.red;
 
-        Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, attackRadius * _attackSizeMultiplier, attackLayer);
+        Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, km_attackRadius * _attackSizeMultiplier, attackLayer);
         if (bopCollision.Length > 0) {
             for (int i = 0; i < bopCollision.Length; i++) {
                 TaggingIdentifier playerHitted = bopCollision[i].transform.gameObject.GetComponent<TaggingIdentifier>();
@@ -279,7 +280,7 @@ public class TaggingIdentifier : MonoBehaviour {
         hammerTransform.localPosition = new Vector3(hammerBopAim.localPosition.x, hammerBopAim.localPosition.y + 0.25f, hammerBopAim.localPosition.z - 1f);
         hammerTransform.localEulerAngles = new Vector3(90, 0, 0);
 
-        yield return new WaitForSecondsRealtime(attackTime);
+        yield return new WaitForSecondsRealtime(km_attackTime);
 
         if(_returnToOriginalColor) {
             m_characterRenderer.material.color = blobOriginalColor;
@@ -347,7 +348,7 @@ public class TaggingIdentifier : MonoBehaviour {
         Gizmos.color = Color.red;
 
         if(hammerBopAim.gameObject.activeSelf) {
-            Gizmos.DrawWireSphere(hammerBopAim.transform.position, attackRadius);
+            Gizmos.DrawWireSphere(hammerBopAim.transform.position, km_attackRadius);
         }
     }
 }
