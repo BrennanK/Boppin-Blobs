@@ -15,4 +15,6 @@ public abstract class Ach : MonoBehaviour
 
     public abstract void ChangeState(int num);
 
+    public abstract void SaveDataToPlayerPrefs();
+
 }

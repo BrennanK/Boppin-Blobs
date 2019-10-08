@@ -6,14 +6,15 @@ public class SaveLoad : MonoBehaviour
 {
     //---------------------total achievement type---------------------------------------------------------
 
-    public TimeInvestment[] timeInvestments; // manually drag & drop into the field
+    public TimeInvestment[] timeInvestments; // dynamically instantiate at run time
 
     //------------------------------------------------------------------------------
     public Dictionary<string, Ach> data = new Dictionary<string, Ach>();
 
     public static SaveLoad instance;
 
-    private void Start()  //awake
+    // It was originally an Awake(), but we need to know the number of timeInvestment after it instantiate, so we wait for the AchievementManager to Instantiate first
+    private void Start()
     {
         if (instance != null)
         {
@@ -61,9 +62,4 @@ public class SaveLoad : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

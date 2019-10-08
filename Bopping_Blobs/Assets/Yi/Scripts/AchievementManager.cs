@@ -25,6 +25,7 @@ public class AchievementManager : MonoBehaviour
         new string[]{"9", "Play 50 games", "0", "1", "100", "0", "Time Investment"},
         new string[]{"10", "Play 100 games", "0", "1", "100", "0", "Time Investment"},
         new string[]{"11", "Play 500 games", "0", "1", "100", "0", "Time Investment"},
+        new string[]{"12", "Place 1st", "0", "1", "100", "0", "Instance"},
     };
     // Enable or Not
     public bool achievementActivated = false;
@@ -99,23 +100,24 @@ public class AchievementManager : MonoBehaviour
                     switch (Achievements[i][0])
                     {
                         case "7":
-                            TI.requiredPlayCount = 1;
+                            TI.requiredGamePlayed = 1;
                             break;
                         case "8":
-                            TI.requiredPlayCount = 10;
+                            TI.requiredGamePlayed = 10;
                             break;
                         case "9":
-                            TI.requiredPlayCount = 50;
+                            TI.requiredGamePlayed = 50;
                             break;
                         case "10":
-                            TI.requiredPlayCount = 100;
+                            TI.requiredGamePlayed = 100;
                             break;
                         case "11":
-                            TI.requiredPlayCount = 500;
+                            TI.requiredGamePlayed = 500;
                             break;
                     }
                     break;
-                default:
+                case "Instance":
+                    achievementprefab.AddComponent<Instance>();
                     break;
             }
 

@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class TimeInvestment : Ach
 {
-    public int requiredPlayCount;
+    public static int currentGamePlayed;
 
-    public int currentPlayCount;
+    public int requiredGamePlayed;
 
     // Start is called before the first frame update
     void Start()
@@ -38,11 +38,6 @@ public class TimeInvestment : Ach
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public override void ChangeState(int num)
     {
@@ -71,4 +66,16 @@ public class TimeInvestment : Ach
             Debug.LogWarning("parameter wrong");
         }
     }
+
+    public override void SaveDataToPlayerPrefs()
+    {
+        currentGamePlayed++;
+        PlayerPrefs.SetInt("currentGamePlayed", currentGamePlayed);
+
+        if (currentGamePlayed == requiredGamePlayed)
+        {
+            ChangeState(1);
+        }
+    }
+
 }
