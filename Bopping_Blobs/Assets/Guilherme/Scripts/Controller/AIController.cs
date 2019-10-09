@@ -20,7 +20,14 @@ public class AIController : MonoBehaviour, IBoppable {
         KING_WANDERING,
     }
 
+    enum EAIBehavior {
+        TRY_HARD,
+        COLLECTOR,
+        BASELINE
+    }
+
     private EAIStates m_currentState = EAIStates.NOT_KING_WANDERING;
+    private EAIBehavior m_currentBehavior = EAIBehavior.BASELINE;
 
     [Header("Behavior Tree Configuration")]
     public float baseReactionTime = 0.35f;
@@ -35,9 +42,11 @@ public class AIController : MonoBehaviour, IBoppable {
     private const float km_distanceToStopWandering = 0.5f;
 
     // Not King Configuration
-    public float m_distanceToFollowKing = 15f;
-    public const float km_distanceToPowerUp = 15f;
-    public const float km_closestPlayerDistanceToFollow = 15f;
+    private float m_distanceToFollowKing = 15f;
+    private float m_distanceToPowerUp = 15f;
+    private const float km_closestPlayerDistanceToFollow = 15f;
+    private float m_timeSinceLastAttack = 0f;
+    private float m_chaoticTimeToAttackAgain;
 
     // King AI Configuration
     private const float km_iminentDangerDistance = 10f;
@@ -57,10 +66,10 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        // Gizmos.DrawWireSphere(transform.position, m_distanceToFollowKing);
+        Gizmos.DrawWireSphere(transform.position, m_distanceToFollowKing);
 
         Gizmos.color = Color.green;
-        // Gizmos.DrawWireSphere(transform.position, km_distanceToPowerUp);
+        Gizmos.DrawWireSphere(transform.position, m_distanceToPowerUp);
     }
 
     private void Awake() {
@@ -74,60 +83,6 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     #region Initialize AI Functions
-    public void MakeChaoticAttacker() {
-        m_behaviorTree = new BehaviorTree.BehaviorTree(
-          new BehaviorTreeBuilder()
-              .Selector("Chaotic Attacker AI")
-                  .Condition("Is Being Knocked Back", IsBeingKnockedBack)
-
-                  // Is King
-                  .Sequence("Is KING Sequence")
-                      .Condition("Check if is King", IsKing)
-                      .Selector("KING Selector")
-
-                          .Sequence("Is on Iminent Danger")
-                              .Condition("Check if is on iminent danger", IsOnIminentDanger)
-                               .Selector("Try to Use Power Up to Run")
-                                   .Action("Try to use Back off", UseBackOffPowerUp)
-                                   .Action("Try to use Super Speed", UseSuperSlamPowerUp)
-                                   .Condition("Tried all power ups?", TriedAllPowerUps)
-                               .End()
-                              .Action("Run away from closest Player", RunAwayFromClosestPlayer)
-                          .End()
-
-                          .Sequence("Collect Power Up")
-                              .Condition("Can get power ups (power up tracker is not full", CanGetPowerUp)
-                              .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
-                              .Action("Collect a Power Up", CollectPowerUp)
-                          .End()
-
-                          .Sequence("King Wander Around")
-                              .Action("King Wander!", KingWander)
-                          .End()
-                      .End()
-
-                  .End()
-
-                  // IS NOT KING
-                  .Selector("Is NOT King Selector")
-                      .Sequence("Attack")
-                          .Condition("Check if someone is REALLY close", CheckIfClosestPlayerIsWithinAttackingDistance)
-                          .Condition("Checking if I can attack", CanAttack)
-                          .Action("Attack!!", Attack)
-                      .End()
-
-                      .Sequence("Follow Closest Player")
-                           .Action("Just Follow Closest Player", ChaseClosestPlayer)
-                      .End()
-                  .End()
-
-              .End()
-              .Build()
-          );
-
-        InitializeAI();
-    }
-
     public void MakeAIBaseline() {
         m_behaviorTree = new BehaviorTree.BehaviorTree(
           new BehaviorTreeBuilder()
@@ -158,6 +113,7 @@ public class AIController : MonoBehaviour, IBoppable {
                           .Sequence("King Wander Around")
                               .Action("King Wander!", KingWander)
                           .End()
+
                       .End()
 
                   .End()
@@ -207,6 +163,23 @@ public class AIController : MonoBehaviour, IBoppable {
               .Build()
           );
 
+        m_currentBehavior = EAIBehavior.BASELINE;
+        InitializeAI();
+    }
+
+    public void MakePowerUpCollectorAI() {
+        m_distanceToPowerUp *= 3f;
+
+        MakeAIBaseline();
+        m_currentBehavior = EAIBehavior.COLLECTOR;
+        InitializeAI();
+    }
+
+    public void MakeTryHardAI() {
+        m_distanceToFollowKing *= 3.5f;
+
+        MakeAIBaseline();
+        m_currentBehavior = EAIBehavior.TRY_HARD;
         InitializeAI();
     }
 
@@ -267,6 +240,7 @@ public class AIController : MonoBehaviour, IBoppable {
     #region BEHAVIOR TREE ACTIONS
     private IEnumerator UpdateTreeRoutine(float _delay) {
         yield return new WaitForSeconds(_delay);
+        m_timeSinceLastAttack += _delay;
         UpdateTree();
         StartCoroutine(UpdateTreeRoutine(baseReactionTime + Random.Range(-reactionTimeVariation, reactionTimeVariation)));
     }
@@ -445,14 +419,12 @@ public class AIController : MonoBehaviour, IBoppable {
         return EReturnStatus.FAILURE;
     }
 
-    private EReturnStatus ChaseClosestPlayer() {
-        if(m_navMeshAgent.isOnNavMesh) {
-            Transform closestPlayer = GetClosestPlayerTransform();
-            m_navMeshAgent.SetDestination(closestPlayer.position);
+    private EReturnStatus CanChaoticAttack() {
+        if((m_timeSinceLastAttack >= m_chaoticTimeToAttackAgain)) {
             return EReturnStatus.SUCCESS;
+        } else {
+            return EReturnStatus.FAILURE;
         }
-
-        return EReturnStatus.FAILURE;
     }
 
     private EReturnStatus CanNotKingWander() {
@@ -497,7 +469,7 @@ public class AIController : MonoBehaviour, IBoppable {
         m_powerUpBoxesInDistance.Clear();
 
         foreach(PowerUpBox box in allPowerupBoxes) {
-            if(Vector3.Distance(transform.position, box.gameObject.transform.position) < km_distanceToPowerUp && box.IsActive) {
+            if(Vector3.Distance(transform.position, box.gameObject.transform.position) < m_distanceToPowerUp && box.IsActive) {
                 m_powerUpBoxesInDistance.Add(box);
             }
         }
@@ -564,6 +536,7 @@ public class AIController : MonoBehaviour, IBoppable {
         if (!m_canAttack) {
             transform.LookAt(m_playerCurrentlyBeingFollowed);
             m_canAttack = true;
+            m_timeSinceLastAttack = 0f;
             return EReturnStatus.SUCCESS;
         }
 

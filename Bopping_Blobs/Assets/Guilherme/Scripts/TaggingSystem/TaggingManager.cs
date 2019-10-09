@@ -81,10 +81,25 @@ public class TaggingManager : MonoBehaviour {
 
         // Initializing All AI
         List<AIController> allAIPlayers = FindObjectsOfType<AIController>().ToList();
-        allAIPlayers[0].MakeChaoticAttacker();
-        foreach(AIController aiBlob in allAIPlayers) {
-            // aiBlob.MakeChaoticAttacker();
-            aiBlob.MakeAIBaseline();
+        int currentIndex = 0;
+        int tryHardAI = Random.Range(1, 3);
+        int powerUpCollectorAI = Random.Range(1, 3);
+
+        // Having 1 or 2 Try Hard AI
+        for(int i = 0; i < tryHardAI; i++) {
+            allAIPlayers[currentIndex].MakeTryHardAI();
+            currentIndex++;
+        }
+
+        // Having 1 or 2 Power Up Collector AI
+        for(int i = 0; i < powerUpCollectorAI; i++) {
+            allAIPlayers[currentIndex].MakePowerUpCollectorAI();
+            currentIndex++;
+        }
+
+        // the remaining AI is baseline!
+        for(; currentIndex < allAIPlayers.Count; currentIndex++) {
+            allAIPlayers[currentIndex].MakeAIBaseline();
         }
     }
 
