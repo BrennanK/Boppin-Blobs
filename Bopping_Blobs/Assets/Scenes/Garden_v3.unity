@@ -39103,6 +39103,37 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: backOffParticle
+      value: 
+      objectReference: {fileID: 8784340201201863942, guid: 9f5c1520fc8bd574cbed0770c20425a7,
+        type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: superSlamParticle
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: blobGotKingParticle
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: blobAttackParticle
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: blobGotPowerUpParticle
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: superSpeedParticle
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6837564551848205126, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: aiPreferredSpots.Array.size

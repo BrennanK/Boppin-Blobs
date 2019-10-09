@@ -92,7 +92,11 @@ namespace PowerUp {
 
         public void AddPowerUp(PowerUp _powerUp) {
             PausedMenuManager._instance?.PlaySFX(GameController.instance.powerUpCollectedSound[Random.Range(0, GameController.instance.powerUpCollectedSound.Length)]);
-            Instantiate(GameController.instance.blobGotPowerUpParticle, transform.position, Quaternion.identity).Play();
+
+            if(GameController.instance.blobGotPowerUpParticle) {
+                Instantiate(GameController.instance.blobGotPowerUpParticle, transform.position, Quaternion.identity).Play();
+            }
+
             // Debug.Log($"Power Up Received by Power Up Tracker: {_powerUp.GetHashCode()}");
             switch(_powerUp.powerUp) {
                 case EPowerUps.SUPER_SPEED:
@@ -137,20 +141,31 @@ namespace PowerUp {
                         case EPowerUps.SUPER_SPEED:
                             if(GameController.instance.superSpeedSounds.Length > 0) {
                                 PausedMenuManager._instance?.PlaySFX(GameController.instance.superSpeedSounds[Random.Range(0, GameController.instance.superSpeedSounds.Length)]);
-                                Instantiate(GameController.instance.superSpeedParticle, transform.position, Quaternion.identity);
+
+                                if(GameController.instance.superSpeedParticle) {
+                                    Instantiate(GameController.instance.superSpeedParticle, transform.position, Quaternion.identity);
+                                }
                             }
                             break;
                         case EPowerUps.BACK_OFF:
                             if(GameController.instance.backOffSounds.Length > 0) {
                                 PausedMenuManager._instance?.PlaySFX(GameController.instance.backOffSounds[Random.Range(0, GameController.instance.backOffSounds.Length)]);
-                                Instantiate(GameController.instance.backOffParticle, transform.position, Quaternion.identity);
+
+                                if(GameController.instance.backOffParticle) {
+                                    Instantiate(GameController.instance.backOffParticle, transform.position, Quaternion.identity);
+                                }
+
                                 Instantiate(GameController.instance.backOffDecal, m_playerTaggingIdentifier.hammerBopAim.transform.position, GameController.instance.backOffDecal.transform.rotation);
                             }
                             break;
                         case EPowerUps.SUPER_SLAM:
                             if(GameController.instance.superSlamSounds.Length > 0) {
                                 PausedMenuManager._instance?.PlaySFX(GameController.instance.superSlamSounds[Random.Range(0, GameController.instance.superSlamSounds.Length)]);
-                                Instantiate(GameController.instance.superSlamParticle, transform.position, Quaternion.identity);
+
+                                if (GameController.instance.superSlamParticle) {
+                                    Instantiate(GameController.instance.superSlamParticle, transform.position, Quaternion.identity);
+                                }
+
                                 Instantiate(GameController.instance.superSlamDecal, m_playerTaggingIdentifier.hammerBopAim.transform.position, GameController.instance.superSlamDecal.transform.rotation);
                             }
                             break;

@@ -185,7 +185,10 @@ public class TaggingIdentifier : MonoBehaviour {
     /// </summary>
     public void SetAsKing() {
         if(GameController.instance) {
-            Instantiate(GameController.instance.blobGotKingParticle, transform.position, Quaternion.identity).Play();
+            if(GameController.instance.blobGotKingParticle) {
+                Instantiate(GameController.instance.blobGotKingParticle, transform.position, Quaternion.identity).Play();
+            }
+
             PausedMenuManager._instance?.PlaySFX(GameController.instance.blobGotKingSounds[Random.Range(0, GameController.instance.blobGotKingSounds.Length)]);
         }
 
@@ -244,7 +247,7 @@ public class TaggingIdentifier : MonoBehaviour {
             PausedMenuManager._instance?.PlaySFX(GameController.instance.blobAttackSounds[Random.Range(0, GameController.instance.blobAttackSounds.Length)]);
         }
 
-        if(GameController.instance) {
+        if(GameController.instance && GameController.instance.blobAttackParticle) {
             Instantiate(GameController.instance.blobAttackParticle, hammerBopAim.transform.position, Quaternion.identity).Play();
         }
 
