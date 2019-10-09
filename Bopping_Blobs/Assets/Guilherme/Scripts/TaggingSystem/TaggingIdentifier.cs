@@ -18,13 +18,11 @@ public class TaggingIdentifier : MonoBehaviour {
     private Vector3 m_originalHammerLocalPosition;
     private Vector3 m_originalHammerLocalEulerAngles;
 
-    [Header("Necessary Dependencies")]
+    [Header("Gameplay Dependencies")]
     public GameObject kingCrown;
     public Transform hammerTransform;
     public Transform hammerBopAim;
     public Color blobOriginalColor;
-
-    [Header("Stunned Dependencies")]
     public GameObject stunnedStars;
 
     [HideInInspector]

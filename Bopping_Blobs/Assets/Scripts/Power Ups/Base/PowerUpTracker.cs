@@ -24,6 +24,7 @@ namespace PowerUp {
     }
 
     public class PowerUpTracker : MonoBehaviour {
+        public GameObject superSpeedTrail;
 
         public PowerUpHolder slot1 = new PowerUpHolder();
         public PowerUpHolder slot2 = new PowerUpHolder();
@@ -53,6 +54,8 @@ namespace PowerUp {
             if(m_isPlayer) {
                 m_UIManager.UpdatePowerUpUI(slot1, slot2);
             }
+
+            superSpeedTrail.SetActive(false);
         }
 
         private void Update() {
@@ -173,10 +176,12 @@ namespace PowerUp {
 
         #region Power Up Functions
         public void ActivateSuperSpeed(float _value) {
+            superSpeedTrail.SetActive(true);
             m_playerTaggingIdentifier.ExternalSpeedBoost = m_playerTaggingIdentifier.ExternalSpeedBoost + m_taggingManager.baseSpeed * _value;
         }
 
         public void ResetSuperSpeed(float _value) {
+            superSpeedTrail.SetActive(false);
             m_playerTaggingIdentifier.ExternalSpeedBoost = m_playerTaggingIdentifier.ExternalSpeedBoost - m_taggingManager.baseSpeed * _value;
         }
 

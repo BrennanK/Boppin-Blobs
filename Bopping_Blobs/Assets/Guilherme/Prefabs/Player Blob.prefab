@@ -321,6 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec4d7fd55017ba458c86217fe26ac34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  superSpeedTrail: {fileID: 1207480873544264026}
 --- !u!1 &2263749499221799621
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +742,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Speed Trail
       objectReference: {fileID: 0}
+    - target: {fileID: 1067897624734390946, guid: 742b80acd516525419d401b598a581f5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4399859406436343965, guid: 742b80acd516525419d401b598a581f5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -833,6 +839,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 742b80acd516525419d401b598a581f5, type: 3}
+--- !u!1 &1207480873544264026 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1067897624734390946, guid: 742b80acd516525419d401b598a581f5,
+    type: 3}
+  m_PrefabInstance: {fileID: 2166295534668215288}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2530823559012766565 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4399859406436343965, guid: 742b80acd516525419d401b598a581f5,
