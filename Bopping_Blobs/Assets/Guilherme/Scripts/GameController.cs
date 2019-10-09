@@ -63,8 +63,10 @@ public class GameController : MonoBehaviour {
 
     private IEnumerator StartGameRoutine() {
         m_UIManager.UpdateTimerText(gameTime);
+        m_UIManager.DeactivateAllGameObjectsOnBeginGame();
         m_UIManager.ShowCenterText("Ready?");
         yield return new WaitForSecondsRealtime(gameStartDelayTime);
+        m_UIManager.ReactivateAllGameObjectsOnBeginGame();
         m_taggingManager.EnableAllPlayers();
         m_taggingManager.StartTagging();
         m_isGameRunning = true;

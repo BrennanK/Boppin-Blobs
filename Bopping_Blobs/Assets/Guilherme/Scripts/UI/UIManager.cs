@@ -9,6 +9,9 @@ public class UIManager : MonoBehaviour {
     public TextMeshProUGUI centerScreenText;
 
     [Header("Scoreboard Scripts")]
+    public GameObject[] deactivateBeforeGameStart;
+
+    [Header("Scoreboard Scripts")]
     public PlayerScoreUI[] playerScores;
 
     [Header("Timer")]
@@ -37,6 +40,17 @@ public class UIManager : MonoBehaviour {
         gameOverPanel.SetActive(false);
     }
 
+    public void DeactivateAllGameObjectsOnBeginGame() {
+        foreach(GameObject toDeactivate in deactivateBeforeGameStart) {
+            toDeactivate.SetActive(false);
+        }
+    }
+
+    public void ReactivateAllGameObjectsOnBeginGame() {
+        foreach(GameObject toActivate in deactivateBeforeGameStart) {
+            toActivate.SetActive(true);
+        }
+    }
 
     /// <summary>
     /// <para>Update timer on screen</para>
@@ -89,7 +103,7 @@ public class UIManager : MonoBehaviour {
 
     private IEnumerator ShowPlayerTaggedTextRoutine(string _playerName, float _timeToShow) {
         centerScreenText.gameObject.SetActive(true);
-        centerScreenText.text = $"{_playerName} got TAG!";
+        centerScreenText.text = $"{_playerName} is KING!";
         yield return new WaitForSecondsRealtime(_timeToShow);
         centerScreenText.gameObject.SetActive(false);
     }
@@ -99,7 +113,7 @@ public class UIManager : MonoBehaviour {
     /// </summary>
     /// <param name="_finalPlayerArray">Final player array as of the end of the game</param>
     public void ShowGameOverPanel(TaggingIdentifier[] _finalPlayerArray) {
-        foreach(GameObject deactivate in deactivateWhenGameIsOver) {
+        foreach (GameObject deactivate in deactivateWhenGameIsOver) {
             deactivate.SetActive(false);
         }
 
