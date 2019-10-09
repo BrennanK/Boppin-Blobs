@@ -406,8 +406,6 @@ MonoBehaviour:
   reactionTimeVariation: 0.05
   minStartTime: 0.15
   maxStartTime: 0.35
-  attackingDistance: 1.75
-  m_distanceToFollowKing: 15
 --- !u!114 &792157179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,6 +425,7 @@ MonoBehaviour:
   hammerTransform: {fileID: 6082885376101268287}
   hammerBopAim: {fileID: 6082885374619583996}
   blobOriginalColor: {r: 0.38020647, g: 0.9056604, b: 0.86695313, a: 1}
+  stunnedStars: {fileID: 6679693520774393538}
   taggingManager: {fileID: 0}
 --- !u!114 &6157029889411830316
 MonoBehaviour:
@@ -972,16 +971,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5506379969930696131, guid: 742b80acd516525419d401b598a581f5,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.459
-      objectReference: {fileID: 0}
-    - target: {fileID: 5506379969930696131, guid: 742b80acd516525419d401b598a581f5,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.587
-      objectReference: {fileID: 0}
     - target: {fileID: 5506379969875552322, guid: 742b80acd516525419d401b598a581f5,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -991,6 +980,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.593
+      objectReference: {fileID: 0}
+    - target: {fileID: 5506379969930696131, guid: 742b80acd516525419d401b598a581f5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.459
+      objectReference: {fileID: 0}
+    - target: {fileID: 5506379969930696131, guid: 742b80acd516525419d401b598a581f5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.587
       objectReference: {fileID: 0}
     - target: {fileID: 5506379971164277694, guid: 742b80acd516525419d401b598a581f5,
         type: 3}

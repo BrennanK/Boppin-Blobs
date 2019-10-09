@@ -24,6 +24,9 @@ public class TaggingIdentifier : MonoBehaviour {
     public Transform hammerBopAim;
     public Color blobOriginalColor;
 
+    [Header("Stunned Dependencies")]
+    public GameObject stunnedStars;
+
     [HideInInspector]
     public TaggingManager taggingManager;
 
@@ -148,6 +151,7 @@ public class TaggingIdentifier : MonoBehaviour {
         m_rigidbodyReference = GetComponent<Rigidbody>();
         m_characterRenderer = GetComponentInChildren<Renderer>();
         kingCrown.SetActive(false);
+        stunnedStars.SetActive(false);
 
         m_rigidbodyReference.isKinematic = true;
         m_amountOfTimeAsKing = 0;
@@ -324,9 +328,11 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private IEnumerator KnockbackDelay(float _delayTime) {
+        stunnedStars.SetActive(true);
         yield return new WaitForSeconds(_delayTime / 2.0f);
         m_rigidbodyReference.velocity = Vector3.zero;
         yield return new WaitForSeconds(_delayTime / 2.0f);
+        stunnedStars.SetActive(false);
         m_characterRenderer.material.color = blobOriginalColor;
         m_rigidbodyReference.isKinematic = true;
         m_boppableInterface.ReactivateController();
