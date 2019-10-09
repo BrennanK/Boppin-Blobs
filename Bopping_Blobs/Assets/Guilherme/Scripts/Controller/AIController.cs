@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class AIController : MonoBehaviour, IBoppable {
+    
     enum EAIStates {
         NOT_KING_RECALCULATING_PATH,
         NOT_KING_CHASING_KING,
@@ -72,87 +73,148 @@ public class AIController : MonoBehaviour, IBoppable {
         m_rigibody.isKinematic = true;
     }
 
-    private void Start() {
+    #region Initialize AI Functions
+    public void MakeChaoticAttacker() {
         m_behaviorTree = new BehaviorTree.BehaviorTree(
-           new BehaviorTreeBuilder()
-               .Selector("AI Behavior Main Selector")
-                   .Condition("Is Being Knocked Back", IsBeingKnockedBack)
+          new BehaviorTreeBuilder()
+              .Selector("Chaotic Attacker AI")
+                  .Condition("Is Being Knocked Back", IsBeingKnockedBack)
 
-                   // Is King
-                   .Sequence("Is KING Sequence")
-                       .Condition("Check if is King", IsKing)
-                       .Selector("KING Selector")
+                  // Is King
+                  .Sequence("Is KING Sequence")
+                      .Condition("Check if is King", IsKing)
+                      .Selector("KING Selector")
 
-                           .Sequence("Is on Iminent Danger")
-                               .Condition("Check if is on iminent danger", IsOnIminentDanger)
-                                .Selector("Try to Use Power Up to Run")
-                                    .Action("Try to use Back off", UseBackOffPowerUp)
-                                    .Action("Try to use Super Speed", UseSuperSlamPowerUp)
-                                    .Condition("Tried all power ups?", TriedAllPowerUps)
-                                .End()
-                               .Action("Run away from closest Player", RunAwayFromClosestPlayer)
-                           .End()
-
-                           .Sequence("Collect Power Up")
-                               .Condition("Can get power ups (power up tracker is not full", CanGetPowerUp)
-                               .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
-                               .Action("Collect a Power Up", CollectPowerUp)
-                           .End()
-
-                           .Sequence("King Wander Around")
-                               .Action("King Wander!", KingWander)
-                           .End()
-                       .End()
-
-                   .End()
-
-                   // IS NOT KING
-                   .Selector("Is NOT King Selector")
-
-                       .Sequence("Chase King")
-                           .Condition("Is King Withing Follow Distance", IsKingWithinFollowDistance)
-                           .Selector("AI Attack or Follow")
-                               .Sequence("Attack if possible")
-                                   .Condition("Check if is within Attacking Distance", IsWithinAttackingDistance)
-                                   .Condition("Check if AI can attack", CanAttack)
-                                   .Action("Attack King", Attack)
+                          .Sequence("Is on Iminent Danger")
+                              .Condition("Check if is on iminent danger", IsOnIminentDanger)
+                               .Selector("Try to Use Power Up to Run")
+                                   .Action("Try to use Back off", UseBackOffPowerUp)
+                                   .Action("Try to use Super Speed", UseSuperSlamPowerUp)
+                                   .Condition("Tried all power ups?", TriedAllPowerUps)
                                .End()
+                              .Action("Run away from closest Player", RunAwayFromClosestPlayer)
+                          .End()
 
-                               .Sequence("Attack with Super Slam if possible")
-                                   .Condition("Is Within Super Slam Distance?", IsWithinSuperSlamDistance)
-                                   .Condition("SUPER SLAM", UseSuperSlamPowerUp)
+                          .Sequence("Collect Power Up")
+                              .Condition("Can get power ups (power up tracker is not full", CanGetPowerUp)
+                              .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
+                              .Action("Collect a Power Up", CollectPowerUp)
+                          .End()
+
+                          .Sequence("King Wander Around")
+                              .Action("King Wander!", KingWander)
+                          .End()
+                      .End()
+
+                  .End()
+
+                  // IS NOT KING
+                  .Selector("Is NOT King Selector")
+                      .Sequence("Attack")
+                          .Condition("Check if someone is REALLY close", CheckIfClosestPlayerIsWithinAttackingDistance)
+                          .Condition("Checking if I can attack", CanAttack)
+                          .Action("Attack!!", Attack)
+                      .End()
+
+                      .Sequence("Follow Closest Player")
+                           .Action("Just Follow Closest Player", ChaseClosestPlayer)
+                      .End()
+                  .End()
+
+              .End()
+              .Build()
+          );
+
+        InitializeAI();
+    }
+
+    public void MakeAIBaseline() {
+        m_behaviorTree = new BehaviorTree.BehaviorTree(
+          new BehaviorTreeBuilder()
+              .Selector("AI Behavior Main Selector")
+                  .Condition("Is Being Knocked Back", IsBeingKnockedBack)
+
+                  // Is King
+                  .Sequence("Is KING Sequence")
+                      .Condition("Check if is King", IsKing)
+                      .Selector("KING Selector")
+
+                          .Sequence("Is on Iminent Danger")
+                              .Condition("Check if is on iminent danger", IsOnIminentDanger)
+                               .Selector("Try to Use Power Up to Run")
+                                   .Action("Try to use Back off", UseBackOffPowerUp)
+                                   .Action("Try to use Super Speed", UseSuperSlamPowerUp)
+                                   .Condition("Tried all power ups?", TriedAllPowerUps)
                                .End()
+                              .Action("Run away from closest Player", RunAwayFromClosestPlayer)
+                          .End()
 
-                               .Sequence("Chase King")
-                                   .Action("Chase King", ChaseKing)
-                               .End()
-                           .End()
-                       .End()
+                          .Sequence("Collect Power Up")
+                              .Condition("Can get power ups (power up tracker is not full", CanGetPowerUp)
+                              .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
+                              .Action("Collect a Power Up", CollectPowerUp)
+                          .End()
 
-                       .Sequence("Collect Power Up")
-                           .Condition("Can get power ups (power up tracker is not full", CanGetPowerUp)
-                           .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
-                           .Action("Collect a Power Up", CollectPowerUp)
-                       .End()
+                          .Sequence("King Wander Around")
+                              .Action("King Wander!", KingWander)
+                          .End()
+                      .End()
 
-                       .Sequence("I dunno man, I like my own space")
-                           .Condition("Check if someone is REALLY close", CheckIfClosestPlayerIsWithinAttackingDistance)
-                           .Condition("Checking if I can attack", CanAttack)
-                           .Action("Attack!!", Attack)
-                       .End()
+                  .End()
 
-                       .Sequence("Walk Randomly")
-                           .Condition("Can we wander?", CanNotKingWander)
-                           .Action("Wander...", NotKingWanderRandomly)
-                       .End()
-                   .End()
+                  // IS NOT KING
+                  .Selector("Is NOT King Selector")
 
-               .End()
-               .Build()
-           );
+                      .Sequence("Chase King")
+                          .Condition("Is King Withing Follow Distance", IsKingWithinFollowDistance)
+                          .Selector("AI Attack or Follow")
+                              .Sequence("Attack if possible")
+                                  .Condition("Check if is within Attacking Distance", IsWithinAttackingDistance)
+                                  .Condition("Check if AI can attack", CanAttack)
+                                  .Action("Attack King", Attack)
+                              .End()
 
+                              .Sequence("Attack with Super Slam if possible")
+                                  .Condition("Is Within Super Slam Distance?", IsWithinSuperSlamDistance)
+                                  .Condition("SUPER SLAM", UseSuperSlamPowerUp)
+                              .End()
+
+                              .Sequence("Chase King")
+                                  .Action("Chase King", ChaseKing)
+                              .End()
+                          .End()
+                      .End()
+
+                      .Sequence("Collect Power Up")
+                          .Condition("Can get power ups (power up tracker is not full", CanGetPowerUp)
+                          .Condition("Is there a Power Up within distance", IsThereAPowerUpWithinDistance)
+                          .Action("Collect a Power Up", CollectPowerUp)
+                      .End()
+
+                      .Sequence("I dunno man, I like my own space")
+                          .Condition("Check if someone is REALLY close", CheckIfClosestPlayerIsWithinAttackingDistance)
+                          .Condition("Checking if I can attack", CanAttack)
+                          .Action("Attack!!", Attack)
+                      .End()
+
+                      .Sequence("Walk Randomly")
+                          .Condition("Can we wander?", CanNotKingWander)
+                          .Action("Wander...", NotKingWanderRandomly)
+                      .End()
+                  .End()
+
+              .End()
+              .Build()
+          );
+
+        InitializeAI();
+    }
+
+    private void InitializeAI() {
         StartCoroutine(UpdateTreeRoutine(Random.Range(minStartTime, maxStartTime)));
     }
+
+    #endregion
 
     private void Update() {
         m_animator.SetFloat("MoveSpeed", m_navMeshAgent.velocity.normalized.magnitude);
@@ -377,6 +439,16 @@ public class AIController : MonoBehaviour, IBoppable {
         if(m_navMeshAgent.isOnNavMesh) {
             m_navMeshAgent.SetDestination(m_playerCurrentlyBeingFollowed.position + m_playerCurrentlyBeingFollowed.forward);
             m_currentState = EAIStates.NOT_KING_CHASING_KING;
+            return EReturnStatus.SUCCESS;
+        }
+
+        return EReturnStatus.FAILURE;
+    }
+
+    private EReturnStatus ChaseClosestPlayer() {
+        if(m_navMeshAgent.isOnNavMesh) {
+            Transform closestPlayer = GetClosestPlayerTransform();
+            m_navMeshAgent.SetDestination(closestPlayer.position);
             return EReturnStatus.SUCCESS;
         }
 

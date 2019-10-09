@@ -78,6 +78,14 @@ public class TaggingManager : MonoBehaviour {
             // Subscribing every player's UpdateWhoIsTag function into the manager
             OnPlayerWasTagged += m_playersIdentifiers[i].UpdateWhoIsTag;
         }
+
+        // Initializing All AI
+        List<AIController> allAIPlayers = FindObjectsOfType<AIController>().ToList();
+        allAIPlayers[0].MakeChaoticAttacker();
+        foreach(AIController aiBlob in allAIPlayers) {
+            // aiBlob.MakeChaoticAttacker();
+            aiBlob.MakeAIBaseline();
+        }
     }
 
     /// <summary>
