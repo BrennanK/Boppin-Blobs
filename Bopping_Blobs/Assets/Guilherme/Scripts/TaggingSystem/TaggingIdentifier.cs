@@ -22,7 +22,6 @@ public class TaggingIdentifier : MonoBehaviour {
     public GameObject kingCrown;
     public Transform hammerTransform;
     public Transform hammerBopAim;
-    public Color blobOriginalColor;
     public GameObject stunnedStars;
     public GameObject forceField;
 
@@ -158,7 +157,6 @@ public class TaggingIdentifier : MonoBehaviour {
         m_playersBopped = 0;
         m_timesAsKing = 0;
 
-        m_characterRenderer.material.color = blobOriginalColor;
         hammerBopAim.localPosition = new Vector3(0, -0.25f, km_attackDistance);
         m_originalHammerLocalPosition = hammerTransform.localPosition;
         m_originalHammerLocalEulerAngles = hammerTransform.localEulerAngles;
@@ -199,7 +197,6 @@ public class TaggingIdentifier : MonoBehaviour {
         m_timesAsKing++;
 
         m_isImmune = true;
-        m_characterRenderer.material.color = Color.green;
         StartCoroutine(SpeedUpRoutine(3f));
         StartCoroutine(TurnOffImmunityRoutine(3f));
         
@@ -210,7 +207,6 @@ public class TaggingIdentifier : MonoBehaviour {
         forceField.SetActive(true);
         yield return new WaitForSecondsRealtime(_delay);
         forceField.SetActive(false);
-        m_characterRenderer.material.color = blobOriginalColor;
         m_isImmune = false;
     }
 
@@ -258,9 +254,6 @@ public class TaggingIdentifier : MonoBehaviour {
         m_boppableInterface.TriggerAttackTransition();
         ETaggingBehavior currentTaggingState = m_currentTaggingState;
         m_currentTaggingState = ETaggingBehavior.TaggingAtacking;
-        bool returnToOriginalColor = true;
-
-        m_characterRenderer.material.color = Color.red;
 
         Collider[] bopCollision = Physics.OverlapSphere(hammerBopAim.position, km_attackRadius * _attackSizeMultiplier, attackLayer);
         if (bopCollision.Length > 0) {
@@ -281,7 +274,6 @@ public class TaggingIdentifier : MonoBehaviour {
 
                         // Updating tagging state because we are tag now.
                         currentTaggingState = m_currentTaggingState;
-                        returnToOriginalColor = false;
                     } else {
                         // Just Knockback the Player
                         // TODO Delay here is a magic number
@@ -297,18 +289,14 @@ public class TaggingIdentifier : MonoBehaviour {
             }
         }
 
-        StartCoroutine(AttackAnimationRoutine(currentTaggingState, returnToOriginalColor));
+        StartCoroutine(AttackAnimationRoutine(currentTaggingState));
     }
 
-    private IEnumerator AttackAnimationRoutine(ETaggingBehavior _nextTaggingState, bool _returnToOriginalColor = true) {
+    private IEnumerator AttackAnimationRoutine(ETaggingBehavior _nextTaggingState) {
         hammerTransform.localPosition = new Vector3(hammerBopAim.localPosition.x, hammerBopAim.localPosition.y + 0.25f, hammerBopAim.localPosition.z - 1f);
         hammerTransform.localEulerAngles = new Vector3(90, 0, 0);
 
         yield return new WaitForSecondsRealtime(km_attackTime);
-
-        if(_returnToOriginalColor) {
-            m_characterRenderer.material.color = blobOriginalColor;
-        }
 
         hammerTransform.localPosition = m_originalHammerLocalPosition;
         hammerTransform.localEulerAngles = m_originalHammerLocalEulerAngles;
@@ -324,7 +312,6 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <param name="_knockbackColor">Feedback Color for knockbacked player</param>
     /// <param name="_knockbackIntensity">Direction and intensity player will be knocked back</param>
     public void KnockbackPlayer(Color _knockbackColor, Vector3 _knockbackIntensity, float _delayTime) {
-        m_characterRenderer.material.color = _knockbackColor;
         m_boppableInterface.DeactivateController(true);
 
         m_rigidbodyReference.isKinematic = false;
@@ -338,7 +325,6 @@ public class TaggingIdentifier : MonoBehaviour {
         m_rigidbodyReference.velocity = Vector3.zero;
         yield return new WaitForSeconds(_delayTime / 2.0f);
         stunnedStars.SetActive(false);
-        m_characterRenderer.material.color = blobOriginalColor;
         m_rigidbodyReference.isKinematic = true;
         m_boppableInterface.ReactivateController();
     }
