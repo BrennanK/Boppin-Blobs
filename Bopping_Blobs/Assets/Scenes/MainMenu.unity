@@ -469,8 +469,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1837081702}
   hatModels:
-  - {fileID: 2979261189834459661, guid: 2d23c6460854a74498de0ceb44a14367, type: 3}
-  - {fileID: 2312788835033585746, guid: a5f8c30341bd5bb44b16e1c5a4f9a50c, type: 3}
+  - {fileID: 3076802555677285261, guid: 0d3771457f8dd80428f7877183543fd0, type: 3}
+  - {fileID: 2911717082817538681, guid: 071a3612f0a44f54db8e633a6919ca10, type: 3}
+  - {fileID: 6198175713674026178, guid: 6ecdb480782138b42af21e54684ad679, type: 3}
+  - {fileID: 2315795451146822362, guid: 70c114b49d6363641818ae962e580ed7, type: 3}
+  - {fileID: 8465240419048700059, guid: 611f0f0041f19774f8f6ee500adac422, type: 3}
+  - {fileID: 52164893011410385, guid: 456158125204e1b44a21ead2cb4424bf, type: 3}
+  - {fileID: 991377585634291587, guid: 7974099b48224664d95a754b89b640f5, type: 3}
+  - {fileID: 4975013739395014953, guid: 39706707a8fd9cb48801949e3f8fe024, type: 3}
+  - {fileID: 6611600805602288329, guid: 83bd54346d9cb614f8c3a1c7535a579a, type: 3}
+  - {fileID: 1429779865631045180, guid: 53bf5d092129b9643a7bd652d5d6c9e8, type: 3}
+  - {fileID: 6180946108252618188, guid: c6bbbcfce0be0ff4c8009e6013244c73, type: 3}
+  - {fileID: 166012870374565244, guid: 66fd7686dff93f44e93f573038b5a5ea, type: 3}
+  - {fileID: 8933914711813129412, guid: cee951a349c5d0844bec55f4ea0a4bef, type: 3}
+  - {fileID: 4482601239099642683, guid: 7b9363c1ca70b014a91a6b14a0893caa, type: 3}
+  - {fileID: 3070152171831766381, guid: c076af16e2d82e74bbf4a270ea1b191f, type: 3}
+  - {fileID: 2136550548061883393, guid: 67dbd8bc38ff3e947adc81d13280e23f, type: 3}
+  - {fileID: 2448635335010426963, guid: 6b7e4815e5137a94a83f9e955799d0d8, type: 3}
+  - {fileID: 340252779329494061, guid: da0bea705da5dcd409f01a57ed1eacba, type: 3}
+  - {fileID: 7140918394002864094, guid: 80c06bc0c974e5948a3dbc4d8ab3ac43, type: 3}
+  - {fileID: 2711735634195562030, guid: ff65c622371fa4342906e006aae3cb55, type: 3}
+  - {fileID: 4863214478542218570, guid: 2c7e2300f137c4149af007cbb48e79f1, type: 3}
+  - {fileID: 7924755743130639337, guid: 6b3ef904c2ef3174fa45b63a7233c5a9, type: 3}
   hatIndex: 0
   activeHat: {fileID: 0}
   eyeModels:
@@ -1549,7 +1569,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2244163.8}
+  m_AnchoredPosition: {x: 0, y: 2261749.2}
   m_SizeDelta: {x: 0, y: 455}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &94007256
@@ -14652,7 +14672,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -44251.105, y: 433917.22}
+  m_AnchoredPosition: {x: -48065.85, y: 449841.1}
   m_SizeDelta: {x: -2.0999756, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1427465233
@@ -19012,7 +19032,7 @@ PrefabInstance:
     - target: {fileID: 5634393265689180664, guid: 0d4315958a08d69478e9f9766e4aa97b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.25
+      value: -0.73
       objectReference: {fileID: 0}
     - target: {fileID: 5634393265689180664, guid: 0d4315958a08d69478e9f9766e4aa97b,
         type: 3}
@@ -19114,6 +19134,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 2e73227d03bb10d47a4e4022892a6926, type: 2}
+    - target: {fileID: 6986648810292266144, guid: 0d4315958a08d69478e9f9766e4aa97b,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986648810292266144, guid: 0d4315958a08d69478e9f9766e4aa97b,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986648810292266144, guid: 0d4315958a08d69478e9f9766e4aa97b,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d4315958a08d69478e9f9766e4aa97b, type: 3}
 --- !u!4 &1837081701 stripped
