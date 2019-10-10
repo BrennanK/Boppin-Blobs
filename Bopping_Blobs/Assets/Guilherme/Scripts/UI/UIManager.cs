@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour {
     public PlayerScoreUI[] playerScores;
 
     [Header("Timer")]
+    public GameObject timerGameObject;
     public TextMeshProUGUI timerText;
 
     [Header("Power Up UI")]
@@ -71,6 +72,10 @@ public class UIManager : MonoBehaviour {
         }
 
         timerText.text = time;
+    }
+
+    public void DeactivateTimerObject() {
+        timerGameObject.SetActive(false);
     }
 
     /// <summary>

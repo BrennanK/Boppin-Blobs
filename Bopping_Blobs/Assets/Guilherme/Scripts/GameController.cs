@@ -9,6 +9,13 @@ public class GameController : MonoBehaviour {
     public float gameStartDelayTime = 3f;
     public float gameTime = 60f;
 
+    [Header("Countdown Sounds")]
+    public AudioClip readySound;
+    public AudioClip goGoGoSound;
+    public AudioClip threeSound;
+    public AudioClip twoSound;
+    public AudioClip oneSound;
+
     [Header("Game Sound Effects")]
     public AudioClip[] blobGotKingSounds;
     public AudioClip[] blobAttackSounds;
@@ -47,12 +54,15 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    private bool m_isCountdownRunning;
+
     private void Awake() {
         instance = this;
         m_allPowerBoxes = FindObjectsOfType<PowerUp.PowerUpBox>();
         m_UIManager = FindObjectOfType<UIManager>();
         m_taggingManager = FindObjectOfType<TaggingManager>();
         m_taggingManager.InitializeTaggingManager();
+        m_isCountdownRunning = false;
     }
 
     private void Start() {
@@ -65,7 +75,9 @@ public class GameController : MonoBehaviour {
         m_UIManager.UpdateTimerText(gameTime);
         m_UIManager.DeactivateAllGameObjectsOnBeginGame();
         m_UIManager.ShowCenterText("Ready?");
+        PausedMenuManager._instance.PlaySFX(readySound);
         yield return new WaitForSecondsRealtime(gameStartDelayTime);
+        PausedMenuManager._instance.PlaySFX(goGoGoSound);
         m_UIManager.ReactivateAllGameObjectsOnBeginGame();
         m_taggingManager.EnableAllPlayers();
         m_taggingManager.StartTagging();
@@ -78,13 +90,35 @@ public class GameController : MonoBehaviour {
             return;
         }
 
-        m_currentGameTime -= Time.deltaTime;
+        if(!m_isCountdownRunning) {
+            m_currentGameTime -= Time.deltaTime;
 
-        if(m_currentGameTime <= 0f) {
-            EndGame();
+            if (m_currentGameTime <= 3.0f) {
+                m_UIManager.DeactivateTimerObject();
+                m_isCountdownRunning = true;
+                StartCountdown();
+            }
         }
 
         m_UIManager.UpdateTimerText(m_currentGameTime);
+    }
+
+    private void StartCountdown() {
+        StartCoroutine(StartCountdownRoutine());
+    }
+
+    private IEnumerator StartCountdownRoutine() {
+        PausedMenuManager._instance.PlaySFX(threeSound);
+        m_UIManager.ShowCenterText("3");
+        yield return new WaitForSecondsRealtime(1.0f);
+        PausedMenuManager._instance.PlaySFX(twoSound);
+        m_UIManager.ShowCenterText("2");
+        yield return new WaitForSecondsRealtime(1.0f);
+        PausedMenuManager._instance.PlaySFX(oneSound);
+        m_UIManager.ShowCenterText("1");
+        yield return new WaitForSecondsRealtime(1.0f);
+
+        EndGame();
     }
 
     private void EndGame() {

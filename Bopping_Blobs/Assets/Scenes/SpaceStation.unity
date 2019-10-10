@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.08365894, g: 0.08365894, b: 0.08373668, a: 1}
+  m_IndirectSpecularColor: {r: 0.43688414, g: 0.48453838, b: 0.56479603, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4305,6 +4305,31 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8784340201201863942, guid: 9f5c1520fc8bd574cbed0770c20425a7,
         type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: readySound
+      value: 
+      objectReference: {fileID: 8300000, guid: 946c2f73baadb184ba9204029a083021, type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: goGoGoSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 7aa880bbfa250344590628e93ec29736, type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: threeSound
+      value: 
+      objectReference: {fileID: 8300000, guid: ca0931d81e3326b448a346f5444d8f0a, type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: twoSound
+      value: 
+      objectReference: {fileID: 8300000, guid: ab43d88201440b4429db5ac30e711950, type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: oneSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 837d384aeee0d9b43a12cd71abe1d0c1, type: 3}
     - target: {fileID: 6837564551848205126, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: aiPreferredSpots.Array.size
