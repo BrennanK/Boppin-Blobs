@@ -24,6 +24,7 @@ public class TaggingIdentifier : MonoBehaviour {
     public Transform hammerBopAim;
     public Color blobOriginalColor;
     public GameObject stunnedStars;
+    public GameObject forceField;
 
     [HideInInspector]
     public TaggingManager taggingManager;
@@ -150,6 +151,7 @@ public class TaggingIdentifier : MonoBehaviour {
         m_characterRenderer = GetComponentInChildren<Renderer>();
         kingCrown.SetActive(false);
         stunnedStars.SetActive(false);
+        forceField.SetActive(false);
 
         m_rigidbodyReference.isKinematic = true;
         m_amountOfTimeAsKing = 0;
@@ -205,7 +207,9 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private IEnumerator TurnOffImmunityRoutine(float _delay) {
+        forceField.SetActive(true);
         yield return new WaitForSecondsRealtime(_delay);
+        forceField.SetActive(false);
         m_characterRenderer.material.color = blobOriginalColor;
         m_isImmune = false;
     }
