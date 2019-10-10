@@ -20,7 +20,6 @@ public class CustomizationManager : MonoBehaviour
 
     [SerializeField] private Material[] eyeModels;
     [SerializeField] private int eyeIndex;
-    [SerializeField] private Material activeEye;
 
     [SerializeField] private GameObject[] weaponModels;
     [SerializeField] private int weaponIndex;
@@ -42,12 +41,10 @@ public class CustomizationManager : MonoBehaviour
                 activeHat.transform.localPosition = Vector3.zero + new Vector3(0,0.75f,0);
                 break;
             case ApearanceDetail.EYE:
-                if (activeEye != null)
-                {
-                    Destroy(activeEye);
-                }
-                activeEye = eyeModels[id];
-                player.GetComponent<MeshRenderer>().material = activeEye;
+
+                Material[] mat = player.GetComponent<MeshRenderer>().materials;
+                mat[1] = eyeModels[id];
+                player.GetComponent<MeshRenderer>().materials = mat;
 
                 //ApplyModification(ApearanceDetail.SKIN_COLOR, id);
 
@@ -148,7 +145,7 @@ public class CustomizationManager : MonoBehaviour
 
     public void NextColor()
     {
-        /*if (colorIndex < skinColor.Length - 1)
+        if (colorIndex < skinColor.Length -1)
         {
             colorIndex++;
         }
@@ -156,169 +153,18 @@ public class CustomizationManager : MonoBehaviour
         {
             colorIndex = 0;
         }
-
-        ApplyModification(ApearanceDetail.SKIN_COLOR, colorIndex);*/
-        switch (eyeIndex)
-        {
-            case 0:
-                if (colorIndex > 0 && colorIndex < 4)
-                {
-                    colorIndex++;
-                }
-                else if (colorIndex < 0)
-                {
-                    colorIndex = 0;
-                }
-                else
-                {
-                    colorIndex = 0;
-                }
-                break;
-            case 1:
-                if (colorIndex > 4 && colorIndex < 9)
-                {
-                    colorIndex++;
-                }
-                else if (colorIndex < 4)
-                {
-                    colorIndex = 5;
-                }
-                else
-                {
-                    colorIndex = 5;
-                }
-                break;
-            case 2:
-                if (colorIndex > 9 && colorIndex < 14)
-                {
-                    colorIndex++;
-                }
-                else if (colorIndex < 9)
-                {
-                    colorIndex = 10;
-                }
-                else
-                {
-                    colorIndex = 10;
-                }
-                break;
-            case 3:
-                if (colorIndex > 14 && colorIndex < 19)
-                {
-                    colorIndex++;
-                }
-                else if (colorIndex < 14)
-                {
-                    colorIndex = 15;
-                }
-                else
-                {
-                    colorIndex = 15;
-                }
-                break;
-            case 4:
-                if (colorIndex > 19 && colorIndex < 24)
-                {
-                    colorIndex++;
-                }
-                else if (colorIndex < 19)
-                {
-                    colorIndex = 20;
-                }
-                else
-                {
-                    colorIndex = 20;
-                }
-                break;
-        }
         ApplyModification(ApearanceDetail.SKIN_COLOR, colorIndex);
     }
 
     public void PreviousColor()
     {
-        /*if (colorIndex > 0)
+        if (colorIndex > 0)
         {
             colorIndex--;
         }
         else
         {
             colorIndex = skinColor.Length - 1;
-        }
-
-        ApplyModification(ApearanceDetail.SKIN_COLOR, colorIndex);*/
-
-        switch (eyeIndex)
-        {
-            case 0:
-                if (colorIndex > 0 && colorIndex < 5)
-                {
-                    colorIndex--;
-                }
-                else if (colorIndex < 0)
-                {
-                    colorIndex = 4;
-                }
-                else
-                {
-                    colorIndex = 0;
-                }
-                break;
-            case 1:
-                if (colorIndex > 5 && colorIndex < 10)
-                {
-                    colorIndex--;
-                }
-                else if (colorIndex < 5)
-                {
-                    colorIndex = 9;
-                }
-                else
-                {
-                    colorIndex = 5;
-                }
-                break;
-            case 2:
-                if (colorIndex > 10 && colorIndex < 15)
-                {
-                    colorIndex--;
-                }
-                else if (colorIndex < 10)
-                {
-                    colorIndex = 14;
-                }
-                else
-                {
-                    colorIndex = 10;
-                }
-                break;
-            case 3:
-                if (colorIndex > 15 && colorIndex < 20)
-                {
-                    colorIndex--;
-                }
-                else if (colorIndex < 15)
-                {
-                    colorIndex = 19;
-                }
-                else
-                {
-                    colorIndex = 15;
-                }
-                break;
-            case 4:
-                if (colorIndex > 20 && colorIndex < 25)
-                {
-                    colorIndex--;
-                }
-                else if (colorIndex < 20)
-                {
-                    colorIndex = 24;
-                }
-                else
-                {
-                    colorIndex = 20;
-                }
-                break;
         }
         ApplyModification(ApearanceDetail.SKIN_COLOR, colorIndex);
     }
