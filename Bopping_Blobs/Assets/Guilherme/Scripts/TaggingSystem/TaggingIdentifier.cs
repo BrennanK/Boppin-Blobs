@@ -252,6 +252,11 @@ public class TaggingIdentifier : MonoBehaviour {
         }
 
         m_boppableInterface.TriggerAttackTransition();
+
+        if (GameController.instance && GameController.instance.attackDecal) {
+            Instantiate(GameController.instance.attackDecal, new Vector3(hammerBopAim.transform.position.x, 0.05f, hammerBopAim.transform.position.z), GameController.instance.attackDecal.transform.rotation);
+        }
+
         ETaggingBehavior currentTaggingState = m_currentTaggingState;
         m_currentTaggingState = ETaggingBehavior.TaggingAtacking;
 
