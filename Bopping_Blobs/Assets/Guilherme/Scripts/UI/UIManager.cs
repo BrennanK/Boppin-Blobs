@@ -111,7 +111,7 @@ public class UIManager : MonoBehaviour {
     private IEnumerator ShowPlayerTaggedTextRoutine(string _playerName, float _timeToShow) {
         ShowCenterText($"{_playerName} is KING!");
         yield return new WaitForSecondsRealtime(_timeToShow / 2.0f);
-        centerScreenText.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBounce);
+        centerScreenText.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.OutQuint);
         yield return new WaitForSecondsRealtime(_timeToShow / 2.0f);
         centerScreenText.gameObject.SetActive(false);
     }
