@@ -12,7 +12,6 @@ public class CustomizationManager : MonoBehaviour
         SKIN_COLOR
     }
 
-    public static CustomizationManager instance;
     [SerializeField] private GameObject player;
 
     public GameObject[] hatModels;
@@ -29,43 +28,33 @@ public class CustomizationManager : MonoBehaviour
     public Material[] skinColor;
     public int colorIndex;
 
-    private void Start()
-    {
-        if (instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
 
-    }
     private void ApplyModification(ApearanceDetail detail, int id)
     {
         switch (detail)
         {
             case ApearanceDetail.HAT:
+
                 if (activeHat != null)
                 {
                     Destroy(activeHat);
                 }
                 activeHat = Instantiate(hatModels[id], player.transform);
                 activeHat.transform.localPosition = Vector3.zero + new Vector3(0,0.42f,0);
+                activeHat.transform.localScale /= 2;
                 break;
+
             case ApearanceDetail.EYE:
 
                 Material[] mat = player.GetComponent<MeshRenderer>().materials;
                 mat[1] = eyeModels[id];
                 player.GetComponent<MeshRenderer>().materials = mat;
-
-                //ApplyModification(ApearanceDetail.SKIN_COLOR, id);
-
                 break;
+
             case ApearanceDetail.WEAPON:
 
                 break;
+
             case ApearanceDetail.SKIN_COLOR:
 
                 player.GetComponent<MeshRenderer>().material = skinColor[id];
@@ -185,7 +174,9 @@ public class CustomizationManager : MonoBehaviour
 
     public void Equip()
     {
-
+        CustomizeData.instance.hatIndex = this.hatIndex;
+        CustomizeData.instance.eyeIndex = this.eyeIndex;
+        CustomizeData.instance.colorIndex = this.colorIndex;
     }
 
     private void OnLevelWasLoaded(int level)

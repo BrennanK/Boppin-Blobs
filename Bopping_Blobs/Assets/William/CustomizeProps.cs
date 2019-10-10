@@ -6,21 +6,25 @@ public class CustomizeProps : MonoBehaviour
 {
     [SerializeField] private GameObject player;
 
-    private GameObject hatModel;
-    private Material eyeModel;
+    [SerializeField] private GameObject hatModel;
+    [SerializeField] private Material eyeModel;
     //private GameObject weaponModel;
-    private Material skinColor;
+    [SerializeField] private Material skinColor;
+
+    [SerializeField] private CustomizationManager customizationManager;
 
     private void Awake()
     {
-        int hatID = CustomizationManager.instance.hatIndex;
-        hatModel = CustomizationManager.instance.hatModels[hatID];
+        customizationManager = GameObject.FindObjectOfType<CustomizationManager>();
 
-        int eyeID = CustomizationManager.instance.eyeIndex;
-        eyeModel = CustomizationManager.instance.eyeModels[eyeID];
+        int hatID = CustomizeData.instance.hatIndex;
+        hatModel = customizationManager.hatModels[hatID];
 
-        int colorID = CustomizationManager.instance.colorIndex;
-        this.skinColor = CustomizationManager.instance.skinColor[colorID];
+        int eyeID = CustomizeData.instance.eyeIndex;
+        eyeModel = customizationManager.eyeModels[eyeID];
+
+        int colorID = CustomizeData.instance.colorIndex;
+        this.skinColor = customizationManager.skinColor[colorID];
 
     }
 
