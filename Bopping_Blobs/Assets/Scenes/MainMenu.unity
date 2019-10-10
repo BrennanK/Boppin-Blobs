@@ -469,7 +469,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1837081702}
   hatModels:
-  - {fileID: 3076802555677285261, guid: 0d3771457f8dd80428f7877183543fd0, type: 3}
+  - {fileID: 8504723026754174369, guid: 599ecb3ff6cc30a42bf2999c3391e32f, type: 3}
   - {fileID: 2911717082817538681, guid: 071a3612f0a44f54db8e633a6919ca10, type: 3}
   - {fileID: 6198175713674026178, guid: 6ecdb480782138b42af21e54684ad679, type: 3}
   - {fileID: 2315795451146822362, guid: 70c114b49d6363641818ae962e580ed7, type: 3}
@@ -491,6 +491,7 @@ MonoBehaviour:
   - {fileID: 2711735634195562030, guid: ff65c622371fa4342906e006aae3cb55, type: 3}
   - {fileID: 4863214478542218570, guid: 2c7e2300f137c4149af007cbb48e79f1, type: 3}
   - {fileID: 7924755743130639337, guid: 6b3ef904c2ef3174fa45b63a7233c5a9, type: 3}
+  - {fileID: 6310558609015252318, guid: e3eea78d236844b45b46af0c7aa735e5, type: 3}
   hatIndex: 0
   activeHat: {fileID: 0}
   eyeModels:
@@ -1490,7 +1491,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2323398.8}
+  m_AnchoredPosition: {x: 0, y: 2345220}
   m_SizeDelta: {x: 0, y: 455}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &94007256
@@ -12842,7 +12843,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -84687.516, y: 502111.47}
+  m_AnchoredPosition: {x: -96131.81, y: 521320.5}
   m_SizeDelta: {x: -2.0999756, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1427465233
@@ -15011,7 +15012,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1660128770}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 18219047}
+        m_MethodName: Equip
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1660128770
@@ -19430,6 +19442,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2067423799}
   m_CullTransparentMesh: 0
+--- !u!1 &2087421570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2087421572}
+  - component: {fileID: 2087421571}
+  m_Layer: 0
+  m_Name: CustomizeData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2087421571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087421570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56759ec248fe9e342927c72c82166088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hatIndex: 0
+  eyeIndex: 0
+  colorIndex: 0
+--- !u!4 &2087421572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087421570}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2087657059
 GameObject:
   m_ObjectHideFlags: 0

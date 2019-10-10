@@ -12,7 +12,6 @@ public class CustomizationManager : MonoBehaviour
         SKIN_COLOR
     }
 
-    public static CustomizationManager instance;
     [SerializeField] private GameObject player;
 
     public GameObject[] hatModels;
@@ -29,19 +28,7 @@ public class CustomizationManager : MonoBehaviour
     public Material[] skinColor;
     public int colorIndex;
 
-    private void Start()
-    {
-        if (instance != null)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
 
-    }
     private void ApplyModification(ApearanceDetail detail, int id)
     {
         switch (detail)
@@ -185,7 +172,9 @@ public class CustomizationManager : MonoBehaviour
 
     public void Equip()
     {
-
+        CustomizeData.instance.hatIndex = this.hatIndex;
+        CustomizeData.instance.eyeIndex = this.eyeIndex;
+        CustomizeData.instance.colorIndex = this.colorIndex;
     }
 
     private void OnLevelWasLoaded(int level)
