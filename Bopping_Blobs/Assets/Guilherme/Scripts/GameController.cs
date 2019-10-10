@@ -210,14 +210,18 @@ public class GameController : MonoBehaviour {
 
     private void OnApplicationFocus(bool _focusStatus) {
         // we just want to pause in case we lose focus, we don't want to unpause
+#if UNITY_ANDROID
         if(!_focusStatus) {
             PausedMenuManager._instance?.EnablePausedMenu(true);
         }
+#endif
     }
 
     private void OnApplicationPause(bool _pauseStatus) {
+#if UNITY_ANDROID
         if(_pauseStatus) {
             PausedMenuManager._instance?.EnablePausedMenu(true);
         }
+#endif
     }
 }
