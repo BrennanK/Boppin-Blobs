@@ -22,12 +22,10 @@ public class DeathVolume : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("Entered");
         for(int i = 0; i < startPoints.Length; i++)
         {
             if(other.GetComponentInParent<PowerUp.PowerUpTracker>().gameObject == players[i].gameObject)
             {
-                print("Hello");
                 other.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 other.GetComponent<CharacterController>().enabled = false;
                 other.GetComponentInParent<PowerUp.PowerUpTracker>().transform.position = startPoints[i];
