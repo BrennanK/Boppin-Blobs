@@ -66,10 +66,10 @@ public class AIController : MonoBehaviour, IBoppable {
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, m_distanceToFollowKing);
+        // Gizmos.DrawWireSphere(transform.position, m_distanceToFollowKing);
 
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, m_distanceToPowerUp);
+        // Gizmos.DrawWireSphere(transform.position, m_distanceToPowerUp);
     }
 
     private void Awake() {

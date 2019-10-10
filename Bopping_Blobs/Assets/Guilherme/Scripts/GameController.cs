@@ -147,7 +147,10 @@ public class GameController : MonoBehaviour {
         m_isGameRunning = false;
         m_taggingManager.FreezeAllPlayers();
         m_UIManager.ShowGameOverPanel(finalPlayersArray);
-        PausedMenuManager._instance.DeactivateOptionsButton();
+
+        if(PausedMenuManager._instance) {
+            PausedMenuManager._instance.DeactivateOptionsButton();
+        }
 
         int finalPlayerPosition = 7;
         TaggingIdentifier playerIdentifier;
