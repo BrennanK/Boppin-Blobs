@@ -79,9 +79,17 @@ public class GameController : MonoBehaviour {
         m_UIManager.UpdateTimerText(gameTime);
         m_UIManager.DeactivateAllGameObjectsOnBeginGame();
         m_UIManager.ShowCenterText("Ready?");
-        PausedMenuManager._instance.PlaySFX(readySound);
+
+        if (PausedMenuManager._instance) {
+            PausedMenuManager._instance.PlaySFX(readySound);
+        }
+
         yield return new WaitForSecondsRealtime(gameStartDelayTime);
-        PausedMenuManager._instance.PlaySFX(goGoGoSound);
+
+        if(PausedMenuManager._instance) {
+            PausedMenuManager._instance.PlaySFX(goGoGoSound);
+        }
+
         m_UIManager.ReactivateAllGameObjectsOnBeginGame();
         m_taggingManager.EnableAllPlayers();
         m_taggingManager.StartTagging();
@@ -112,13 +120,21 @@ public class GameController : MonoBehaviour {
     }
 
     private IEnumerator StartCountdownRoutine() {
-        PausedMenuManager._instance.PlaySFX(threeSound);
+        if(PausedMenuManager._instance) {
+            PausedMenuManager._instance.PlaySFX(threeSound);
+        }
         m_UIManager.ShowCenterText("3");
         yield return new WaitForSecondsRealtime(1.0f);
-        PausedMenuManager._instance.PlaySFX(twoSound);
+
+        if(PausedMenuManager._instance) {
+            PausedMenuManager._instance.PlaySFX(twoSound);
+        }
         m_UIManager.ShowCenterText("2");
         yield return new WaitForSecondsRealtime(1.0f);
-        PausedMenuManager._instance.PlaySFX(oneSound);
+
+        if(PausedMenuManager._instance) {
+            PausedMenuManager._instance.PlaySFX(oneSound);
+        }
         m_UIManager.ShowCenterText("1");
         yield return new WaitForSecondsRealtime(1.0f);
 
