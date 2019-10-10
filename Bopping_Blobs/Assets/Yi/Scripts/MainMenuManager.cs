@@ -35,13 +35,18 @@ public class MainMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Add a bool to disable mouse detection when enable Customization Menu
-        if (enableMouseDetection)
-            MouseDetection();
-        if (achievementManager.achievementActivated || PausedMenu.IsOpen1)
+        if (achievementManager.achievementActivated || PausedMenu.IsOpen1) 
+        {
             enableMouseDetection = false;
-        else
+        } 
+        else 
+        {
             enableMouseDetection = true;
+        }
+
+        if (enableMouseDetection) {
+            MouseDetection();
+        }
     }
 
     private void MouseDetection()
