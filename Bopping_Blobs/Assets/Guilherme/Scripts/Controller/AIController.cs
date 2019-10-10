@@ -393,7 +393,7 @@ public class AIController : MonoBehaviour, IBoppable {
             return EReturnStatus.SUCCESS;
         }
 
-        return EReturnStatus.FAILURE;
+        return KingWander();
     }
 
     private void RunToThisDirection(Vector3 _direction) {
