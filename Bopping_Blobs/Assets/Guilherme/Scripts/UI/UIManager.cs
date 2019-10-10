@@ -125,7 +125,10 @@ public class UIManager : MonoBehaviour {
             deactivate.SetActive(false);
         }
 
+        Transform finalScoreboard = gameOverPanel.transform.GetChild(0);
+        finalScoreboard.transform.localScale = Vector2.zero;
         gameOverPanel.SetActive(true);
+        finalScoreboard.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce);
 
         for(int i = 0; i <_finalPlayerArray.Length; i++) {
             finalPlayerScores[i].RefreshPlayerScore(_finalPlayerArray[i].PlayerName, _finalPlayerArray[i].PlayerScore);

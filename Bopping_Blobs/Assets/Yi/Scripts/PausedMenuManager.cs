@@ -185,6 +185,10 @@ public class PausedMenuManager : MonoBehaviour
 		}
 	}
 
+    public void DeactivateOptionsButton() {
+        OptionButton.SetActive(false);
+    }
+
 	/// <summary>
 	/// 0 = Button Click, 1 = ?
 	/// </summary>
