@@ -7,6 +7,7 @@ TagManager:
   - Inventory
   - AchievementTab
   - SpawnPoint
+  - CustomizePlayer
   layers:
   - Default
   - TransparentFX

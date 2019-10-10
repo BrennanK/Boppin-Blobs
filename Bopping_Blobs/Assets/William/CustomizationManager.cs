@@ -12,22 +12,36 @@ public class CustomizationManager : MonoBehaviour
         SKIN_COLOR
     }
 
+    public static CustomizationManager instance;
     [SerializeField] private GameObject player;
 
-    [SerializeField] private GameObject[] hatModels;
-    [SerializeField] private int hatIndex;
+    public GameObject[] hatModels;
+    public int hatIndex;
     [SerializeField] private GameObject activeHat;
 
-    [SerializeField] private Material[] eyeModels;
-    [SerializeField] private int eyeIndex;
+    public Material[] eyeModels;
+    public int eyeIndex;
 
-    [SerializeField] private GameObject[] weaponModels;
-    [SerializeField] private int weaponIndex;
+    public GameObject[] weaponModels;
+    public int weaponIndex;
     [SerializeField] private GameObject activeWeapon;
 
-    [SerializeField] private Material[] skinColor;
-    [SerializeField] private int colorIndex;
+    public Material[] skinColor;
+    public int colorIndex;
 
+    private void Start()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+    }
     private void ApplyModification(ApearanceDetail detail, int id)
     {
         switch (detail)
@@ -167,5 +181,18 @@ public class CustomizationManager : MonoBehaviour
             colorIndex = skinColor.Length - 1;
         }
         ApplyModification(ApearanceDetail.SKIN_COLOR, colorIndex);
+    }
+
+    public void Equip()
+    {
+
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        if (GameObject.FindGameObjectWithTag("CustomizePlayer"))
+        {
+            player = GameObject.FindGameObjectWithTag("CustomizePlayer");
+        }
     }
 }
