@@ -40,8 +40,10 @@ public class CustomizationManager : MonoBehaviour
                     Destroy(activeHat);
                 }
                 activeHat = Instantiate(hatModels[id], player.transform);
-                activeHat.transform.localPosition = Vector3.zero + new Vector3(0,0.42f,0);
-                activeHat.transform.localScale /= 2;
+                //activeHat.transform.localPosition = Vector3.zero + new Vector3(0, 0.42f,0);
+                activeHat.transform.localPosition = Vector3.zero;
+                //activeHat.transform.localScale /= 2;
+                activeHat.transform.localScale = Vector3.one;
                 break;
 
             case ApearanceDetail.EYE:
