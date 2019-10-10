@@ -83,9 +83,11 @@ public class AIController : MonoBehaviour, IBoppable {
     }
 
     private void Start() {
-        // give me a het >:L
-        GameObject myHat = GameController.instance.allHatsPrefabs[Random.Range(0, GameController.instance.allHatsPrefabs.Length)];
-        Instantiate(myHat, m_animator.transform);
+        if(GameController.instance) {
+            // give me a het >:L
+            GameObject myHat = GameController.instance.allHatsPrefabs[Random.Range(0, GameController.instance.allHatsPrefabs.Length)];
+            Instantiate(myHat, m_animator.transform);
+        }
     }
 
     #region Initialize AI Functions
@@ -581,6 +583,17 @@ public class AIController : MonoBehaviour, IBoppable {
                     Debug.DrawLine(transform.position, hit.position, Color.red, 1f);
                     m_navMeshAgent.SetPath(path);
                     return true;
+                } else {
+                    Debug.LogWarning($"AI there's no Path!");
+                }
+            } else {
+                randomPoint = transform.position + (_direction * (km_wanderRange / 4.0f));
+                if(NavMesh.SamplePosition(randomPoint, out hit, 5.0f, NavMesh.AllAreas)) {
+                    NavMeshPath path = new NavMeshPath();
+                    if(NavMesh.CalculatePath(transform.position, hit.position, NavMesh.AllAreas, path)) {
+                        m_navMeshAgent.SetPath(path);
+                        return true;
+                    }
                 }
             }
         }
@@ -600,7 +613,11 @@ public class AIController : MonoBehaviour, IBoppable {
                     Debug.DrawLine(transform.position, hit.position, Color.green, 1f);
                     m_navMeshAgent.SetPath(path);
                     return true;
+                } else {
+                    Debug.LogWarning($"AI There's no path!!");
                 }
+            } else {
+                Debug.LogWarning($"AI there's no sample position");
             }
         }
 
