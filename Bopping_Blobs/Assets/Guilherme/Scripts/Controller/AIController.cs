@@ -220,8 +220,11 @@ public class AIController : MonoBehaviour, IBoppable {
         return m_navMeshAgent.speed;
     }
 
-    public void DeactivateController() {
-        m_animator.SetBool("Hit", true);
+    public void DeactivateController(bool _updateAnimation = false) {
+        if(_updateAnimation) {
+            m_animator.SetBool("Hit", true);
+        }
+
         m_isBeingKnockedBack = true;
         m_navMeshAgent.enabled = false;
 

@@ -173,7 +173,7 @@ public class TaggingManager : MonoBehaviour {
     public void FreezeAllPlayers() {
         foreach(TaggingIdentifier player in m_playersIdentifiers) {
             player.SetAsNotKing();
-            player.DeactivatePlayer();
+            player.DeactivatePlayer(false);
         }
     }
 

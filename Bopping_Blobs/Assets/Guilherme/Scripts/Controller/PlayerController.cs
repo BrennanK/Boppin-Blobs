@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour, IBoppable {
     private DigitalJoystick m_digitalJoystickReference;
     private JoyButton m_joyButtonReference;
     private Transform m_whoIsTag;
+    private Animator m_animator;
 
     // Tracking Current State
     private ECharacterState m_currentState;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour, IBoppable {
         m_currentState = ECharacterState.Moving;
         m_digitalJoystickReference = FindObjectOfType<DigitalJoystick>();
         m_joyButtonReference = FindObjectOfType<JoyButton>();
+        m_animator = GetComponentInChildren<Animator>();
     }
 
     private void Update() {
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour, IBoppable {
         m_movementVector.z = Mathf.Lerp(m_characterControllerReference.velocity.z, m_movementVector.z, groundDamping * dampingMultiplier);
 
         if(m_characterControllerReference.enabled) {
+            m_animator.SetFloat("MoveSpeed", m_movementVector.normalized.magnitude);
             m_characterControllerReference.SimpleMove(m_movementVector);
         }
     }
@@ -92,12 +95,17 @@ public class PlayerController : MonoBehaviour, IBoppable {
         return m_characterSpeed;
     }
 
-    public void DeactivateController() {
+    public void DeactivateController(bool _updateAnimation = false) {
+        if(_updateAnimation) {
+            m_animator.SetBool("Hit", true);
+        }
+
         m_characterControllerReference.enabled = false;
         m_currentState = ECharacterState.KnockedBack;
     }
 
     public void ReactivateController() {
+        m_animator.SetBool("Hit", false);
         m_characterControllerReference.enabled = true;
         m_currentState = ECharacterState.Moving;
     }

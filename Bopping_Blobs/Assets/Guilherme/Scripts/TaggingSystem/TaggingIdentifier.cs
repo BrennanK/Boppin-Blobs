@@ -325,7 +325,7 @@ public class TaggingIdentifier : MonoBehaviour {
     /// <param name="_knockbackIntensity">Direction and intensity player will be knocked back</param>
     public void KnockbackPlayer(Color _knockbackColor, Vector3 _knockbackIntensity, float _delayTime) {
         m_characterRenderer.material.color = _knockbackColor;
-        m_boppableInterface.DeactivateController();
+        m_boppableInterface.DeactivateController(true);
 
         m_rigidbodyReference.isKinematic = false;
         m_rigidbodyReference.velocity = _knockbackIntensity;
@@ -361,8 +361,8 @@ public class TaggingIdentifier : MonoBehaviour {
     #endregion
 
     #region Helpers
-    public void DeactivatePlayer() {
-        m_boppableInterface.DeactivateController();
+    public void DeactivatePlayer(bool _updateAnimation) {
+        m_boppableInterface.DeactivateController(_updateAnimation);
     }
 
     public void ActivatePlayer() {

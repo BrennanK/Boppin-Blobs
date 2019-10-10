@@ -10,6 +10,6 @@ public interface IBoppable {
     float GetSpeed();
 
     // Knockback
-    void DeactivateController();
+    void DeactivateController(bool _updateAnimation = false);
     void ReactivateController();
 }
