@@ -37,6 +37,9 @@ public class GameController : MonoBehaviour {
     public GameObject backOffDecal;
     public GameObject superSlamDecal;
 
+    [Header("Hats!!")]
+    public GameObject[] allHatsPrefabs;
+
     private bool m_isGameRunning = false;
     public bool IsGameRunning {
         get {

@@ -1490,7 +1490,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2323398.8}
+  m_AnchoredPosition: {x: 0, y: 2337273.2}
   m_SizeDelta: {x: 0, y: 455}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &94007256
@@ -12842,7 +12842,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -84687.516, y: 502111.47}
+  m_AnchoredPosition: {x: -86976.375, y: 514959.5}
   m_SizeDelta: {x: -2.0999756, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1427465233
@@ -16716,6 +16716,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 2e73227d03bb10d47a4e4022892a6926, type: 2}
+    - target: {fileID: 6986648810292762752, guid: 0d4315958a08d69478e9f9766e4aa97b,
+        type: 3}
+      propertyPath: m_TagString
+      value: CustomizePlayer
+      objectReference: {fileID: 0}
     - target: {fileID: 6986648810292266144, guid: 0d4315958a08d69478e9f9766e4aa97b,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -16730,11 +16735,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6986648810292762752, guid: 0d4315958a08d69478e9f9766e4aa97b,
-        type: 3}
-      propertyPath: m_TagString
-      value: CustomizePlayer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d4315958a08d69478e9f9766e4aa97b, type: 3}

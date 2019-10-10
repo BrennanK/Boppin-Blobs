@@ -82,6 +82,12 @@ public class AIController : MonoBehaviour, IBoppable {
         m_rigibody.isKinematic = true;
     }
 
+    private void Start() {
+        // give me a het >:L
+        GameObject myHat = GameController.instance.allHatsPrefabs[Random.Range(0, GameController.instance.allHatsPrefabs.Length)];
+        Instantiate(myHat, m_animator.transform);
+    }
+
     #region Initialize AI Functions
     public void MakeAIBaseline() {
         m_behaviorTree = new BehaviorTree.BehaviorTree(
