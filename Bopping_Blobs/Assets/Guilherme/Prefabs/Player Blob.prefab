@@ -47,7 +47,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2263749497187115715}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -309,7 +309,6 @@ MonoBehaviour:
   kingCrown: {fileID: 2957890491488842452}
   hammerTransform: {fileID: 4857436594729091526}
   hammerBopAim: {fileID: 2263749497187115727}
-  blobOriginalColor: {r: 0.5035531, g: 0.38416696, b: 0.8396226, a: 1}
   stunnedStars: {fileID: 5810819768758958781}
   forceField: {fileID: 425045851709288816}
   taggingManager: {fileID: 0}

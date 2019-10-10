@@ -60664,6 +60664,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8704284024612872347, guid: 217084b2459218c47b725f5a9d9d4f3f,
         type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: attackDecal
+      value: 
+      objectReference: {fileID: 5517336685642390414, guid: 30ce47fee06e03d4bb208a662ed3b9fe,
+        type: 3}
     - target: {fileID: 6837564551848205126, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: aiPreferredSpots.Array.size
@@ -62129,6 +62135,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1583146523}
+  hatModel: {fileID: 0}
+  eyeModel: {fileID: 0}
+  skinColor: {fileID: 0}
+  customizationManager: {fileID: 0}
 --- !u!1 &1584661960
 GameObject:
   m_ObjectHideFlags: 0

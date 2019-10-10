@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour {
     public ParticleSystem backOffParticle;
 
     [Header("Decals")]
+    public GameObject attackDecal;
     public GameObject backOffDecal;
     public GameObject superSlamDecal;
 
