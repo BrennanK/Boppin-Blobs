@@ -152,10 +152,12 @@ namespace PowerUp {
                                 PausedMenuManager._instance?.PlaySFX(GameController.instance.backOffSounds[Random.Range(0, GameController.instance.backOffSounds.Length)]);
 
                                 if(GameController.instance.backOffParticle) {
-                                    Instantiate(GameController.instance.backOffParticle, transform.position, Quaternion.identity);
+                                    Instantiate(GameController.instance.backOffParticle, transform.position + new Vector3(0f, 5f, 0f), Quaternion.identity);
                                 }
 
-                                Instantiate(GameController.instance.backOffDecal, m_playerTaggingIdentifier.hammerBopAim.transform.position, GameController.instance.backOffDecal.transform.rotation);
+                                if(GameController.instance.backOffDecal) {
+                                    Instantiate(GameController.instance.backOffDecal, new Vector3(m_playerTaggingIdentifier.hammerBopAim.transform.position.x, 0.2f, m_playerTaggingIdentifier.hammerBopAim.transform.position.z), GameController.instance.backOffDecal.transform.rotation);
+                                }
                             }
                             break;
                         case EPowerUps.SUPER_SLAM:
@@ -166,7 +168,9 @@ namespace PowerUp {
                                     Instantiate(GameController.instance.superSlamParticle, transform.position, Quaternion.identity);
                                 }
 
-                                Instantiate(GameController.instance.superSlamDecal, m_playerTaggingIdentifier.hammerBopAim.transform.position, GameController.instance.superSlamDecal.transform.rotation);
+                                if(GameController.instance.superSlamDecal) {
+                                    Instantiate(GameController.instance.superSlamDecal, new Vector3(m_playerTaggingIdentifier.hammerBopAim.transform.position.x, 0.05f, m_playerTaggingIdentifier.hammerBopAim.transform.position.z), GameController.instance.superSlamDecal.transform.rotation);
+                                }
                             }
                             break;
                     }
