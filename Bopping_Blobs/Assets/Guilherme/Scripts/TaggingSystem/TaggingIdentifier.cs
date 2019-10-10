@@ -13,7 +13,7 @@ public class TaggingIdentifier : MonoBehaviour {
     public LayerMask attackLayer;
 
     private const float km_attackDistance = 1.5f;
-    private const float km_attackTime = .1f;
+    private const float km_attackTime = .25f;
     private const float km_attackRadius = 1f;
     private Vector3 m_originalHammerLocalPosition;
     private Vector3 m_originalHammerLocalEulerAngles;
@@ -248,7 +248,7 @@ public class TaggingIdentifier : MonoBehaviour {
         }
 
         if(GameController.instance && GameController.instance.blobAttackParticle) {
-            Instantiate(GameController.instance.blobAttackParticle, hammerBopAim.transform.position, Quaternion.identity).Play();
+            Instantiate(GameController.instance.blobAttackParticle, hammerBopAim.transform.position, GameController.instance.blobAttackParticle.transform.rotation).Play();
         }
 
         m_boppableInterface.TriggerAttackTransition();
