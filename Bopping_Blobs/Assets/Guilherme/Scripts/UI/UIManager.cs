@@ -1,9 +1,9 @@
-﻿using PowerUp;
+﻿using DG.Tweening;
+using PowerUp;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-// TODO DOTween
 
 public class UIManager : MonoBehaviour {
     public TextMeshProUGUI centerScreenText;
@@ -93,8 +93,10 @@ public class UIManager : MonoBehaviour {
     /// </summary>
     /// <param name="_text">Text to be shown</param>
     public void ShowCenterText(string _text) {
+        centerScreenText.transform.localScale = Vector3.zero;
         centerScreenText.gameObject.SetActive(true);
         centerScreenText.text = _text;
+        centerScreenText.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce);
     }
 
     /// <summary>
@@ -107,9 +109,10 @@ public class UIManager : MonoBehaviour {
     }
 
     private IEnumerator ShowPlayerTaggedTextRoutine(string _playerName, float _timeToShow) {
-        centerScreenText.gameObject.SetActive(true);
-        centerScreenText.text = $"{_playerName} is KING!";
-        yield return new WaitForSecondsRealtime(_timeToShow);
+        ShowCenterText($"{_playerName} is KING!");
+        yield return new WaitForSecondsRealtime(_timeToShow / 2.0f);
+        centerScreenText.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBounce);
+        yield return new WaitForSecondsRealtime(_timeToShow / 2.0f);
         centerScreenText.gameObject.SetActive(false);
     }
 
