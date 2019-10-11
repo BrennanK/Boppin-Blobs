@@ -37,7 +37,8 @@ public class CustomizeProps : MonoBehaviour
         player.GetComponent<MeshRenderer>().materials = mat;
 
         GameObject hat = Instantiate(hatModel, player.transform);
-        hat.transform.localPosition = Vector3.zero + new Vector3(0, 0.42f, 0);
+        hat.transform.localPosition = Vector3.zero + new Vector3(0, 0, 0);
+        hat.transform.localScale = new Vector3(1, 1, 1);
 
     }
 
