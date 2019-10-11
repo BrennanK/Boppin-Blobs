@@ -156,6 +156,7 @@ namespace PowerUp {
                                 }
 
                                 if(GameController.instance.backOffDecal) {
+                                    
                                     Instantiate(GameController.instance.backOffDecal, new Vector3(m_playerTaggingIdentifier.hammerBopAim.transform.position.x, 0.2f, m_playerTaggingIdentifier.hammerBopAim.transform.position.z), GameController.instance.backOffDecal.transform.rotation);
                                 }
                             }
@@ -193,15 +194,28 @@ namespace PowerUp {
             }
         }
 
+        private Vector3 GetPointToInstantiateDecal(Vector3 _originPosition) {
+            RaycastHit hitPoint;
+
+            if(Physics.Raycast(_originPosition, Vector3.down, out hitPoint)) {
+                return hitPoint.point;
+            }
+
+            return Vector3.zero;
+        }
+
         #region Power Up Functions
         public void ActivateSuperSpeed(float _value) {
             superSpeedTrail.SetActive(true);
-            m_playerTaggingIdentifier.ExternalSpeedBoost = m_playerTaggingIdentifier.ExternalSpeedBoost + m_taggingManager.baseSpeed * _value;
+            m_playerTaggingIdentifier.ExternalSpeedBoost += m_taggingManager.baseSpeed * _value;
         }
 
         public void ResetSuperSpeed(float _value) {
-            superSpeedTrail.SetActive(false);
-            m_playerTaggingIdentifier.ExternalSpeedBoost = m_playerTaggingIdentifier.ExternalSpeedBoost - m_taggingManager.baseSpeed * _value;
+            m_playerTaggingIdentifier.ExternalSpeedBoost -= m_taggingManager.baseSpeed * _value;
+
+            if(m_playerTaggingIdentifier.ExternalSpeedBoost <= 0) {
+                superSpeedTrail.SetActive(false);
+            }
         }
 
         public void ActivateBackOff(float _value) {
