@@ -90,12 +90,11 @@ public class AIController : MonoBehaviour, IBoppable {
 
             // give me a wepan
             GameObject myWeapon = GameController.instance.allWeaponsPrefabs[Random.Range(0, GameController.instance.allWeaponsPrefabs.Length)];
-            Instantiate(myWeapon, m_animator.transform);
+            Instantiate(myWeapon, transform);
 
             m_taggingIdentifier.hammerTransform.gameObject.SetActive(false);
             m_taggingIdentifier.hammerTransform = myWeapon.transform;
-            myWeapon.transform.position = new Vector3(0f, 0.15f, -0.4f);
-            // myWeapon.transform.rotation = Quaternion.Euler(Vector3.zero);
+            myWeapon.transform.position = new Vector3(.8f, 0.25f, 0f);
             m_taggingIdentifier.ReinitializeOriginalHammerPosition();
         }
     }
