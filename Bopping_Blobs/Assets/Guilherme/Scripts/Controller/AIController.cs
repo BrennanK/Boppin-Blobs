@@ -87,6 +87,16 @@ public class AIController : MonoBehaviour, IBoppable {
             // give me a het >:L
             GameObject myHat = GameController.instance.allHatsPrefabs[Random.Range(0, GameController.instance.allHatsPrefabs.Length)];
             Instantiate(myHat, m_animator.transform);
+
+            // give me a wepan
+            GameObject myWeapon = GameController.instance.allWeaponsPrefabs[Random.Range(0, GameController.instance.allWeaponsPrefabs.Length)];
+            Instantiate(myWeapon, m_animator.transform);
+
+            m_taggingIdentifier.hammerTransform.gameObject.SetActive(false);
+            m_taggingIdentifier.hammerTransform = myWeapon.transform;
+            myWeapon.transform.position = new Vector3(0f, 0.15f, -0.4f);
+            // myWeapon.transform.rotation = Quaternion.Euler(Vector3.zero);
+            m_taggingIdentifier.ReinitializeOriginalHammerPosition();
         }
     }
 

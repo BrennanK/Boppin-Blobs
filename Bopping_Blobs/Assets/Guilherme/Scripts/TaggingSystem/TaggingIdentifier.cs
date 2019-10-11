@@ -163,6 +163,11 @@ public class TaggingIdentifier : MonoBehaviour {
         m_tempSpeedBoost = 0f;
     }
 
+    public void ReinitializeOriginalHammerPosition() {
+        m_originalHammerLocalPosition = hammerTransform.localPosition;
+        m_originalHammerLocalEulerAngles = hammerTransform.localEulerAngles;
+    }
+
     private void Update() {
         switch(m_currentTaggingState) {
             case ETaggingBehavior.Running:
@@ -365,7 +370,7 @@ public class TaggingIdentifier : MonoBehaviour {
         Gizmos.color = Color.red;
 
         if(hammerBopAim.gameObject.activeSelf) {
-            Gizmos.DrawWireSphere(hammerBopAim.transform.position, km_attackRadius);
+            // Gizmos.DrawWireSphere(hammerBopAim.transform.position, km_attackRadius);
         }
     }
 }

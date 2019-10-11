@@ -38,8 +38,9 @@ public class GameController : MonoBehaviour {
     public GameObject backOffDecal;
     public GameObject superSlamDecal;
 
-    [Header("Hats!!")]
+    [Header("AI Customization!!")]
     public GameObject[] allHatsPrefabs;
+    public GameObject[] allWeaponsPrefabs;
 
     private bool m_isGameRunning = false;
     public bool IsGameRunning {

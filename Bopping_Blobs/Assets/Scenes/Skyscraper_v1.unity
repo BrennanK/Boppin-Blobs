@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.43688414, g: 0.48453838, b: 0.56479603, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -60503,6 +60503,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
+      propertyPath: allWeaponsPrefabs.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
       propertyPath: blobGotKingParticle
       value: 
       objectReference: {fileID: 0}
@@ -60690,6 +60695,42 @@ PrefabInstance:
       propertyPath: attackDecal
       value: 
       objectReference: {fileID: 5517336685642390414, guid: 30ce47fee06e03d4bb208a662ed3b9fe,
+        type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: allWeaponsPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 3699759585379187473, guid: c87c44c2a699855439160a10571d1f61,
+        type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: allWeaponsPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 4784336226534472318, guid: 244bde6b94aad764485d310fdef06e41,
+        type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: allWeaponsPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 8018750898232220156, guid: 54b0298ca859ac543972eb76e5b12fc1,
+        type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: allWeaponsPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 237085933112965524, guid: e1e3b961ed0ba0147a5654e41ec8760f,
+        type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: allWeaponsPrefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 3060288855658337154, guid: 7991a10d70d26ad499774dd9d28687e3,
+        type: 3}
+    - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: allWeaponsPrefabs.Array.data[5]
+      value: 
+      objectReference: {fileID: 3027510070780791112, guid: 8088212c31bf3714eabc0a0cead773ec,
         type: 3}
     - target: {fileID: 8020187829727422893, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
