@@ -61,6 +61,7 @@ public class MainMenuManager : MonoBehaviour
                 {
                     case "Play":
                         Debug.Log("Play the game!");
+                        PausedMenuManager._instance.FadeIn(PausedMenuManager._instance.fadeTime);
                         SceneManager.LoadSceneAsync(PossibleLevels[Random.Range(0, PossibleLevels.Length)]);
                         break;
                     case "Customization":

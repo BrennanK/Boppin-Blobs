@@ -34,8 +34,12 @@ public class PausedMenuManager : MonoBehaviour
 	[Header("SFX List")]
 	[SerializeField] AudioClip[] SFXGroup;
 
-	// Check if cannot open
-	private bool CanNotOpen = false;
+    [Header("Fade Related")]
+    public float fadeTime = 0.5f;
+    public MaskableGraphic fadeGraphic;
+
+    // Check if cannot open
+    private bool CanNotOpen = false;
 	// Check if is open
 	private bool IsOpen = false;
 
@@ -117,7 +121,8 @@ public class PausedMenuManager : MonoBehaviour
 	public void ReturnToMainMenu()
 	{
 		StartCoroutine(CallPauseMenu(0.2f));
-		SceneManager.LoadSceneAsync("MainMenu");
+        FadeIn(fadeTime);
+        SceneManager.LoadSceneAsync("MainMenu");
 	}
 
     // Enable Credits UI
@@ -154,7 +159,8 @@ public class PausedMenuManager : MonoBehaviour
 	// Play Background Music when loaded a scene
 	private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		switch (scene.name)
+        FadeOut(fadeTime);
+        switch (scene.name)
 		{
 			case "MainMenu":
 				BGMPlayer.Stop();
@@ -207,5 +213,21 @@ public class PausedMenuManager : MonoBehaviour
         SFXPlayer.PlayOneShot(_clip);
     }
 
-	#endregion
+    #endregion
+
+    #region Fade In and Fade Out
+    public void FadeIn(float _duration) {
+        fadeGraphic.canvasRenderer.SetAlpha(0f);
+        Fade(1f, _duration);
+    }
+
+    public void FadeOut(float _duration) {
+        fadeGraphic.canvasRenderer.SetAlpha(1f);
+        Fade(0f, _duration);
+    }
+
+    private void Fade(float _targetAlpha, float _duration) {
+        fadeGraphic.CrossFadeAlpha(_targetAlpha, _duration, true);
+    }
+    #endregion
 }
