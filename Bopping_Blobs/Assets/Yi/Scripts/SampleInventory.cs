@@ -27,6 +27,6 @@ public class SampleInventory : MonoBehaviour
     }
 
     public void UpdateCoins() {
-        CoinText.text = "$" + CurrentCoins1.ToString();
+        //CoinText.text = "$" + CurrentCoins1.ToString();
     }
 }

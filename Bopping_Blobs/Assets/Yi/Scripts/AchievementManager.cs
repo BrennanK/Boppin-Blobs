@@ -188,7 +188,8 @@ public class AchievementManager : MonoBehaviour
     public void OpenAchievement()
     {
         PausedMenuManager._instance.PlaySFX(0);
-        AchievementUI.GetComponent<Animator>().SetBool("Open", true);
+        AchievementUI.SetActive(true);
+        //AchievementUI.GetComponent<Animator>().SetBool("Open", true);
         achievementActivated = true;
         //NotCompletedContent.GetComponent<RectTransform>().offsetMax = Vector2.zero;
         //NotCompletedContent.GetComponent<RectTransform>().offsetMin = Vector2.zero;

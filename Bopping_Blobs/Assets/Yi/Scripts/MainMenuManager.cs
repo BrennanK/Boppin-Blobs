@@ -14,6 +14,8 @@ public class MainMenuManager : MonoBehaviour
 
     private PausedMenuManager PausedMenu;
 
+    private HowToManager tutCanvas;
+
     //**********
     private CustomizationManager customizationManager;
     //**********
@@ -25,6 +27,8 @@ public class MainMenuManager : MonoBehaviour
     {
         achievementManager = AchievementManager._instance;
         PausedMenu = PausedMenuManager._instance;
+        tutCanvas = FindObjectOfType<HowToManager>();
+        tutCanvas.gameObject.SetActive(false);
 
         TaggingManager taggingManagerOnMainMenu = FindObjectOfType<TaggingManager>();
         if(taggingManagerOnMainMenu) {
@@ -69,14 +73,15 @@ public class MainMenuManager : MonoBehaviour
                         Debug.Log("Open customization menu.");
                         break;
                     case "Achievements":
-                        achievementManager.OpenAchievement();
+                        tutCanvas.gameObject.SetActive(true);
+                        tutCanvas.Next();
                         break;
                     case "Options":
                         PausedMenu.EnablePausedMenu();
                         Debug.Log("Open option menu.");
                         break;
                     default:
-                        Debug.Log("Nothing Selected!");
+                        
                         break;
                 }
             }
