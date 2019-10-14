@@ -40,7 +40,7 @@ public class MainMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (achievementManager.achievementActivated || PausedMenu.IsOpen1) 
+        if (achievementManager.achievementActivated || PausedMenu.IsOpen1 || tutCanvas.gameObject.activeSelf) 
         {
             enableMouseDetection = false;
         } 
@@ -76,6 +76,7 @@ public class MainMenuManager : MonoBehaviour
                         Debug.Log("Open customization menu.");
                         break;
                     case "Achievements":
+                        PausedMenuManager._instance.PlaySFX(0);
                         tutCanvas.gameObject.SetActive(true);
                         tutCanvas.Next();
                         break;
