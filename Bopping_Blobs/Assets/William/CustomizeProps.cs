@@ -21,7 +21,7 @@ public class CustomizeProps : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (CustomizeData.instance)
+        /*if (CustomizeData.instance)
         {
             int hatID = CustomizeData.instance.hatIndex;
             hatModel = customizationManager.hatModels[hatID];
@@ -31,7 +31,14 @@ public class CustomizeProps : MonoBehaviour
 
             int colorID = CustomizeData.instance.colorIndex;
             this.skinColor = customizationManager.skinColor[colorID];
-        }
+        }*/
+
+        Debug.Log("hatIndex is: " + PlayerPrefs.GetInt("hatIndex"));
+        Debug.Log("eyeIndex is: " + PlayerPrefs.GetInt("eyeIndex"));
+        Debug.Log("colorIndex is: " + PlayerPrefs.GetInt("colorIndex"));
+        hatModel = customizationManager.hatModels[PlayerPrefs.GetInt("hatIndex")];
+        eyeModel = customizationManager.eyeModels[PlayerPrefs.GetInt("eyeIndex")];
+        this.skinColor = customizationManager.skinColor[PlayerPrefs.GetInt("colorIndex")];
 
         Material[] mat = player.GetComponent<MeshRenderer>().materials;
         mat[0] = skinColor;

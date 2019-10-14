@@ -28,6 +28,12 @@ public class CustomizationManager : MonoBehaviour
     public Material[] skinColor;
     public int colorIndex;
 
+    private void Start()
+    {
+        hatIndex = PlayerPrefs.GetInt("hatIndex", hatIndex);
+        eyeIndex = PlayerPrefs.GetInt("eyeIndex", eyeIndex);
+        colorIndex = PlayerPrefs.GetInt("colorIndex", colorIndex);
+    }
 
     private void ApplyModification(ApearanceDetail detail, int id)
     {
@@ -178,6 +184,11 @@ public class CustomizationManager : MonoBehaviour
         CustomizeData.instance.eyeIndex = this.eyeIndex;
         CustomizeData.instance.colorIndex = this.colorIndex;
         GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetTrigger("Confirmed");
+
+        // Save the data to PlayerPrefs as well
+        PlayerPrefs.SetInt("hatIndex", hatIndex);
+        PlayerPrefs.SetInt("eyeIndex", eyeIndex);
+        PlayerPrefs.SetInt("colorIndex", colorIndex);
     }
 
     private void OnLevelWasLoaded(int level)
