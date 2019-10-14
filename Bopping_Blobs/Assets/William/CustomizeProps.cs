@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CustomizeProps : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class CustomizeProps : MonoBehaviour
 
     [SerializeField] private GameObject hatModel;
     [SerializeField] private Material eyeModel;
-    //private GameObject weaponModel;
+    [SerializeField] private GameObject weaponModel;
     [SerializeField] private Material skinColor;
 
     [SerializeField] private CustomizationManager customizationManager;
@@ -38,7 +39,8 @@ public class CustomizeProps : MonoBehaviour
         Debug.Log("colorIndex is: " + PlayerPrefs.GetInt("colorIndex"));
         hatModel = customizationManager.hatModels[PlayerPrefs.GetInt("hatIndex")];
         eyeModel = customizationManager.eyeModels[PlayerPrefs.GetInt("eyeIndex")];
-        this.skinColor = customizationManager.skinColor[PlayerPrefs.GetInt("colorIndex")];
+        weaponModel = customizationManager.weaponModels[PlayerPrefs.GetInt("weaponIndex")];
+        skinColor = customizationManager.skinColor[PlayerPrefs.GetInt("colorIndex")];
 
         Material[] mat = player.GetComponent<MeshRenderer>().materials;
         mat[0] = skinColor;
@@ -49,7 +51,16 @@ public class CustomizeProps : MonoBehaviour
         customizationManager.activeHat.transform.localPosition = Vector3.zero + new Vector3(0, 0, 0);
         customizationManager.activeHat.transform.localScale = new Vector3(1, 1, 1);
 
+        // Sets the weapon place according to different scenes
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            customizationManager.activeWeapon = Instantiate(weaponModel, player.transform.parent.parent);
+            customizationManager.activeWeapon.transform.localPosition = Vector3.left;
+        }
+        else
+        {
+            customizationManager.activeWeapon = Instantiate(weaponModel, player.transform.parent.parent);
+            customizationManager.activeWeapon.transform.localPosition = Vector3.right;
+        }
     }
-
-
 }

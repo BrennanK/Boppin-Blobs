@@ -204,7 +204,9 @@ public class CustomizationManager : MonoBehaviour
         // Save the data to PlayerPrefs as well
         PlayerPrefs.SetInt("hatIndex", hatIndex);
         PlayerPrefs.SetInt("eyeIndex", eyeIndex);
+        PlayerPrefs.SetInt("weaponIndex", weaponIndex);
         PlayerPrefs.SetInt("colorIndex", colorIndex);
+
 
         PlayerPrefs.SetString("PLAYER_INPUT_NAME", playerNameInputField.text);
     }
