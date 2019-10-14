@@ -60,11 +60,11 @@ namespace PowerUp {
 
         private void Update() {
             if(m_isPlayer) {
-                if(Input.GetKeyDown(KeyCode.Q)) {
+                if(Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown("joystick button 2")) {
                     ActivatePowerUp1();
                 }
 
-                if(Input.GetKeyDown(KeyCode.E)) {
+                if(Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown("joystick button 3")) {
                     ActivatePowerUp2();
                 }
             }
