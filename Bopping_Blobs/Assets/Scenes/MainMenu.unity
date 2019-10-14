@@ -6499,6 +6499,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &643340416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643340412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d6d82d18392bbd4aa32edab6a0d5b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1837081702}
+  hatModel: {fileID: 0}
+  eyeModel: {fileID: 0}
+  skinColor: {fileID: 0}
+  customizationManager: {fileID: 0}
 --- !u!1 &650160435
 GameObject:
   m_ObjectHideFlags: 0
@@ -11202,7 +11219,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1074372753}
   m_Direction: 2
   m_Value: 0.9999999
-  m_Size: 0.23317757
+  m_Size: 0.23317754
   m_NumberOfSteps: 11
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13389,7 +13406,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -318150.03, y: 2554526.2}
+  m_AnchoredPosition: {x: -320438.84, y: 2556400.5}
   m_SizeDelta: {x: -2.0999756, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1427465233
@@ -21954,6 +21971,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3011843536339730886, guid: 4e234d2029e7a88419a713e0aa292fb3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.38989258
+      objectReference: {fileID: 0}
+    - target: {fileID: 3011843536339730886, guid: 4e234d2029e7a88419a713e0aa292fb3,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.78003
+      objectReference: {fileID: 0}
     - target: {fileID: 3011843536302837273, guid: 4e234d2029e7a88419a713e0aa292fb3,
         type: 3}
       propertyPath: m_IsActive
@@ -22898,16 +22925,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_margin.z
       value: 35.84669
-      objectReference: {fileID: 0}
-    - target: {fileID: 3011843536339730886, guid: 4e234d2029e7a88419a713e0aa292fb3,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.38989258
-      objectReference: {fileID: 0}
-    - target: {fileID: 3011843536339730886, guid: 4e234d2029e7a88419a713e0aa292fb3,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0.78003
       objectReference: {fileID: 0}
     - target: {fileID: 4732686092255508538, guid: 4e234d2029e7a88419a713e0aa292fb3,
         type: 3}

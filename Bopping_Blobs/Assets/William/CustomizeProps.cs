@@ -16,29 +16,31 @@ public class CustomizeProps : MonoBehaviour
     private void Awake()
     {
         customizationManager = GameObject.FindObjectOfType<CustomizationManager>();
-
-        int hatID = CustomizeData.instance.hatIndex;
-        hatModel = customizationManager.hatModels[hatID];
-
-        int eyeID = CustomizeData.instance.eyeIndex;
-        eyeModel = customizationManager.eyeModels[eyeID];
-
-        int colorID = CustomizeData.instance.colorIndex;
-        this.skinColor = customizationManager.skinColor[colorID];
-
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        if (CustomizeData.instance)
+        {
+            int hatID = CustomizeData.instance.hatIndex;
+            hatModel = customizationManager.hatModels[hatID];
+
+            int eyeID = CustomizeData.instance.eyeIndex;
+            eyeModel = customizationManager.eyeModels[eyeID];
+
+            int colorID = CustomizeData.instance.colorIndex;
+            this.skinColor = customizationManager.skinColor[colorID];
+        }
+
         Material[] mat = player.GetComponent<MeshRenderer>().materials;
-        mat[0] = eyeModel;
-        mat[1] = skinColor;
+        mat[0] = skinColor;
+        mat[1] = eyeModel;
         player.GetComponent<MeshRenderer>().materials = mat;
 
-        GameObject hat = Instantiate(hatModel, player.transform);
-        hat.transform.localPosition = Vector3.zero + new Vector3(0, 0, 0);
-        hat.transform.localScale = new Vector3(1, 1, 1);
+        customizationManager.activeHat = Instantiate(hatModel, player.transform);
+        customizationManager.activeHat.transform.localPosition = Vector3.zero + new Vector3(0, 0, 0);
+        customizationManager.activeHat.transform.localScale = new Vector3(1, 1, 1);
 
     }
 

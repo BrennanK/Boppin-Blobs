@@ -10,7 +10,7 @@ public class CustomizeData : MonoBehaviour
     public int eyeIndex;
     public int colorIndex;
 
-    private void Start()
+    private void Awake()
     {
         if (instance != null)
         {

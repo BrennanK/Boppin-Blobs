@@ -16,14 +16,14 @@ public class CustomizationManager : MonoBehaviour
 
     public GameObject[] hatModels;
     public int hatIndex;
-    [SerializeField] private GameObject activeHat;
+    public GameObject activeHat;
 
     public Material[] eyeModels;
     public int eyeIndex;
 
     public GameObject[] weaponModels;
     public int weaponIndex;
-    [SerializeField] private GameObject activeWeapon;
+    public GameObject activeWeapon;
 
     public Material[] skinColor;
     public int colorIndex;
@@ -40,9 +40,7 @@ public class CustomizationManager : MonoBehaviour
                     Destroy(activeHat);
                 }
                 activeHat = Instantiate(hatModels[id], player.transform);
-                //activeHat.transform.localPosition = Vector3.zero + new Vector3(0, 0.42f,0);
                 activeHat.transform.localPosition = Vector3.zero;
-                //activeHat.transform.localScale /= 2;
                 activeHat.transform.localScale = Vector3.one;
                 break;
 
