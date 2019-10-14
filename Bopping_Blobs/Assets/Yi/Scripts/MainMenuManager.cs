@@ -21,6 +21,7 @@ public class MainMenuManager : MonoBehaviour
     //**********
 
     private bool enableMouseDetection = true;
+    private AsyncOperation m_currentSceneBeingLoaded = null;
 
     // Start is called before the first frame update
     void Start()
@@ -64,9 +65,11 @@ public class MainMenuManager : MonoBehaviour
                 switch (hit.collider.name)
                 {
                     case "Play":
-                        Debug.Log("Play the game!");
-                        PausedMenuManager._instance.FadeIn(PausedMenuManager._instance.fadeTime);
-                        SceneManager.LoadSceneAsync(PossibleLevels[Random.Range(0, PossibleLevels.Length)]);
+                        if(m_currentSceneBeingLoaded == null) {
+                            Debug.Log("Play the game!");
+                            PausedMenuManager._instance.FadeIn(PausedMenuManager._instance.fadeTime);
+                            m_currentSceneBeingLoaded = SceneManager.LoadSceneAsync(PossibleLevels[Random.Range(0, PossibleLevels.Length)]);
+                        }
                         break;
                     case "Customization":
                         achievementManager.OpenCustomization();
