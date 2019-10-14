@@ -40,7 +40,7 @@ public class MainMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (achievementManager.achievementActivated || PausedMenu.IsOpen1 || tutCanvas.gameObject.activeSelf) 
+        if (achievementManager.achievementActivated || PausedMenu.IsOpen1 || tutCanvas.gameObject.activeSelf || PausedMenuManager._instance.IsCreditOpen) 
         {
             enableMouseDetection = false;
         } 
@@ -85,7 +85,6 @@ public class MainMenuManager : MonoBehaviour
                         Debug.Log("Open option menu.");
                         break;
                     default:
-                        
                         break;
                 }
             }

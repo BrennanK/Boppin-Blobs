@@ -43,11 +43,21 @@ public class PausedMenuManager : MonoBehaviour
     private bool CanNotOpen = false;
 	// Check if is open
 	private bool IsOpen = false;
+    // credits is open
+    private bool m_isCreditsOpen = false;
 
 	// Singleton
 	public static PausedMenuManager _instance;
 
     public bool IsOpen1 { get => IsOpen; set => IsOpen = value; }
+    public bool IsCreditOpen {
+        get {
+            return m_isCreditsOpen;
+        }
+        set {
+            m_isCreditsOpen = value;
+        }
+    }
 
     #region Initilize & Enable/Disable UI
     private void Awake()
@@ -99,6 +109,7 @@ public class PausedMenuManager : MonoBehaviour
 
     private IEnumerator CallCreditsMenu(float waitTime)
     {
+        IsCreditOpen = !IsCreditOpen;
         Credits.SetTrigger("TriggerCredits");
         PlaySFX(0);
         CreditsScrollbar.value = 1.0f;
