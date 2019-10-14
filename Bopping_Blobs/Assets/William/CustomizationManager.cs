@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CustomizationManager : MonoBehaviour
 {
@@ -28,11 +30,19 @@ public class CustomizationManager : MonoBehaviour
     public Material[] skinColor;
     public int colorIndex;
 
+    [Header("Player name input")]
+    public TMP_InputField playerNameInputField;
+
     private void Start()
     {
         hatIndex = PlayerPrefs.GetInt("hatIndex", hatIndex);
         eyeIndex = PlayerPrefs.GetInt("eyeIndex", eyeIndex);
         colorIndex = PlayerPrefs.GetInt("colorIndex", colorIndex);
+
+        string playerName = PlayerPrefs.GetString("PLAYER_INPUT_NAME");
+        if(playerName != "") {
+            playerNameInputField.text = playerName;
+        }
     }
 
     private void ApplyModification(ApearanceDetail detail, int id)
@@ -189,6 +199,8 @@ public class CustomizationManager : MonoBehaviour
         PlayerPrefs.SetInt("hatIndex", hatIndex);
         PlayerPrefs.SetInt("eyeIndex", eyeIndex);
         PlayerPrefs.SetInt("colorIndex", colorIndex);
+
+        PlayerPrefs.SetString("PLAYER_INPUT_NAME", playerNameInputField.text);
     }
 
     private void OnLevelWasLoaded(int level)

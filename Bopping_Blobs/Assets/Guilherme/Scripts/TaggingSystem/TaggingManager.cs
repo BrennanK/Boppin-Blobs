@@ -61,7 +61,17 @@ public class TaggingManager : MonoBehaviour {
         if (playerInfoUI.Length == m_playersIdentifiers.Count) {
             for (int i = 0; i < m_playersIdentifiers.Count; i++) {
                 m_playersIdentifiers[i].PlayerInfo = playerInfoUI[i];
-                m_playersIdentifiers[i].PlayerName = randomNameGenerator.GetRandomName();
+
+                if(m_playersIdentifiers[i].IsUserPlayer) {
+                    string playerName = PlayerPrefs.GetString("PLAYER_INPUT_NAME");
+                    if(playerName != "") {
+                        m_playersIdentifiers[i].PlayerName = playerName;
+                    } else {
+                        m_playersIdentifiers[i].PlayerName = randomNameGenerator.GetRandomName();
+                    }
+                } else {
+                    m_playersIdentifiers[i].PlayerName = randomNameGenerator.GetRandomName();
+                }
             }
         } else {
             Debug.LogWarning($"There are more or less PlayerInfo scripts than Players in the scene!! You have {m_playersIdentifiers.Count} players and {playerInfoUI.Length} info scripts!");
