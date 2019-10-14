@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour, IBoppable {
         m_movementVector.y = 0;
         m_movementVector.z = Mathf.Lerp(m_characterControllerReference.velocity.z, m_movementVector.z, groundDamping * dampingMultiplier);
 
-        if(m_characterControllerReference.enabled) {
+        if (m_characterControllerReference.enabled) {
             m_animator.SetFloat("MoveSpeed", m_movementVector.normalized.magnitude);
             m_characterControllerReference.SimpleMove(m_movementVector);
         }
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour, IBoppable {
 
     private void HandleMovement() {
         // TEMP
-        if(m_digitalJoystickReference.Horizontal == 0 && m_digitalJoystickReference.Vertical == 0) {
+        if (m_digitalJoystickReference.Horizontal == 0 && m_digitalJoystickReference.Vertical == 0) {
             m_movementVector.x = Input.GetAxis("Horizontal") * m_characterSpeed;
             m_movementVector.z = Input.GetAxis("Vertical") * m_characterSpeed;
         } else {
@@ -70,9 +70,9 @@ public class PlayerController : MonoBehaviour, IBoppable {
         transform.LookAt(transform.position + new Vector3(m_movementVector.x, 0f, m_movementVector.z));
     }
 
-#region IBoppable Functions
+    #region IBoppable Functions
     public bool HasAttacked() {
-        return m_joyButtonReference.pressed;
+        return m_joyButtonReference.pressed || Input.GetKeyDown("joystick button 5") ;
     }
 
     public void TriggerAttackTransition() {
