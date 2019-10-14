@@ -179,6 +179,7 @@ public class CustomizationManager : MonoBehaviour
         CustomizeData.instance.hatIndex = this.hatIndex;
         CustomizeData.instance.eyeIndex = this.eyeIndex;
         CustomizeData.instance.colorIndex = this.colorIndex;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetTrigger("Confirmed");
     }
 
     private void OnLevelWasLoaded(int level)
