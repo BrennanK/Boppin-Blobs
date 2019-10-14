@@ -23,6 +23,7 @@ public class PausedMenuManager : MonoBehaviour
 	[SerializeField] GameObject OptionButton;
 	[SerializeField] Animator Paused;
     [SerializeField] Animator Credits;
+    [SerializeField] Scrollbar CreditsScrollbar;
     [SerializeField] GameObject ReturnToMainMenuButton;
     [SerializeField] GameObject CreditsButton;
 
@@ -100,6 +101,7 @@ public class PausedMenuManager : MonoBehaviour
     {
         Credits.SetTrigger("TriggerCredits");
         PlaySFX(0);
+        CreditsScrollbar.value = 1.0f;
         yield return new WaitForSeconds(waitTime);
     }
 
