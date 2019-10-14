@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour, IBoppable {
     public enum ECharacterState {
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour, IBoppable {
     private JoyButton m_joyButtonReference;
     private Transform m_whoIsTag;
     private Animator m_animator;
+    private TaggingIdentifier m_taggingIdentifier;
 
     // Tracking Current State
     private ECharacterState m_currentState;
@@ -29,6 +31,25 @@ public class PlayerController : MonoBehaviour, IBoppable {
         m_digitalJoystickReference = FindObjectOfType<DigitalJoystick>();
         m_joyButtonReference = FindObjectOfType<JoyButton>();
         m_animator = GetComponentInChildren<Animator>();
+        m_taggingIdentifier = GetComponent<TaggingIdentifier>();
+    }
+
+    private void Start() {
+        CustomizationManager customizationManager = GameObject.FindObjectOfType<CustomizationManager>();
+        GameObject weaponModel = customizationManager.weaponModels[PlayerPrefs.GetInt("weaponIndex")];
+
+        if (SceneManager.GetActiveScene().buildIndex == 0) {
+            customizationManager.activeWeapon = Instantiate(weaponModel, m_animator.transform.parent.parent);
+            customizationManager.activeWeapon.transform.localPosition = Vector3.left;
+        } else {
+            customizationManager.activeWeapon = Instantiate(weaponModel, m_animator.transform.parent.parent);
+            customizationManager.activeWeapon.transform.localPosition = Vector3.right;
+        }
+
+        m_taggingIdentifier.hammerTransform.gameObject.SetActive(false);
+        m_taggingIdentifier.hammerTransform = weaponModel.transform;
+        weaponModel.transform.position = new Vector3(.8f, 0.25f, 0f);
+        m_taggingIdentifier.ReinitializeOriginalHammerPosition();
     }
 
     private void Update() {

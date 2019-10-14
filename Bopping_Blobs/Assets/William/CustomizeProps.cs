@@ -39,7 +39,7 @@ public class CustomizeProps : MonoBehaviour
         Debug.Log("colorIndex is: " + PlayerPrefs.GetInt("colorIndex"));
         hatModel = customizationManager.hatModels[PlayerPrefs.GetInt("hatIndex")];
         eyeModel = customizationManager.eyeModels[PlayerPrefs.GetInt("eyeIndex")];
-        weaponModel = customizationManager.weaponModels[PlayerPrefs.GetInt("weaponIndex")];
+        // weaponModel = customizationManager.weaponModels[PlayerPrefs.GetInt("weaponIndex")];
         skinColor = customizationManager.skinColor[PlayerPrefs.GetInt("colorIndex")];
 
         Material[] mat = player.GetComponent<MeshRenderer>().materials;
@@ -52,6 +52,7 @@ public class CustomizeProps : MonoBehaviour
         customizationManager.activeHat.transform.localScale = new Vector3(1, 1, 1);
 
         // Sets the weapon place according to different scenes
+        /*
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             customizationManager.activeWeapon = Instantiate(weaponModel, player.transform.parent.parent);
@@ -62,5 +63,6 @@ public class CustomizeProps : MonoBehaviour
             customizationManager.activeWeapon = Instantiate(weaponModel, player.transform.parent.parent);
             customizationManager.activeWeapon.transform.localPosition = Vector3.right;
         }
+        */
     }
 }
