@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour, IBoppable {
 
     #region IBoppable Functions
     public bool HasAttacked() {
-        return m_joyButtonReference.pressed || Input.GetKeyDown("joystick button 5");
+        return m_joyButtonReference.pressed || Input.GetKeyDown("joystick button 5") ;
     }
 
     public void TriggerAttackTransition() {
