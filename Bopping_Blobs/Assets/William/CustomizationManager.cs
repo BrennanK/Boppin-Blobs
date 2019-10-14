@@ -69,6 +69,12 @@ public class CustomizationManager : MonoBehaviour
 
             case ApearanceDetail.WEAPON:
 
+                if (activeWeapon != null)
+                {
+                    Destroy(activeWeapon);
+                }
+                activeWeapon = Instantiate(weaponModels[id], player.transform.parent.parent);
+                activeWeapon.transform.localPosition = Vector3.left;
                 break;
 
             case ApearanceDetail.SKIN_COLOR:
