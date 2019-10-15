@@ -37,18 +37,13 @@ public class PlayerController : MonoBehaviour, IBoppable {
     private void Start() {
         CustomizationManager customizationManager = GameObject.FindObjectOfType<CustomizationManager>();
         GameObject weaponModel = customizationManager.weaponModels[PlayerPrefs.GetInt("weaponIndex")];
+        GameObject instantiatedWeapon = Instantiate(weaponModel, m_animator.transform.parent.parent) as GameObject;
+        customizationManager.activeWeapon = instantiatedWeapon;
 
-        if (SceneManager.GetActiveScene().buildIndex == 0) {
-            customizationManager.activeWeapon = Instantiate(weaponModel, m_animator.transform.parent.parent);
-            customizationManager.activeWeapon.transform.localPosition = Vector3.left;
-        } else {
-            customizationManager.activeWeapon = Instantiate(weaponModel, m_animator.transform.parent.parent);
-            customizationManager.activeWeapon.transform.localPosition = Vector3.right;
-        }
 
         m_taggingIdentifier.hammerTransform.gameObject.SetActive(false);
-        m_taggingIdentifier.hammerTransform = weaponModel.transform;
-        weaponModel.transform.position = new Vector3(.8f, 0.25f, 0f);
+        m_taggingIdentifier.hammerTransform = instantiatedWeapon.transform;
+        instantiatedWeapon.transform.localPosition = new Vector3(.8f, 0.25f, 0f);
         m_taggingIdentifier.ReinitializeOriginalHammerPosition();
     }
 
