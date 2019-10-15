@@ -57,7 +57,6 @@ public class TaggingIdentifier : MonoBehaviour {
 
     // IBoppable should be implemented by PlayerController and AI Controller so we can handle attacking and knockback
     private IBoppable m_boppableInterface;
-    private Renderer m_characterRenderer;
 
     private int m_playerIdentifier;
     public int PlayerIdentifier {
@@ -147,7 +146,6 @@ public class TaggingIdentifier : MonoBehaviour {
 
         m_boppableInterface = GetComponent<IBoppable>();
         m_rigidbodyReference = GetComponent<Rigidbody>();
-        m_characterRenderer = GetComponentInChildren<Renderer>();
         kingCrown.SetActive(false);
         stunnedStars.SetActive(false);
         forceField.SetActive(false);
@@ -303,9 +301,9 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private IEnumerator AttackAnimationRoutine(ETaggingBehavior _nextTaggingState) {
-        Debug.Log($"Attack Animation Routine");
-        hammerTransform.localPosition = new Vector3(hammerBopAim.localPosition.x, hammerBopAim.localPosition.y + 0.25f, hammerBopAim.localPosition.z - 1f);
-        hammerTransform.Rotate(new Vector3(90f, 90f, 0f));
+        Debug.Log($"Attack Animation Routine: {hammerTransform}");
+        hammerTransform.Rotate(new Vector3(1f, 0f, 0f), 90f);
+        // hammerTransform.localPosition = transform.forward + hammerTransform.localPosition + new Vector3(0f, 0f, 1f);
 
         yield return new WaitForSecondsRealtime(km_attackTime);
 

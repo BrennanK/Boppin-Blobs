@@ -94,7 +94,7 @@ public class AIController : MonoBehaviour, IBoppable {
 
             m_taggingIdentifier.hammerTransform.gameObject.SetActive(false);
             m_taggingIdentifier.hammerTransform = myWeapon.transform;
-            myWeapon.transform.position = new Vector3(.8f, 0.25f, 0f);
+            m_taggingIdentifier.hammerTransform.localPosition = new Vector3(0.8f, 0.25f, 0f);
             m_taggingIdentifier.ReinitializeOriginalHammerPosition();
         }
     }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CustomizationManager : MonoBehaviour
 {
@@ -69,6 +68,12 @@ public class CustomizationManager : MonoBehaviour
 
             case ApearanceDetail.WEAPON:
 
+                if (activeWeapon != null)
+                {
+                    Destroy(activeWeapon);
+                }
+                activeWeapon = Instantiate(weaponModels[id], player.transform.parent.parent);
+                activeWeapon.transform.localPosition = Vector3.left;
                 break;
 
             case ApearanceDetail.SKIN_COLOR:
@@ -198,7 +203,9 @@ public class CustomizationManager : MonoBehaviour
         // Save the data to PlayerPrefs as well
         PlayerPrefs.SetInt("hatIndex", hatIndex);
         PlayerPrefs.SetInt("eyeIndex", eyeIndex);
+        PlayerPrefs.SetInt("weaponIndex", weaponIndex);
         PlayerPrefs.SetInt("colorIndex", colorIndex);
+
 
         PlayerPrefs.SetString("PLAYER_INPUT_NAME", playerNameInputField.text);
     }
