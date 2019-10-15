@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4382434, g: 0.48626918, b: 0.5665476, a: 1}
+  m_IndirectSpecularColor: {r: 0.08365894, g: 0.08365894, b: 0.08373668, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4761,28 +4761,28 @@ PrefabInstance:
     - target: {fileID: 6837564552388712657, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 101.80005
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 6837564552388712657, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -16.599976
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 6837564552388712657, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 322.1
+      value: 263.1
       objectReference: {fileID: 0}
     - target: {fileID: 6837564552388712657, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 148.6
+      value: 112
       objectReference: {fileID: 0}
     - target: {fileID: 6837564552388712656, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 99874345ae75f8f49a1170bfc493bae2,
+      objectReference: {fileID: 21300000, guid: ec6d7cf18bd2c477e8370ff9740b1ad1,
         type: 3}
     - target: {fileID: 6837564552388712656, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
@@ -4837,7 +4837,7 @@ PrefabInstance:
     - target: {fileID: 6837564552122168773, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 33
+      value: -0.000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 6837564552122168773, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
@@ -6479,6 +6479,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -80.78784
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837564552388712662, guid: 09461b07148682f4984cd123e50722fb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09461b07148682f4984cd123e50722fb, type: 3}
