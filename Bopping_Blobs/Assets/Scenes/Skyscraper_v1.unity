@@ -60715,37 +60715,37 @@ PrefabInstance:
         type: 3}
       propertyPath: allWeaponsPrefabs.Array.data[0]
       value: 
-      objectReference: {fileID: 3699759585379187473, guid: c87c44c2a699855439160a10571d1f61,
+      objectReference: {fileID: 5424436078008229350, guid: b488e9d2dcbdeb04492ac60c999473e3,
         type: 3}
     - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: allWeaponsPrefabs.Array.data[1]
       value: 
-      objectReference: {fileID: 4784336226534472318, guid: 244bde6b94aad764485d310fdef06e41,
+      objectReference: {fileID: 3019073876778084099, guid: 1ea83c039775f364c861e29263ae1b29,
         type: 3}
     - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: allWeaponsPrefabs.Array.data[2]
       value: 
-      objectReference: {fileID: 8018750898232220156, guid: 54b0298ca859ac543972eb76e5b12fc1,
+      objectReference: {fileID: 2294109545945719874, guid: 962d427a593b420469a70654a4a2926a,
         type: 3}
     - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: allWeaponsPrefabs.Array.data[3]
       value: 
-      objectReference: {fileID: 237085933112965524, guid: e1e3b961ed0ba0147a5654e41ec8760f,
+      objectReference: {fileID: 7027974672032483061, guid: 23f6954595d2cdf4e8c187759429a38d,
         type: 3}
     - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: allWeaponsPrefabs.Array.data[4]
       value: 
-      objectReference: {fileID: 3060288855658337154, guid: 7991a10d70d26ad499774dd9d28687e3,
+      objectReference: {fileID: 6743695127832090057, guid: 727c085cb22d4524f8c042246c0b4319,
         type: 3}
     - target: {fileID: 6837564551494164381, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: allWeaponsPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 3027510070780791112, guid: 8088212c31bf3714eabc0a0cead773ec,
+      objectReference: {fileID: 8864121038743580634, guid: 7c881de2b4e242a4a851d36af7a86c1d,
         type: 3}
     - target: {fileID: 1592531449891057372, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
@@ -61088,7 +61088,7 @@ PrefabInstance:
     - target: {fileID: 6837564552122168773, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 32.6
+      value: 32.59999
       objectReference: {fileID: 0}
     - target: {fileID: 6837564552122168773, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
@@ -61098,7 +61098,7 @@ PrefabInstance:
     - target: {fileID: 6837564552122168773, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -2.1
+      value: -2.100006
       objectReference: {fileID: 0}
     - target: {fileID: 6837564552122168773, guid: 09461b07148682f4984cd123e50722fb,
         type: 3}
@@ -62628,6 +62628,7 @@ MonoBehaviour:
   player: {fileID: 1583146523}
   hatModel: {fileID: 0}
   eyeModel: {fileID: 0}
+  weaponModel: {fileID: 0}
   skinColor: {fileID: 0}
   customizationManager: {fileID: 0}
 --- !u!114 &1583146526 stripped

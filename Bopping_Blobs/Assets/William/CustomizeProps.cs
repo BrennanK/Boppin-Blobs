@@ -44,8 +44,8 @@ public class CustomizeProps : MonoBehaviour
         }
         else
         {
-            customizationManager.activeWeapon = Instantiate(weaponModel, player.transform.parent.parent);
-            customizationManager.activeWeapon.transform.localPosition = Vector3.right;
+            // customizationManager.activeWeapon = Instantiate(weaponModel, player.transform.parent.parent);
+            // customizationManager.activeWeapon.transform.localPosition = Vector3.right;
         }
     }
 }
