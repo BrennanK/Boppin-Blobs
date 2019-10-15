@@ -302,8 +302,7 @@ public class TaggingIdentifier : MonoBehaviour {
 
     private IEnumerator AttackAnimationRoutine(ETaggingBehavior _nextTaggingState) {
         Debug.Log($"Attack Animation Routine: {hammerTransform}");
-        // hammerTransform.Translate(new Vector3(0f, .25f, 1f));
-        // hammerTransform.Rotate(transform.right, 90f);
+        hammerTransform.Rotate(new Vector3(1f, 0f, 0f), 90f);
         // hammerTransform.localPosition = transform.forward + hammerTransform.localPosition + new Vector3(0f, 0f, 1f);
 
         yield return new WaitForSecondsRealtime(km_attackTime);

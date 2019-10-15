@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour, IBoppable {
     }
 
     private void Start() {
-        CustomizationManager customizationManager = GameObject.FindObjectOfType<CustomizationManager>();
         int weaponIndex = PlayerPrefs.GetInt("weaponIndex");
         GameObject instantiatedWeapon = Instantiate(GameController.instance.allWeaponsPrefabs[weaponIndex], m_animator.transform.parent.parent) as GameObject;
         m_taggingIdentifier.hammerTransform.gameObject.SetActive(false);
