@@ -5,5 +5,6 @@ using UnityEngine;
 
 namespace StoreServices {
     public class AchievementManager : MonoBehaviour {
+        public Achievement[] allAchievements;
     }
 }
