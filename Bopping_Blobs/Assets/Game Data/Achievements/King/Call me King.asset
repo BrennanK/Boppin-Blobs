@@ -16,4 +16,5 @@ MonoBehaviour:
   goalValue: 1
   isAchievementHidden: 0
   achievementType: 1
-  achievementID: 
+  internalAchievementID: call_me_king
+  storeAchievementID: 

@@ -16,4 +16,5 @@ MonoBehaviour:
   goalValue: 1
   isAchievementHidden: 0
   achievementType: 0
-  achievementID: 
+  internalAchievementID: winner
+  storeAchievementID: 

@@ -16,4 +16,5 @@ MonoBehaviour:
   goalValue: 100
   isAchievementHidden: 0
   achievementType: 1
-  achievementID: 
+  internalAchievementID: four_score_and_another_too
+  storeAchievementID: 

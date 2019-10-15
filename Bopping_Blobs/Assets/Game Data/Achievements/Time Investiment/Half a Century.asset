@@ -16,4 +16,5 @@ MonoBehaviour:
   goalValue: 50
   isAchievementHidden: 0
   achievementType: 1
-  achievementID: 
+  internalAchievementID: half_a_century
+  storeAchievementID: 

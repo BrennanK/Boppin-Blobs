@@ -43,6 +43,15 @@ namespace StoreServices.Core.Achievements {
         public bool isAchievementHidden;
         public EAchievementType achievementType;
 
-        public string achievementID;
+        /// <summary>
+        /// <para>Internal Achivement is used in case the achievement system will not ever be synchronized, or to keep a backup just in case</para>
+        /// <para>The ID is needed to track achievements accurately</para>
+        /// </summary>
+        public string internalAchievementID;
+
+        /// <summary>
+        /// <para>ID of this achievement on Google Play Store or App Store</para>
+        /// </summary>
+        public string storeAchievementID;
     }
 }
