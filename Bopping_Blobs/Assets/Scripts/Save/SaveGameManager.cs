@@ -1,12 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SaveGameManager : MonoBehaviour {
     public static SaveGameManager instance;
 
     private const string HAS_SAVED_GAME = "HAS_SAVED_GAME";
     private SaveData m_currentLoadedSaveData;
+    public SaveData SaveDataInfo {
+        get {
+            return m_currentLoadedSaveData;
+        }
+    }
 
     private void Awake() {
         if(instance == null) {
@@ -14,11 +17,9 @@ public class SaveGameManager : MonoBehaviour {
         } else {
             Destroy(gameObject);
         }
-    }
 
-    private void Start() {
         m_currentLoadedSaveData = new SaveData();
-        if(PlayerPrefs.HasKey(HAS_SAVED_GAME)) {
+        if (PlayerPrefs.HasKey(HAS_SAVED_GAME)) {
             LoadSavedGame();
         } else {
             CreateSaveGame();
