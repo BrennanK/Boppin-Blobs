@@ -7,6 +7,8 @@ using System.Collections.Generic;
 [System.Serializable]
 public class SaveData
 {
+    public PlayerProfile playerProfile;
+
     // Store player's money
     public int MoneyInfo;
 
@@ -15,4 +17,8 @@ public class SaveData
 
     // Store customization information
     public List<string[]> CustomizationInfo;
+
+    public SaveData() {
+        playerProfile = new PlayerProfile();
+    }
 }

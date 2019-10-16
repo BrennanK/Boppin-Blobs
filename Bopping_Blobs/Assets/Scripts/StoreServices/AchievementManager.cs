@@ -1,12 +1,21 @@
 ﻿using StoreServices.Core.Achievements;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace StoreServices {
     public class AchievementManager : MonoBehaviour {
         public Achievement[] allAchievements;
         private AchievementInstance[] m_achievementInstances;
+
+        private void Start() {
+            Debug.Log($"Starting Achievement Manager!");
+            // Create all achievement instances and/or check for persistence!!
+            m_achievementInstances = new AchievementInstance[allAchievements.Length];
+
+            for(int i = 0; i < allAchievements.Length; i++) {
+                m_achievementInstances[i] = new AchievementInstance(allAchievements[i]);
+                // Debug.Log(JsonUtility.ToJson(m_achievementInstances[i]));
+            }
+        }
 
         // TODO this function should receive an increment to the save game?!
         public void UpdateAllAchievements() {

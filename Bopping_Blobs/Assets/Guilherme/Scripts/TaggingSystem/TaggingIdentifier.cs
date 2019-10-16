@@ -76,7 +76,7 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private int m_timesAsKing;
-    public float TimesAsKing {
+    public int TimesAsKing {
         get {
             return m_timesAsKing;
         }
@@ -301,7 +301,6 @@ public class TaggingIdentifier : MonoBehaviour {
     }
 
     private IEnumerator AttackAnimationRoutine(ETaggingBehavior _nextTaggingState) {
-        Debug.Log($"Attack Animation Routine: {hammerTransform}");
         hammerTransform.Rotate(new Vector3(1f, 0f, 0f), 90f);
         // hammerTransform.localPosition = transform.forward + hammerTransform.localPosition + new Vector3(0f, 0f, 1f);
 

@@ -2,28 +2,48 @@
 
 namespace StoreServices.Core.Achievements {
     [System.Serializable]
-    public class AchievementInstance : MonoBehaviour {
-        public Achievement achievementReference;
-        public float currentProgress;
-        public bool isCurrentlyHidden = false;
-        public long lastModification = 0;
+    public class AchievementInstance {
+        [System.NonSerialized]
+        private readonly Achievement m_achievementReference;
+
+        private float m_currentProgress;
+        private bool m_isCurrentlyHidden = false;
+        private long m_lastModification = 0;
+
+        public AchievementInstance(Achievement _achievementReference) {
+            m_achievementReference = _achievementReference;
+            m_currentProgress = 0;
+            m_isCurrentlyHidden = false;
+            m_lastModification = 0;
+        }
+
+        public AchievementInstance(Achievement _achievementReference, float _currentProgress, bool _isCurrentlyHidden, long _lastModification) {
+            m_achievementReference = _achievementReference;
+            m_currentProgress = _currentProgress;
+            m_isCurrentlyHidden = _isCurrentlyHidden;
+            m_lastModification = _lastModification;
+        }
 
         public bool Complete {
             get {
-                return currentProgress >= achievementReference.goalValue;
+                return m_currentProgress >= m_achievementReference.goalValue;
             }
         }
 
         public float ProgressInPercentage {
             get {
-                return (currentProgress / achievementReference.goalValue);
+                return (m_currentProgress / m_achievementReference.goalValue);
             }
         }
 
         public float CurrentProgress {
             get {
-                return currentProgress;
+                return m_currentProgress;
             }
+        }
+
+        public override string ToString() {
+            return $"Achievement {m_achievementReference.name} - Progress: {m_currentProgress}/{m_achievementReference.goalValue} - Last Modification: {m_lastModification}";
         }
     }
 }

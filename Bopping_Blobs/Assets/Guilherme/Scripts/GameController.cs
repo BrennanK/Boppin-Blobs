@@ -154,7 +154,7 @@ public class GameController : MonoBehaviour {
         }
 
         int finalPlayerPosition = 7;
-        TaggingIdentifier playerIdentifier;
+        TaggingIdentifier playerIdentifier = null;
         for(int i = 0; i < finalPlayersArray.Length; i++) {
             if(finalPlayersArray[i].IsUserPlayer) {
                 playerIdentifier = finalPlayersArray[i];
@@ -168,17 +168,8 @@ public class GameController : MonoBehaviour {
         int currentAmountOfMoneyPlayerHas = PlayerPrefs.GetInt("SAVED_AMOUNT_OF_COINS");
         PlayerPrefs.SetInt("SAVED_AMOUNT_OF_COINS", currentAmountOfMoneyPlayerHas + amountOfMoneyPlayerEarned);
 
-        /*
-         * TODO
-         * Save Data Stuff
-         * Games Played => +1
-         * Times In Each Position => add finalPlayerPosition
-         * Time Played += gameTime
-         * Times King in Round => playerIdentifier.TimesAsKing;
-         * Times King => Add playerIdentifier.TimeAsKing
-         * TimesAttacked => playerIdentifier.PlayersBopped;
-         * Money Earned => amountOfMoneyPlayerEarned
-         */
+        PlayerProfile playerProfileForThisMatch = new PlayerProfile(1, gameTime, playerIdentifier.TimesAsKing, playerIdentifier.AmountOfTimeAsKing, playerIdentifier.PlayersBopped);
+        SaveGameManager.instance.IncrementSavedData(playerProfileForThisMatch, amountOfMoneyPlayerEarned);
     }
 
 
