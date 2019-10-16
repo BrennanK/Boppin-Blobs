@@ -92,17 +92,17 @@ public class TaggingManager : MonoBehaviour {
         // Initializing All AI
         List<AIController> allAIPlayers = FindObjectsOfType<AIController>().ToList();
         int currentIndex = 0;
-        int tryHardAI = Random.Range(1, 3);
-        int powerUpCollectorAI = Random.Range(1, 3);
+        int amountOfTryHardAI = Random.Range(1, 3);
+        int amountOfCollectorAI = Random.Range(1, 3);
 
         // Having 1 or 2 Try Hard AI
-        for(int i = 0; i < tryHardAI; i++) {
+        for(int i = 0; i < amountOfTryHardAI; i++) {
             allAIPlayers[currentIndex].MakeTryHardAI();
             currentIndex++;
         }
 
         // Having 1 or 2 Power Up Collector AI
-        for(int i = 0; i < powerUpCollectorAI; i++) {
+        for(int i = 0; i < amountOfCollectorAI; i++) {
             allAIPlayers[currentIndex].MakePowerUpCollectorAI();
             currentIndex++;
         }
