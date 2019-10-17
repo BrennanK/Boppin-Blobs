@@ -4,7 +4,13 @@ using UnityEngine;
 namespace StoreServices {
     public class AchievementManager : MonoBehaviour {
         public Achievement[] allAchievements;
+
         private AchievementInstance[] m_achievementInstances;
+        public AchievementInstance[] AchievementInstances {
+            get {
+                return m_achievementInstances;
+            }
+        }
 
         private void Start() {
             Debug.Log($"Starting Achievement Manager!");
@@ -31,7 +37,5 @@ namespace StoreServices {
             // get achievement
             // update progress value and check for completion
         }
-
-        
     }
 }
