@@ -33,7 +33,6 @@ namespace StoreServices {
             }
         }
 
-        // TODO this function should receive an increment to the save game?!
         public void UpdateAllAchievements(PlayerProfile _profileIncrement, int _finalPlayerPosition) {
             Debug.Log($"Final Player Position: {_finalPlayerPosition}");
 
@@ -65,6 +64,8 @@ namespace StoreServices {
             TrackStandardAchievementUsingInternalID(InternalIDs.achievement_friendly, _profileIncrement.timesAttackedBlobs == 0);
             TrackIncrementalAchievementUsingInternalID(InternalIDs.achievement_hammer_down, _profileIncrement.timesAttackedBlobs);
             TrackIncrementalAchievementUsingInternalID(InternalIDs.achievement_regicide, _profileIncrement.timesKing);
+
+            PersistAchievements();
         }
 
         private void TrackIncrementalAchievementUsingInternalID(string _achievementID, float _incrementValue) {
@@ -79,7 +80,7 @@ namespace StoreServices {
             achievementBeingUpdated.CurrentProgress += _incrementValue;
 
             if (achievementBeingUpdated.Complete) {
-                // TODO
+                // TODO Give Money to Player
                 Debug.Log($"{achievementBeingUpdated.AchievementName} was completed!");
             }
         }
@@ -96,19 +97,17 @@ namespace StoreServices {
             achievementBeingUpdated.CurrentProgress += 1;
 
             if (achievementBeingUpdated.Complete) {
-                // TODO
+                // TODO Give Money to Player
                 Debug.Log($"{achievementBeingUpdated.AchievementName} was completed!");
             }
         }
 
-        /// <summary>
-        /// <para>Receives the ID and Progress Value for a specific achievement, so it can check for its progress.</para>
-        /// </summary>
-        /// <param name="_achievementID">Achievement ID</param>
-        /// <param name="_progressValue">Progress Value</param>
-        private void TrackAchievement(string _achievementID, string _progressValue) {
-            // get achievement
-            // update progress value and check for completion
+        private void PersistAchievements() {
+            Debug.Log($"Persist Achievements");
+
+            for (int i = 0; i < m_achievementInstances.Length; i++) {
+                Debug.Log(JsonUtility.ToJson(m_achievementInstances[i]));
+            }
         }
     }
 }

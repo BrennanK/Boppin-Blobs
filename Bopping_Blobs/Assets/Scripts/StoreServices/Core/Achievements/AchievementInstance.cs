@@ -23,9 +23,16 @@ namespace StoreServices.Core.Achievements {
             }
         }
 
+        [SerializeField]
         private float m_currentProgress;
+
+        [SerializeField]
         private bool m_isCurrentlyHidden;
+
+        [SerializeField]
         private long m_lastModification = 0;
+
+        [SerializeField]
         private bool m_isCompletedAlready = false;
         public bool AlreadyCompleted {
             get {
@@ -51,6 +58,7 @@ namespace StoreServices.Core.Achievements {
                 return m_currentProgress;
             }
             set {
+                m_lastModification = System.DateTime.Now.Ticks;
                 m_isCurrentlyHidden = false;
                 m_currentProgress = value;
             }
