@@ -5,6 +5,12 @@ namespace StoreServices.Core.Achievements {
     public class AchievementInstance {
         [System.NonSerialized]
         private readonly Achievement m_achievementReference;
+        public string AchievementInternalID {
+            get {
+                return m_achievementReference.internalAchievementID;
+            }
+        }
+
         public string AchievementName {
             get {
                 return m_achievementReference.name;
@@ -18,8 +24,14 @@ namespace StoreServices.Core.Achievements {
         }
 
         private float m_currentProgress;
-        private bool m_isCurrentlyHidden = false;
+        private bool m_isCurrentlyHidden;
         private long m_lastModification = 0;
+        private bool m_isCompletedAlready = false;
+        public bool AlreadyCompleted {
+            get {
+                return m_isCompletedAlready;
+            }
+        }
 
 
         public bool Complete {
@@ -38,20 +50,26 @@ namespace StoreServices.Core.Achievements {
             get {
                 return m_currentProgress;
             }
+            set {
+                m_isCurrentlyHidden = false;
+                m_currentProgress = value;
+            }
         }
 
         public AchievementInstance(Achievement _achievementReference) {
             m_achievementReference = _achievementReference;
             m_currentProgress = 0;
-            m_isCurrentlyHidden = false;
+            m_isCurrentlyHidden = _achievementReference.isAchievementHidden;
             m_lastModification = 0;
+            m_isCompletedAlready = false;
         }
 
-        public AchievementInstance(Achievement _achievementReference, float _currentProgress, bool _isCurrentlyHidden, long _lastModification) {
+        public AchievementInstance(Achievement _achievementReference, float _currentProgress, bool _isCurrentlyHidden, long _lastModification, bool _isCompletedAlready) {
             m_achievementReference = _achievementReference;
             m_currentProgress = _currentProgress;
             m_isCurrentlyHidden = _isCurrentlyHidden;
             m_lastModification = _lastModification;
+            m_isCompletedAlready = _isCompletedAlready;
         }
 
         public override string ToString() {

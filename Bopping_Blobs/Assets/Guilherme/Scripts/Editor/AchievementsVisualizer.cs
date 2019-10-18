@@ -14,14 +14,13 @@ public class AchievementsVisualizer : Editor {
         GUILayout.Label("Progress", GUILayout.Width(200));
         GUILayout.EndHorizontal();
 
+        GUILayout.Space(20);
+        GUILayout.Label("Achievements Instances", GUILayout.Width(200));
         foreach (StoreServices.Core.Achievements.AchievementInstance instance in instances) {
             GUILayout.BeginHorizontal();
             GUILayout.Label($"{instance.AchievementName}", GUILayout.Width(200));
             GUILayout.Label($"{instance.CurrentProgress}/{instance.GoalValue}", GUILayout.Width(200));
             GUILayout.EndHorizontal();
         }
-
-        GUILayout.Space(20);
-        GUILayout.Label("Achievements Instances", GUILayout.Width(200));
     }
 }

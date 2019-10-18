@@ -170,8 +170,8 @@ public class GameController : MonoBehaviour {
 
         PlayerProfile playerProfileForThisMatch = new PlayerProfile(1, gameTime, playerIdentifier.TimesAsKing, playerIdentifier.AmountOfTimeAsKing, playerIdentifier.PlayersBopped);
         SaveGameManager.instance.IncrementSavedData(playerProfileForThisMatch, amountOfMoneyPlayerEarned);
+        StoreServices.AchievementManager.instance.UpdateAllAchievements(playerProfileForThisMatch, finalPlayerPosition);
     }
-
 
     /// <summary>
     /// Return the amount of money player earned for ending on that position
