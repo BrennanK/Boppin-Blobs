@@ -5,9 +5,10 @@ using UnityEngine;
 namespace StoreServices {
     public class AchievementManager : MonoBehaviour {
         public static AchievementManager instance;
+        private const string ACHIEVEMENTS_SAVE_STRING = "SAVED_ACHIEVEMENTS";
         public Achievement[] allAchievements;
 
-        private AchievementInstance[] m_achievementInstances;
+        [SerializeField] private AchievementInstance[] m_achievementInstances;
         public AchievementInstance[] AchievementInstances {
             get {
                 return m_achievementInstances;
@@ -20,16 +21,25 @@ namespace StoreServices {
             } else {
                 Destroy(gameObject);
             }
-        }
 
-        private void Start() {
             Debug.Log($"Starting Achievement Manager!");
             // Create all achievement instances and/or check for persistence!!
             m_achievementInstances = new AchievementInstance[allAchievements.Length];
 
+            if (PlayerPrefs.HasKey(ACHIEVEMENTS_SAVE_STRING)) {
+                LoadAchievements();
+            } else {
+                for (int i = 0; i < allAchievements.Length; i++) {
+                    m_achievementInstances[i] = new AchievementInstance(allAchievements[i]);
+                }
+            }
+        }
+
+        private void LoadAchievements() {
+            Debug.Log("Loading Achievements...");
             for(int i = 0; i < allAchievements.Length; i++) {
-                m_achievementInstances[i] = new AchievementInstance(allAchievements[i]);
-                // Debug.Log(JsonUtility.ToJson(m_achievementInstances[i]));
+                m_achievementInstances[i] = JsonUtility.FromJson<AchievementInstance>(PlayerPrefs.GetString($"{ACHIEVEMENTS_SAVE_STRING}_{allAchievements[i].internalAchievementID}"));
+                m_achievementInstances[i].SetAchievementReference(allAchievements[i]);
             }
         }
 
@@ -81,6 +91,7 @@ namespace StoreServices {
 
             if (achievementBeingUpdated.Complete) {
                 // TODO Give Money to Player
+                achievementBeingUpdated.AlreadyCompleted = true;
                 Debug.Log($"{achievementBeingUpdated.AchievementName} was completed!");
             }
         }
@@ -90,7 +101,7 @@ namespace StoreServices {
                 return achievement.AchievementInternalID == _achievementID;
             }).FirstOrDefault();
 
-            if(achievementBeingUpdated.AlreadyCompleted | !_isComplete) {
+            if(achievementBeingUpdated.AlreadyCompleted || !_isComplete) {
                 return;
             }
 
@@ -98,6 +109,7 @@ namespace StoreServices {
 
             if (achievementBeingUpdated.Complete) {
                 // TODO Give Money to Player
+                achievementBeingUpdated.AlreadyCompleted = true;
                 Debug.Log($"{achievementBeingUpdated.AchievementName} was completed!");
             }
         }
@@ -105,8 +117,9 @@ namespace StoreServices {
         private void PersistAchievements() {
             Debug.Log($"Persist Achievements");
 
+            PlayerPrefs.SetInt(ACHIEVEMENTS_SAVE_STRING, 1);
             for (int i = 0; i < m_achievementInstances.Length; i++) {
-                Debug.Log(JsonUtility.ToJson(m_achievementInstances[i]));
+                PlayerPrefs.SetString($"{ACHIEVEMENTS_SAVE_STRING}_{m_achievementInstances[i].AchievementInternalID}", JsonUtility.ToJson(m_achievementInstances[i]));
             }
         }
     }

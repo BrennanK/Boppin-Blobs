@@ -4,10 +4,13 @@ namespace StoreServices.Core.Achievements {
     [System.Serializable]
     public class AchievementInstance {
         [System.NonSerialized]
-        private readonly Achievement m_achievementReference;
+        private Achievement m_achievementReference;
+
+        [SerializeField]
+        private string m_achievementInternalID;
         public string AchievementInternalID {
             get {
-                return m_achievementReference.internalAchievementID;
+                return m_achievementInternalID;
             }
         }
 
@@ -38,6 +41,9 @@ namespace StoreServices.Core.Achievements {
             get {
                 return m_isCompletedAlready;
             }
+            set {
+                m_isCompletedAlready = value;
+            }
         }
 
 
@@ -49,7 +55,7 @@ namespace StoreServices.Core.Achievements {
 
         public float ProgressInPercentage {
             get {
-                return (m_currentProgress / m_achievementReference.goalValue);
+                return Mathf.Clamp((m_currentProgress / m_achievementReference.goalValue), 0, 1);
             }
         }
 
@@ -66,6 +72,7 @@ namespace StoreServices.Core.Achievements {
 
         public AchievementInstance(Achievement _achievementReference) {
             m_achievementReference = _achievementReference;
+            m_achievementInternalID = m_achievementReference.internalAchievementID;
             m_currentProgress = 0;
             m_isCurrentlyHidden = _achievementReference.isAchievementHidden;
             m_lastModification = 0;
@@ -74,10 +81,16 @@ namespace StoreServices.Core.Achievements {
 
         public AchievementInstance(Achievement _achievementReference, float _currentProgress, bool _isCurrentlyHidden, long _lastModification, bool _isCompletedAlready) {
             m_achievementReference = _achievementReference;
+            m_achievementInternalID = _achievementReference.internalAchievementID;
+
             m_currentProgress = _currentProgress;
             m_isCurrentlyHidden = _isCurrentlyHidden;
             m_lastModification = _lastModification;
             m_isCompletedAlready = _isCompletedAlready;
+        }
+
+        public void SetAchievementReference(Achievement _achievementReference) {
+            m_achievementReference = _achievementReference;
         }
 
         public override string ToString() {
