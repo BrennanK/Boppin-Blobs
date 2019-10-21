@@ -20,6 +20,12 @@ namespace StoreServices.Core.Achievements {
             }
         }
 
+        public string AchievementDescription {
+            get {
+                return m_achievementReference.achievementDescription;
+            }
+        }
+
         public float GoalValue {
             get {
                 return m_achievementReference.goalValue;

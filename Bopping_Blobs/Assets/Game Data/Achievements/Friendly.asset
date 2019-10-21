@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 294fe49842c9cb344b8dd59e2d194d36, type: 3}
   m_Name: Friendly
   m_EditorClassIdentifier: 
-  achievementDescription: Go an entire match without attacking anyone
+  achievementDescription: Don't attack any blob.
   goalValue: 1
   isAchievementHidden: 0
   achievementType: 0
