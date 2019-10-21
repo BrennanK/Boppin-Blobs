@@ -37,11 +37,11 @@ public class TaggingIdentifier : MonoBehaviour {
         }
     }
 
-    private string m_playerName;
+    public string m_playerName;
     public string PlayerName {
         get {
             if(m_isUserPlayer) {
-                return m_playerName + " (you)";
+                return m_playerName;
             } else {
                 return m_playerName;
             }
