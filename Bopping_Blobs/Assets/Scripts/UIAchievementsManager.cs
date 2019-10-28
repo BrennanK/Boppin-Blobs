@@ -22,15 +22,6 @@ public class UIAchievementsManager : MonoBehaviour {
             Debug.LogError($"Achievements on game and achievements on UI are not the same!");
         }
 
-        /*
-        for(int i = 0; i < achievementInstances.Length; i++) {
-            GameObject achievementEntry = Instantiate(prefabEntry, entriesParent);
-            float percentageProgress = achievementInstances[i].ProgressInPercentage;
-            percentageProgress *= 100;
-            achievementEntry.GetComponentInChildren<TextMeshProUGUI>().text = $"{achievementInstances[i].AchievementName}\n{Mathf.Round(percentageProgress)}%";
-        }
-        */
-
         prefabCanvas.SetActive(false);
     }
 

@@ -78,16 +78,17 @@ namespace StoreServices.Core.Achievements {
 
         public AchievementInstance(Achievement _achievementReference) {
             m_achievementReference = _achievementReference;
+
             m_achievementInternalID = m_achievementReference.internalAchievementID;
             m_currentProgress = 0;
-            m_isCurrentlyHidden = _achievementReference.isAchievementHidden;
+            m_isCurrentlyHidden = m_achievementReference.isAchievementHidden;
             m_lastModification = 0;
             m_isCompletedAlready = false;
         }
 
         public AchievementInstance(Achievement _achievementReference, float _currentProgress, bool _isCurrentlyHidden, long _lastModification, bool _isCompletedAlready) {
             m_achievementReference = _achievementReference;
-            m_achievementInternalID = _achievementReference.internalAchievementID;
+            m_achievementInternalID = m_achievementReference.internalAchievementID;
 
             m_currentProgress = _currentProgress;
             m_isCurrentlyHidden = _isCurrentlyHidden;
